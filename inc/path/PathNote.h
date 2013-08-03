@@ -6,15 +6,22 @@
 
 class PathNote{
     private:
+        const int MOVE = 10;
         bool closedList;
         int heuristicValue, movementCost, combinedValue;
-        sf::Vector2i coordinate;
+        sf::Vector2i* coordinate;
+        PathNote* parent;
 
     public:
-        PathNote(sf::Vector2i coordinate, int heuristicValue, bool closedList = false);
+        PathNote(sf::Vector2i* coordinate, int heuristicValue, bool closedList = false);
 
 
-        void calcNote(PathNote* searchPoint);
+        bool calcNote(PathNote* searchPoint);
+        int getMovementCost(){ return movementCost;}
+        int getCombinedValue(){ return combinedValue;}
+        sf::Vector2i* getCoordinate() {return coordinate;}
+        void setClosed(){closedList = true;}
+        bool getClosedList(){return closedList;}
 
 };
 

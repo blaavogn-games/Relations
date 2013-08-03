@@ -17,58 +17,91 @@ Pathfinder::Pathfinder(){
 Pathfinder::~Pathfinder(){
 }
 
-std::vector<sf::Vector2i> Pathfinder::findPath(sf::Vector2i startPoint, sf::Vector2i endPoint){
+std::vector<sf::Vector2i*> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint){
 
     std::cout << "Finding path:" << std::endl;
 
-//    notes[startPoint.x][startPoint.y] = new PathNote(startPoint, sf::Vector2i(-1, -1), true);
+    int heuristic = std::abs(startPoint->x - endPoint->x) + std::abs(startPoint->y - endPoint->y);
+    notes[startPoint->x][startPoint->y] = new PathNote(startPoint, heuristic);
 
 
-    return searchNoteRec(startPoint, endPoint);
+    std::vector<sf::Vector2i*> returnVal = searchNoteRec(startPoint, endPoint);
+    return returnVal;
 
 }
 
-std::vector<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i searchPoint, sf::Vector2i endPoint){
-    std::vector<sf::Vector2i> ret;
+std::vector<sf::Vector2i*> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, sf::Vector2i* endPoint){
+    std::vector<sf::Vector2i*> ret;
 
-    //Loops throught the surroinding grid
-    signed int i = -1, j = -1, XMax = 1, YMax = 1;
+    std::cout << "Searching: " << searchPoint->x << " , " << searchPoint->y << std::endl;
+
+    //Gets the searchNote, and puts it on the closed list, so the note doesn't search itself.
+    PathNote* searchNote = notes[searchPoint->x][searchPoint->y];
+    searchNote->setClosed();
+
+
 
     //Makes sure we stay within grid
-    if(searchPoint.x == 0){
-        i = 0;
-    }else if(searchPoint.x == 24){
-        XMax = 0;
+    if(searchPoint->x != 0){
+        calcPoint(searchPoint, endPoint, searchNote,  sf::Vector2i(searchPoint->x -1 , searchPoint->y ));
     }
 
-    if(searchPoint.y == 0){
-        j = 0;
-    }else if(searchPoint.y == 18){
-        YMax = 0;
+    if(searchPoint->x != 24){
+        calcPoint(searchPoint, endPoint, searchNote, sf::Vector2i(searchPoint->x +1 , searchPoint->y ));
     }
 
-    PathNote* searchNote = notes[searchPoint.x][searchPoint.y];
+    if(searchPoint->y != 0){
+        calcPoint(searchPoint, endPoint, searchNote, sf::Vector2i(searchPoint->x , searchPoint-> y -1 ));
+    }
+    if(searchPoint->y != 18){
+        calcPoint(searchPoint, endPoint, searchNote, sf::Vector2i(searchPoint->x , searchPoint-> y  +1 ));
+    }
 
-    for(signed int itX = i; itX <= XMax ; itX++){
-
-        for(signed int itY = j; itY <= YMax ; itY++){
+    sf::Vector2i* nextPoint = (nextNote()->getCoordinate());
 
 
-            sf::Vector2i curPoint(searchPoint.x + itX, searchPoint.y + itY);
+    if(endPoint->x == nextPoint->x && endPoint->y == nextPoint->y){
+            std::cout << "SLUT: " << tal << std::endl;
+            return ret;
+      }
+    tal++;
+    return searchNoteRec(nextPoint, endPoint);
+}
 
-            std::cout << curPoint.x << " , " << curPoint.y << std::endl;
+void Pathfinder::calcPoint(sf::Vector2i* searchPoint, sf::Vector2i* endPoint, PathNote* searchNote, sf::Vector2i curPoint){
+//
 
-            if(notes[curPoint.x][curPoint.y] == NULL ){
-                int heuristicValue = std::abs(curPoint.x - searchPoint.x) + std::abs(curPoint.y - searchPoint.y);
-                std::cout << "Opret" << std::endl;
+    //if a note doesn'r exist, it is created
+    if(notes[curPoint.x][curPoint.y] == NULL ){
+        int heuristicValue = std::abs(curPoint.x - endPoint->x) + std::abs(curPoint.y - endPoint->y);
 
-                notes[curPoint.x][curPoint.y] = new PathNote(curPoint,heuristicValue);
-            }
-                notes[curPoint.x][curPoint.y]->calcNote(searchNote);
+
+        PathNote* tempNote =  new PathNote(new sf::Vector2i(curPoint.x,curPoint.y),heuristicValue);
+
+
+        notes[curPoint.x][curPoint.y] = tempNote;
+
+        openList.push_back(tempNote);
+
+     }
+
+    //calculates moveCost for point
+     notes[curPoint.x][curPoint.y]->calcNote(searchNote);
+   // return false;
+}
+
+PathNote* Pathfinder::nextNote(){
+    PathNote* returnValue;
+    int minValue = 999999;
+    for(std::vector<PathNote*>::iterator it = openList.begin(); it != openList.end(); ++it){
+   //     std::cout << (*it)->getCoordinate()->x <<  " , " << (*it)->getCoordinate()->y << std::endl;
+        if((*it)->getClosedList()){
+            //delete
+     //       openList.erase(it);
+        }else if((*it)->getCombinedValue() < minValue ){
+            minValue = (*it)->getCombinedValue();
+            returnValue = (*it);
         }
-//            notes.at(curPoint)->setValues()
-
-
     }
-    return ret;
+    return returnValue;
 }

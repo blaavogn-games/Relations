@@ -12,15 +12,19 @@
 
 class Pathfinder{
     private:
-
+        int tal = 0;
         PathNote* notes[25][19];
 
-        std::vector<sf::Vector2i> searchNoteRec(sf::Vector2i, sf::Vector2i);
+        std::vector<sf::Vector2i*> searchNoteRec(sf::Vector2i*, sf::Vector2i*);
+        std::vector<PathNote*> openList;
+
+        void calcPoint(sf::Vector2i* , sf::Vector2i*, PathNote*, sf::Vector2i);
+        PathNote* nextNote();
 
     public:
         Pathfinder();
         ~Pathfinder();
-        std::vector<sf::Vector2i> findPath(sf::Vector2i startPoint, sf::Vector2i endPoint);
+        std::vector<sf::Vector2i*> findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint);
 
 };
 

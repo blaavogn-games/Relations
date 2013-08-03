@@ -47,6 +47,10 @@ void WallHandler::init(){
 	}
 	sprHighlight.setTexture(txHighlight);
 
+    sf::Vector2i startPoint(0,0), endPoint(10 ,10);
+
+    pathfinder.findPath( &startPoint , &endPoint);
+
 }
 
 
@@ -60,10 +64,6 @@ void WallHandler::update(float delta, sf::Event &event, sf::Vector2i &mousePosit
         addWall(mouseGridPosition);
     }
 
-    sf::Keyboard key;
-    if(key.isKeyPressed(sf::Keyboard::Space)){
-        pathfinder.findPath(sf::Vector2i(0,0) , sf::Vector2i(10,10));
-    }
 }
 
 void WallHandler::render(sf::RenderWindow &window){
