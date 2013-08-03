@@ -1,0 +1,8 @@
+Potentiel optimeringer:
+Wallhandler kører addwall for hver frame mouse.left == true
+
+
+
+
+Forskelle på Linux og Windows:
+Windowsopsætning ingen unordered_map.emplace , insert kan bruges kender ikke forskellen.
