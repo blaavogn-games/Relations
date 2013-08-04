@@ -3,6 +3,7 @@
 #include <inc/gameobj/GameControl.h>
 
 #include <cmath>
+#include <queue>
 #include <iostream>
 
 Pathfinder::Pathfinder(){
@@ -21,8 +22,7 @@ std::vector<sf::Vector2i*> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Ve
 
     std::cout << "Finding path:" << std::endl;
 
-    int heuristic = std::abs(startPoint->x - endPoint->x) + std::abs(startPoint->y - endPoint->y);
-    notes[startPoint->x][startPoint->y] = new PathNote(startPoint, heuristic);
+    notes[startPoint->x][startPoint->y] = new PathNote(startPoint, 0);
 
 
     std::vector<sf::Vector2i*> returnVal = searchNoteRec(startPoint, endPoint);
@@ -61,9 +61,18 @@ std::vector<sf::Vector2i*> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, 
 
 
     if(endPoint->x == nextPoint->x && endPoint->y == nextPoint->y){
-            std::cout << "SLUT: " << tal << std::endl;
-            return ret;
-      }
+        std::cout << "SLUT: " << tal << std::endl;
+        notes[endPoint->x][endPoint->y]->getPathRec(&finalPath);
+
+        std::cout << "REVERSE PATH:" << std::endl;
+
+        for(std::vector<sf::Vector2i>::iterator it = finalPath.begin() ; it != finalPath.end() ; ++it){
+            std::cout << it->x << " , " << it->y << std::endl;
+        }
+
+
+        return ret;
+    }
     tal++;
     return searchNoteRec(nextPoint, endPoint);
 }
@@ -76,8 +85,7 @@ void Pathfinder::calcPoint(sf::Vector2i* searchPoint, sf::Vector2i* endPoint, Pa
         int heuristicValue = std::abs(curPoint.x - endPoint->x) + std::abs(curPoint.y - endPoint->y);
 
 
-        PathNote* tempNote =  new PathNote(new sf::Vector2i(curPoint.x,curPoint.y),heuristicValue);
-
+        PathNote* tempNote =  new PathNote(new sf::Vector2i(curPoint.x,curPoint.y),heuristicValue  * 100);
 
         notes[curPoint.x][curPoint.y] = tempNote;
 

@@ -17,7 +17,7 @@ class Pathfinder{
 
         std::vector<sf::Vector2i*> searchNoteRec(sf::Vector2i*, sf::Vector2i*);
         std::vector<PathNote*> openList;
-
+        std::vector<sf::Vector2i> finalPath; //Burde nok være queue
         void calcPoint(sf::Vector2i* , sf::Vector2i*, PathNote*, sf::Vector2i);
         PathNote* nextNote();
 

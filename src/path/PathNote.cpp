@@ -29,3 +29,12 @@ bool PathNote::calcNote(PathNote *searchNote){
         return true;
     }
 }
+
+ void PathNote::getPathRec(std::vector<sf::Vector2i>* path){
+    path->push_back(*coordinate);
+    if(parent == NULL){
+        return;
+    }else{
+        parent->getPathRec(path);
+    }
+}
