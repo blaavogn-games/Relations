@@ -1,6 +1,6 @@
 #include <inc/gameobj/handler/WallHandler.h>
-
 #include <inc/gameobj/GameControl.h>
+
 #include <iostream>
 
 //private
@@ -14,9 +14,8 @@ void WallHandler::addWall(sf::Vector2i position){
         tempWall->init();
         std::pair<sf::Vector2i, Wall* > tempValuePair (mapPos , tempWall);
         walls.insert(tempValuePair);
+        pathfinder->addWall(position);
     }
-
-
 }
 
 sf::Vector2i WallHandler::getGridPosition(int posx, int posy){
@@ -28,7 +27,7 @@ sf::Vector2i WallHandler::getGridPosition(int posx, int posy){
 
 //Public
 WallHandler::WallHandler(){
-
+    pathfinder = new Pathfinder(this);
 }
 
 WallHandler::~WallHandler(){
@@ -36,6 +35,10 @@ WallHandler::~WallHandler(){
         delete it->second;
     }
 	walls.clear();
+
+	if(pathfinder){
+        delete pathfinder;
+	}
 
 }
 
@@ -49,7 +52,7 @@ void WallHandler::init(){
 
     sf::Vector2i startPoint(0,0), endPoint(10 ,10);
 
-    pathfinder.findPath( &startPoint , &endPoint);
+    pathfinder->findPath( &startPoint , &endPoint);
 
 }
 

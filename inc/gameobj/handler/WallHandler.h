@@ -12,7 +12,7 @@
 
 class WallHandler : protected GameObj{
     private:
-        Pathfinder pathfinder;
+        Pathfinder* pathfinder;
 
         sf::Sprite sprHighlight;
         sf::Texture txHighlight;

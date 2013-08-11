@@ -1,11 +1,11 @@
 #include <inc/path/PathNote.h>
 #include <iostream>
 
-PathNote::PathNote(sf::Vector2i* coordinate, int heuristicValue,  bool closedList){
-
+PathNote::PathNote(sf::Vector2i coordinate, int heuristicValue,  bool closedList, bool wall){
     this -> coordinate = coordinate;
     this -> heuristicValue = heuristicValue;
     this -> closedList = closedList;
+    this -> wall = wall;
     parent = NULL;
     movementCost = 0;
 }
@@ -17,13 +17,8 @@ bool PathNote::calcNote(PathNote *searchNote){
             parent = searchNote;
             movementCost = parent->getMovementCost() + MOVE;
             combinedValue = heuristicValue + movementCost;
-
-            std::cout << coordinate->x << " , " << coordinate->y << ": M=" << movementCost  << " H=" << heuristicValue << " C=" << combinedValue << std::endl;
-
-
+            //std::cout << coordinate->x << " , " << coordinate->y << ": M=" << movementCost  << " H=" << heuristicValue << " C=" << combinedValue << std::endl;
         }
-
-
         return false;
     }else{
         return true;
@@ -31,7 +26,7 @@ bool PathNote::calcNote(PathNote *searchNote){
 }
 
  void PathNote::getPathRec(std::vector<sf::Vector2i>* path){
-    path->push_back(*coordinate);
+    path->push_back(coordinate);
     if(parent == NULL){
         return;
     }else{
