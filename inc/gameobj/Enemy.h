@@ -8,6 +8,7 @@
 
 class Enemy : protected GameObj{
 	private:
+        int const GRIDOFFSET = 9;
 		ColCircle* colCircle;
 
 		sf::Sprite sprite;
@@ -15,7 +16,7 @@ class Enemy : protected GameObj{
 		sf::Vector2f position;
 
 	public:
-		Enemy(float x, float y);
+		Enemy(sf::Vector2i);
 		~Enemy();
 
 		void init();

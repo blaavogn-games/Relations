@@ -7,7 +7,7 @@
 #include "inc/gameobj/FpsDisplay.h"
 #include "inc/col/ColRectangle.h"
 
-
+//
 int main()
 {
     int const TARGET_FPS = 60;

@@ -14,8 +14,10 @@ Player::~Player(){
 void Player::init(){
 	//Variables
 	speed = 80;
-	position.x = 200;
-	position.y = 200;
+
+	//Player at 9,9 just for enemy testing
+	position.x = 32 * 9 + 9;
+	position.y = 32 * 9 + 9;
 
 	//Dynamic vars
 	colCircle = new ColCircle(position, 8);

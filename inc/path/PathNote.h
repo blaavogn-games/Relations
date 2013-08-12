@@ -2,6 +2,7 @@
 #define PATHNOTE_H
 
 #include <SFML/System.hpp>
+#include <iostream>
 
 class PathNote{
     private:
@@ -13,6 +14,7 @@ class PathNote{
 
     public:
         PathNote(sf::Vector2i coordinate, int heuristicValue, bool closedList = false, bool wall = false);
+        ~PathNote();
         void getPathRec(std::vector<sf::Vector2i>*);
 
         bool calcNote(PathNote* searchPoint);

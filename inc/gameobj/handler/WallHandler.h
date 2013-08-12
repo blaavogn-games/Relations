@@ -23,6 +23,7 @@ class WallHandler : protected GameObj{
 
         void addWall(sf::Vector2i);
         sf::Vector2i getGridPosition(int,int);
+        sf::Vector2i toCoordinate(sf::Vector2i position);
 
     public:
         WallHandler();

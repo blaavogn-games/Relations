@@ -6,7 +6,6 @@
 //private
 void WallHandler::addWall(sf::Vector2i position){
     sf::Vector2i mapPos(position.x / GameControl::GRIDSIZE, position.y / GameControl::GRIDSIZE);
-
     //Is mouse coordinates within the window
     if(1 <= mapPos.x && mapPos.x < GameControl::GRIDX - 1 && 1 <= mapPos.y &&  mapPos.y < GameControl::GRIDY - 1 && !walls.count(mapPos) ){
 
@@ -14,8 +13,13 @@ void WallHandler::addWall(sf::Vector2i position){
         tempWall->init();
         std::pair<sf::Vector2i, Wall* > tempValuePair (mapPos , tempWall);
         walls.insert(tempValuePair);
-        pathfinder->addWall(position);
+        pathfinder->addWall(toCoordinate(position));
     }
+}
+
+sf::Vector2i WallHandler::toCoordinate(sf::Vector2i position){
+
+    return sf::Vector2i(position.x / GameControl::GRIDSIZE, position.y / GameControl::GRIDSIZE);
 }
 
 sf::Vector2i WallHandler::getGridPosition(int posx, int posy){
@@ -50,9 +54,16 @@ void WallHandler::init(){
 	}
 	sprHighlight.setTexture(txHighlight);
 
-    sf::Vector2i startPoint(0,0), endPoint(10 ,10);
 
-    pathfinder->findPath( &startPoint , &endPoint);
+    //Setup walls for testing
+    for(int i = 1; i < 10; i++){
+        addWall(sf::Vector2i(i * 32,32));
+        addWall(sf::Vector2i(i * 32,320));
+
+        addWall(sf::Vector2i(320,32 + i * 32));
+        addWall(sf::Vector2i(32,64 + i * 32));
+    }
+
 
 }
 

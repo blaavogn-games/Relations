@@ -30,10 +30,22 @@ std::vector<sf::Vector2i*> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Ve
     notes[startPoint->x][startPoint->y] = new PathNote(*startPoint, 0);
 
     std::vector<sf::Vector2i*> returnVal = searchNoteRec(startPoint, endPoint);
+
+    std::cout << "SLUT: " << tal << std::endl;
+    notes[endPoint->x][endPoint->y]->getPathRec(&finalPath);
+
+
+    for(std::vector<sf::Vector2i>::iterator it = finalPath.begin() ; it != finalPath.end() ; ++it){
+        std::cout << it->x << " , " << it->y << std::endl;
+    }
+
     return returnVal;
 }
 
 void Pathfinder::clearNotes(){
+
+    std::cout << "Clearing notes:" << std::endl;
+
     for(int x = 0; x < 25; x++){
         for(int y = 0; y < 19; y++){
             if(notes[x][y] != NULL){
@@ -58,19 +70,19 @@ void Pathfinder::clearNotes(){
 
 void Pathfinder::addWall(sf::Vector2i coordinate){
 
+//    std::cout << "Adding Wall" << std::endl;
+//    std::cout << coordinate.x << " , " << coordinate.y << std::endl;
+
     if(notes[coordinate.x][coordinate.y] != NULL){
 
         delete notes[coordinate.x][coordinate.y];
+
         notes[coordinate.x][coordinate.y] = NULL;
     }
 
     notes[coordinate.x][coordinate.y] = new PathNote((coordinate),0, true,true);
 
-    std::cout << "Wall CREATED!!!!!" << std::endl;
 
-    sf::Vector2i startPoint(0,0), endPoint(10 ,10);
-
-    findPath( &startPoint , &endPoint);
 }
 
 std::vector<sf::Vector2i*> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, sf::Vector2i* endPoint){
@@ -102,15 +114,6 @@ std::vector<sf::Vector2i*> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, 
 
 
     if(endPoint->x == nextPoint->x && endPoint->y == nextPoint->y){
-        std::cout << "SLUT: " << tal << std::endl;
-        notes[endPoint->x][endPoint->y]->getPathRec(&finalPath);
-
-        std::cout << "REVERSE PATH:" << std::endl;
-
-        for(std::vector<sf::Vector2i>::iterator it = finalPath.begin() ; it != finalPath.end() ; ++it){
-            std::cout << it->x << " , " << it->y << std::endl;
-        }
-
 
         return ret;
     }
@@ -125,19 +128,17 @@ void Pathfinder::calcPoint(sf::Vector2i* searchPoint, sf::Vector2i* endPoint, Pa
     if(notes[curPoint.x][curPoint.y] == NULL ){
         int heuristicValue = std::abs(curPoint.x - endPoint->x) + std::abs(curPoint.y - endPoint->y);
 
+        notes[curPoint.x][curPoint.y] = new PathNote(curPoint,heuristicValue  * 100);;
+        if(curPoint.x == 1 && curPoint.y == 1){
+            std::cout << notes[curPoint.x][curPoint.y] << std::endl;
+        }
 
-        PathNote* tempNote =  new PathNote(curPoint,heuristicValue  * 100);
-
-        notes[curPoint.x][curPoint.y] = tempNote;
-
-        openList.push_back(tempNote);
-
+        openList.push_back(curPoint);
      }
 
     //calculates moveCost for point
     if(notes[curPoint.x][curPoint.y]-> getClosedList() == false){
         notes[curPoint.x][curPoint.y]->calcNote(searchNote);
-
     }
     // return false;
 }
@@ -145,14 +146,14 @@ void Pathfinder::calcPoint(sf::Vector2i* searchPoint, sf::Vector2i* endPoint, Pa
 PathNote* Pathfinder::nextNote(){
     PathNote* returnValue;
     int minValue = 999999;
-    for(std::vector<PathNote*>::iterator it = openList.begin(); it != openList.end(); ++it){
+    for(std::vector<sf::Vector2i>::iterator it = openList.begin(); it != openList.end(); ++it){
    //     std::cout << (*it)->getCoordinate()->x <<  " , " << (*it)->getCoordinate()->y << std::endl;
-        if((*it)->getClosedList()){
+        if(notes[(*it).x][(*it).y]->getClosedList()){
             //delete
             openList.erase(it);
-        }else if((*it)->getCombinedValue() < minValue ){
-            minValue = (*it)->getCombinedValue();
-            returnValue = (*it);
+        }else if(notes[(*it).x][(*it).y]->getCombinedValue() < minValue ){
+            minValue = notes[(*it).x][(*it).y]->getCombinedValue();
+            returnValue = notes[(*it).x][(*it).y];
         }
     }
     return returnValue;

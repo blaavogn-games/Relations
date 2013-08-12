@@ -18,8 +18,10 @@ class Pathfinder{
         WallHandler* wallHandler;
 
         std::vector<sf::Vector2i*> searchNoteRec(sf::Vector2i*, sf::Vector2i*);
-        std::vector<PathNote*> openList;
+        std::vector<sf::Vector2i> openList;
         std::vector<sf::Vector2i> finalPath; //Burde nok være queue
+
+
         void calcPoint(sf::Vector2i* , sf::Vector2i*, PathNote*, sf::Vector2i);
         void clearNotes();
         PathNote* nextNote();
@@ -29,6 +31,7 @@ class Pathfinder{
         Pathfinder(WallHandler* wallHandler);
         ~Pathfinder();
         std::vector<sf::Vector2i*> findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint);
+
 };
 
 #endif

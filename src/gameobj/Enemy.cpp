@@ -1,8 +1,8 @@
 #include <inc/gameobj/Enemy.h>
 
-Enemy::Enemy(float x, float y){
-	position.x = x;
-	position.y = y;
+Enemy::Enemy(sf::Vector2i startCoordinate){
+	position.x = startCoordinate.x * 32 + GRIDOFFSET;
+	position.y = startCoordinate.y * 32 + GRIDOFFSET;
 }
 Enemy::~Enemy(){
 	if(colCircle)

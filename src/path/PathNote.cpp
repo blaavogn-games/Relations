@@ -1,6 +1,4 @@
 #include <inc/path/PathNote.h>
-#include <iostream>
-
 PathNote::PathNote(sf::Vector2i coordinate, int heuristicValue,  bool closedList, bool wall){
     this -> coordinate = coordinate;
     this -> heuristicValue = heuristicValue;
@@ -8,6 +6,11 @@ PathNote::PathNote(sf::Vector2i coordinate, int heuristicValue,  bool closedList
     this -> wall = wall;
     parent = NULL;
     movementCost = 0;
+}
+
+PathNote::~PathNote(){
+    std::cout << "Deleting note" << std::endl;
+
 }
 
 //Returns closedList value

@@ -14,8 +14,7 @@ EnemyHandler::~EnemyHandler(){
 
 void EnemyHandler::init(){
 
-    enemies.push_back(new Enemy(100,100));
-	enemies.push_back(new Enemy(200,100));
+    enemies.push_back(new Enemy(sf::Vector2i(0,0)));
 
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->init();
