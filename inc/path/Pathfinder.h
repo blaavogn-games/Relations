@@ -7,6 +7,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include <deque>
 
 //Forward declaration
 class WallHandler;
@@ -17,9 +18,11 @@ class Pathfinder{
         PathNote* notes[25][19];
         WallHandler* wallHandler;
 
-        std::vector<sf::Vector2i*> searchNoteRec(sf::Vector2i*, sf::Vector2i*);
+        std::deque<sf::Vector2i> searchNoteRec(sf::Vector2i*, sf::Vector2i*);
         std::vector<sf::Vector2i> openList;
-        std::vector<sf::Vector2i> finalPath; //Burde nok være queue
+        std::deque<sf::Vector2i> finalPath; //Deque so I can use push_front, and dont' have to reverse the path found.
+        //I think it later will be benificially that I am searching from multiple enemies to one goal,
+        //because I might be able to use heuristic calculations and more for several paths
 
 
         void calcPoint(sf::Vector2i* , sf::Vector2i*, PathNote*, sf::Vector2i);
@@ -30,7 +33,7 @@ class Pathfinder{
         void addWall(sf::Vector2i coordinate);
         Pathfinder(WallHandler* wallHandler);
         ~Pathfinder();
-        std::vector<sf::Vector2i*> findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint);
+        std::deque<sf::Vector2i> findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint);
 
 };
 

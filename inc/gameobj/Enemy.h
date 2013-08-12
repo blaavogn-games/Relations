@@ -6,22 +6,41 @@
 
 #include <SFML/Graphics.hpp>
 
+#include <deque>
+
+
+//Forward declaration
+class EnemyHandler;
+
 class Enemy : protected GameObj{
 	private:
         int const GRIDOFFSET = 9;
+        float const SPEED = 20  ;
+
+		EnemyHandler* enemyHandler;
 		ColCircle* colCircle;
+
+        std::deque<sf::Vector2i> path;
+
 
 		sf::Sprite sprite;
 		sf::Texture texture;
 		sf::Vector2f position;
+        sf::Vector2i targetPoint;
+        sf::Vector2f movement;
+
+        void newTargetPoint();
 
 	public:
-		Enemy(sf::Vector2i);
+		Enemy(EnemyHandler* enemyHandler, sf::Vector2i);
 		~Enemy();
 
 		void init();
 		void update(float delta);
 		void render(sf::RenderWindow &window);
 		ColCircle getColCircle(){return *colCircle;}
+
+        //Closer inheritance between enemy and player might be a good idea, I should do that for next project at least
+		sf::Vector2i getPosition();
 };
 #endif

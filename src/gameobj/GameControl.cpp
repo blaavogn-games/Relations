@@ -14,14 +14,16 @@ GameControl::~GameControl(){
 }
 
 void GameControl::init(){
+    //enemyHandler dependent on wallhandler
+	wallHandler = new WallHandler();
+	wallHandler->init();
+
 	player = new Player(this);
 	player->init();
 
 	enemyHandler = new EnemyHandler(this);
 	enemyHandler->init();
 
-	wallHandler = new WallHandler();
-	wallHandler->init();
 }
 void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
 	player->update(delta);
@@ -40,6 +42,10 @@ std::vector<Enemy*>* GameControl::getEnemies(){
 	return enemyHandler->getEnemies();
 }
 
-    std::vector<Wall*> GameControl::getSurWalls(sf::Vector2f &position){
+std::vector<Wall*> GameControl::getSurWalls(sf::Vector2i position){
     return wallHandler->getSurWalls(position);
+}
+
+std::deque<sf::Vector2i> GameControl::getPath(sf::Vector2i startPosition){
+    return wallHandler->getPath(startPosition, player->getPosition());
 }

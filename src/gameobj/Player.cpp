@@ -60,7 +60,7 @@ void Player::update(float delta){
 	colCircle->setPosition(position);
 
 	//Collision
-    std::vector<Wall*> walls = gameControl->getSurWalls(position);
+    std::vector<Wall*> walls = gameControl->getSurWalls( getPosition());
 
     int ventil = 0;
     while(collisionHandler(walls) && ventil < 10){
@@ -100,8 +100,10 @@ void Player::render(sf::RenderWindow &window){
 	window.draw(sprite);
 }
 
-
-
 ColCircle* Player::getCol(){
     return colCircle;
+}
+
+sf::Vector2i Player::getPosition(){
+    return sf::Vector2i( (int) position.x, (int) position.y);
 }

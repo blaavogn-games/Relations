@@ -3,11 +3,9 @@
 #include <inc/gameobj/handler/WallHandler.h>
 
 #include <cmath>
-#include <queue>
 #include <iostream>
 
 Pathfinder::Pathfinder(WallHandler* wallHandler){
-
     this->wallHandler = wallHandler;
 
     for(int x = 0; x < 25; x++){
@@ -21,7 +19,7 @@ Pathfinder::~Pathfinder(){
     clearNotes();
 }
 
-std::vector<sf::Vector2i*> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint){
+std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint){
 
     std::cout << "Finding path:" << std::endl;
 
@@ -29,17 +27,17 @@ std::vector<sf::Vector2i*> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Ve
 
     notes[startPoint->x][startPoint->y] = new PathNote(*startPoint, 0);
 
-    std::vector<sf::Vector2i*> returnVal = searchNoteRec(startPoint, endPoint);
+    searchNoteRec(startPoint, endPoint);
 
     std::cout << "SLUT: " << tal << std::endl;
     notes[endPoint->x][endPoint->y]->getPathRec(&finalPath);
 
 
-    for(std::vector<sf::Vector2i>::iterator it = finalPath.begin() ; it != finalPath.end() ; ++it){
+    for(std::deque<sf::Vector2i>::iterator it = finalPath.begin() ; it != finalPath.end() ; ++it){
         std::cout << it->x << " , " << it->y << std::endl;
     }
 
-    return returnVal;
+    return finalPath;
 }
 
 void Pathfinder::clearNotes(){
@@ -49,15 +47,9 @@ void Pathfinder::clearNotes(){
     for(int x = 0; x < 25; x++){
         for(int y = 0; y < 19; y++){
             if(notes[x][y] != NULL){
-
-                std::cout << "Note: " << notes[x][y]->isWall() << std::endl;
-
                 if(notes[x][y]->isWall() == false){
                     delete notes[x][y];
                     notes[x][y] = NULL;
-                }else{
-                    std::cout << "Wall not deleted!!!!!" << std::endl;
-
                 }
             }
         }
@@ -69,9 +61,6 @@ void Pathfinder::clearNotes(){
 }
 
 void Pathfinder::addWall(sf::Vector2i coordinate){
-
-//    std::cout << "Adding Wall" << std::endl;
-//    std::cout << coordinate.x << " , " << coordinate.y << std::endl;
 
     if(notes[coordinate.x][coordinate.y] != NULL){
 
@@ -85,10 +74,9 @@ void Pathfinder::addWall(sf::Vector2i coordinate){
 
 }
 
-std::vector<sf::Vector2i*> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, sf::Vector2i* endPoint){
-    std::vector<sf::Vector2i*> ret;
+std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, sf::Vector2i* endPoint){
+    std::deque<sf::Vector2i> ret;
 
-    std::cout << "Searching: " << searchPoint->x << " , " << searchPoint->y << std::endl;
 
     //Gets the searchNote, and puts it on the closed list, so the note doesn't search itself.
     PathNote* searchNote = notes[searchPoint->x][searchPoint->y];
@@ -129,9 +117,6 @@ void Pathfinder::calcPoint(sf::Vector2i* searchPoint, sf::Vector2i* endPoint, Pa
         int heuristicValue = std::abs(curPoint.x - endPoint->x) + std::abs(curPoint.y - endPoint->y);
 
         notes[curPoint.x][curPoint.y] = new PathNote(curPoint,heuristicValue  * 100);;
-        if(curPoint.x == 1 && curPoint.y == 1){
-            std::cout << notes[curPoint.x][curPoint.y] << std::endl;
-        }
 
         openList.push_back(curPoint);
      }

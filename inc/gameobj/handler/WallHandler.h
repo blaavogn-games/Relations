@@ -22,7 +22,7 @@ class WallHandler : protected GameObj{
         WallMap walls;
 
         void addWall(sf::Vector2i);
-        sf::Vector2i getGridPosition(int,int);
+        sf::Vector2i getGridPosition(sf::Vector2i);
         sf::Vector2i toCoordinate(sf::Vector2i position);
 
     public:
@@ -31,7 +31,7 @@ class WallHandler : protected GameObj{
         void init();
         void update( float delta , sf::Event &event, sf::Vector2i &mousePosition);
         void render(sf::RenderWindow &window);
-        std::vector<Wall*> getSurWalls(sf::Vector2f &position);
-
+        std::vector<Wall*> getSurWalls(sf::Vector2i &position);
+        std::deque<sf::Vector2i> getPath(sf::Vector2i, sf::Vector2i);
 };
 #endif

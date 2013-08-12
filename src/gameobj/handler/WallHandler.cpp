@@ -22,10 +22,10 @@ sf::Vector2i WallHandler::toCoordinate(sf::Vector2i position){
     return sf::Vector2i(position.x / GameControl::GRIDSIZE, position.y / GameControl::GRIDSIZE);
 }
 
-sf::Vector2i WallHandler::getGridPosition(int posx, int posy){
+sf::Vector2i WallHandler::getGridPosition(sf::Vector2i position){
     sf::Vector2i returnVector;
-    returnVector.x = posx - (posx % GameControl::GRIDSIZE);
-    returnVector.y = posy - (posy % GameControl::GRIDSIZE);
+    returnVector.x = position.x - (position.x % GameControl::GRIDSIZE);
+    returnVector.y = position.y - (position.y % GameControl::GRIDSIZE);
     return returnVector;
 }
 
@@ -63,14 +63,12 @@ void WallHandler::init(){
         addWall(sf::Vector2i(320,32 + i * 32));
         addWall(sf::Vector2i(32,64 + i * 32));
     }
-
-
 }
 
 
 void WallHandler::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
     //Handles highlight and mouse position
-    sf::Vector2i mouseGridPosition = getGridPosition(mousePosition.x , mousePosition.y);
+    sf::Vector2i mouseGridPosition = getGridPosition(mousePosition);
     sprHighlight.setPosition(sf::Vector2f(mouseGridPosition.x,mouseGridPosition.y));
 
     sf::Mouse mouse;
@@ -89,10 +87,10 @@ void WallHandler::render(sf::RenderWindow &window){
 }
 
 
-std::vector<Wall*> WallHandler::getSurWalls(sf::Vector2f &position){
+std::vector<Wall*> WallHandler::getSurWalls(sf::Vector2i &position){
     std::vector<Wall*> surWalls;
 
-    sf::Vector2i gridPosition = getGridPosition((int) position.x , (int)position.y);
+    sf::Vector2i gridPosition = getGridPosition(position);
     sf::Vector2i mapPosition(gridPosition.x / GameControl::GRIDSIZE, gridPosition.y / GameControl::GRIDSIZE);
 
     //Get the 2x2 grid expanding from grid pos
@@ -106,4 +104,16 @@ std::vector<Wall*> WallHandler::getSurWalls(sf::Vector2f &position){
     }
 
     return surWalls;
+}
+
+std::deque<sf::Vector2i> WallHandler::getPath(sf::Vector2i startPosition, sf::Vector2i endPosition){
+
+    sf::Vector2i startCoordinate = toCoordinate( getGridPosition(startPosition) );
+    sf::Vector2i endCoordinate = toCoordinate( getGridPosition(endPosition) );
+
+ //   std::cout << startCoordinate.x << " , " << startCoordinate.y << std::endl;
+ //   std::cout << endCoordinate.x << " , " << endCoordinate.y << std::endl;
+
+    return pathfinder->findPath( &startCoordinate, &endCoordinate);
+
 }

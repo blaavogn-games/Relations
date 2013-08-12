@@ -18,6 +18,10 @@ sf::Vector2f MathVector::normalize(sf::Vector2f vector){
 
 }
 
+sf::Vector2f MathVector::scale(sf::Vector2f vector, float scale){
+    return sf::Vector2f(vector.x * scale , vector.y * scale);
+
+}
 
 
 sf::Vector2f MathVector::project(sf::Vector2f point, sf::Vector2f vector, sf::Vector2f offset){

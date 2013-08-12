@@ -3,6 +3,7 @@
 
 #include <SFML/System.hpp>
 #include <iostream>
+#include <deque>
 
 class PathNote{
     private:
@@ -15,7 +16,7 @@ class PathNote{
     public:
         PathNote(sf::Vector2i coordinate, int heuristicValue, bool closedList = false, bool wall = false);
         ~PathNote();
-        void getPathRec(std::vector<sf::Vector2i>*);
+        void getPathRec(std::deque<sf::Vector2i>*);
 
         bool calcNote(PathNote* searchPoint);
         int getMovementCost(){ return movementCost;}

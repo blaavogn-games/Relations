@@ -21,5 +21,6 @@ class EnemyHandler : protected GameObj{
 		void update(float delta);
 		void render(sf::RenderWindow &window);
 		std::vector<Enemy*>* getEnemies(){ return &enemies;}
+		std::deque<sf::Vector2i> getPath(sf::Vector2i position);
 };
 #endif

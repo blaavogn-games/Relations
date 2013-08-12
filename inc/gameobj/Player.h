@@ -24,7 +24,6 @@ class Player : protected GameObj{
 
 		float speed;
 
-        sf::Vector2f pxPos();
         bool collisionHandler(std::vector<Wall*>);
 
 	public:
@@ -35,5 +34,6 @@ class Player : protected GameObj{
 		void update(float delta);
 		void render(sf::RenderWindow &window);
         ColCircle* getCol();
+        sf::Vector2i getPosition();
 };
 #endif

@@ -9,7 +9,6 @@ PathNote::PathNote(sf::Vector2i coordinate, int heuristicValue,  bool closedList
 }
 
 PathNote::~PathNote(){
-    std::cout << "Deleting note" << std::endl;
 
 }
 
@@ -28,8 +27,8 @@ bool PathNote::calcNote(PathNote *searchNote){
     }
 }
 
- void PathNote::getPathRec(std::vector<sf::Vector2i>* path){
-    path->push_back(coordinate);
+ void PathNote::getPathRec(std::deque<sf::Vector2i>* path){
+    path->push_front(coordinate);
     if(parent == NULL){
         return;
     }else{
