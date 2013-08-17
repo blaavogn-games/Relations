@@ -14,13 +14,18 @@ class EnemyHandler : protected GameObj{
 	private:
 		GameControl* gameControl;
 		std::vector<Enemy*> enemies;
+
 	public:
 		EnemyHandler(GameControl* gameControl);
 		~EnemyHandler();
 		void init();
 		void update(float delta);
 		void render(sf::RenderWindow &window);
-		std::vector<Enemy*>* getEnemies(){ return &enemies;}
+
 		std::deque<sf::Vector2i> getPath(sf::Vector2i position);
+        std::vector<Enemy*> getEnemiesWithPathPoint(sf::Vector2i);
+
+        std::vector<Enemy*>* getEnemies(){ return &enemies;}
+
 };
 #endif

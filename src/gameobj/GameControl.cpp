@@ -9,14 +9,14 @@ GameControl::~GameControl(){
 		delete player;
 	if(enemyHandler)
 		delete enemyHandler;
-    if(wallHandler)
-        delete wallHandler;
+    if(gridHandler)
+        delete gridHandler;
 }
 
 void GameControl::init(){
     //enemyHandler dependent on wallhandler
-	wallHandler = new WallHandler();
-	wallHandler->init();
+	gridHandler = new GridHandler(this);
+	gridHandler->init();
 
 	player = new Player(this);
 	player->init();
@@ -26,26 +26,36 @@ void GameControl::init(){
 
 }
 void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
-	player->update(delta);
-	enemyHandler->update(delta);
-	wallHandler->update(delta, event, mousePosition);
+	player          -> update(delta);
+	enemyHandler    -> update(delta);
+	gridHandler     -> update(delta, event, mousePosition);
 }
 
 void GameControl::render(sf::RenderWindow &window){
-	player->render(window);
-	enemyHandler->render(window);
-	wallHandler->render(window);
+	player          -> render(window);
+	enemyHandler    -> render(window);
+	gridHandler     -> render(window);
 }
 
+//Enemyhandler
+std::vector<Enemy*> GameControl::getEnemiesWithPathPoint(sf::Vector2i point){
+    return enemyHandler -> getEnemiesWithPathPoint(point);
+}
 
 std::vector<Enemy*>* GameControl::getEnemies(){
 	return enemyHandler->getEnemies();
 }
 
+//GridHandler
 std::vector<Wall*> GameControl::getSurWalls(sf::Vector2i position){
-    return wallHandler->getSurWalls(position);
+    return gridHandler->getSurWalls(position);
 }
 
 std::deque<sf::Vector2i> GameControl::getPath(sf::Vector2i startPosition){
-    return wallHandler->getPath(startPosition, player->getPosition());
+    return gridHandler->getPath(startPosition, player->getPosition());
+}
+
+//player
+sf::Vector2i GameControl::getPlayerPosition(){
+    return player -> getPosition();
 }

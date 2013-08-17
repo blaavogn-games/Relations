@@ -1,12 +1,13 @@
 #include <inc/path/Pathfinder.h>
 #include <inc/gameobj/GameControl.h>
-#include <inc/gameobj/handler/WallHandler.h>
+#include <inc/gameobj/handler/GridHandler.h>
 
 #include <cmath>
 #include <iostream>
+#include <climits>
 
-Pathfinder::Pathfinder(WallHandler* wallHandler){
-    this->wallHandler = wallHandler;
+Pathfinder::Pathfinder(GridHandler* gridHandler){
+    this->gridHandler = gridHandler;
 
     for(int x = 0; x < 25; x++){
         for(int y = 0; y < 19; y++){
@@ -27,15 +28,7 @@ std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vect
 
     notes[startPoint->x][startPoint->y] = new PathNote(*startPoint, 0);
 
-    searchNoteRec(startPoint, endPoint);
-
-    std::cout << "SLUT: " << tal << std::endl;
-    notes[endPoint->x][endPoint->y]->getPathRec(&finalPath);
-
-
-    for(std::deque<sf::Vector2i>::iterator it = finalPath.begin() ; it != finalPath.end() ; ++it){
-        std::cout << it->x << " , " << it->y << std::endl;
-    }
+    std::deque<sf::Vector2i> finalPath = searchNoteRec(startPoint, endPoint);
 
     return finalPath;
 }
@@ -56,8 +49,7 @@ void Pathfinder::clearNotes(){
     }
 
     openList.clear();
-    finalPath.clear();
-    tal = 0;
+    std::cout << "SIZESIZESIZE" << openList.size() << std::endl;
 }
 
 void Pathfinder::addWall(sf::Vector2i coordinate){
@@ -70,17 +62,31 @@ void Pathfinder::addWall(sf::Vector2i coordinate){
     }
 
     notes[coordinate.x][coordinate.y] = new PathNote((coordinate),0, true,true);
+}
 
+void Pathfinder::removeWall(sf::Vector2i coordinate){
+
+    if(notes[coordinate.x][coordinate.y] != NULL){
+
+        delete notes[coordinate.x][coordinate.y];
+
+        notes[coordinate.x][coordinate.y] = NULL;
+    }
 
 }
 
 std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, sf::Vector2i* endPoint){
-    std::deque<sf::Vector2i> ret;
-
-
     //Gets the searchNote, and puts it on the closed list, so the note doesn't search itself.
     PathNote* searchNote = notes[searchPoint->x][searchPoint->y];
     searchNote->setClosed();
+
+
+    for(std::vector<sf::Vector2i>::iterator it = openList.begin(); it != openList.end(); ++it){
+        if(searchPoint->x == it->x && searchPoint->y == it->y){
+            openList.erase(it);
+            break;
+        }
+    }
 
     //Makes sure we stay within grid
     if(searchPoint->x != 0){
@@ -98,14 +104,19 @@ std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, sf
         calcPoint(searchPoint, endPoint, searchNote, sf::Vector2i(searchPoint->x , searchPoint-> y  +1 ));
     }
 
-    sf::Vector2i* nextPoint = (nextNote()->getCoordinate());
+    sf::Vector2i* nextPoint = getNextPoint();
 
+    if(nextPoint == NULL){
+        std::deque<sf::Vector2i> emptyPath;
+        return emptyPath;
+    }
 
     if(endPoint->x == nextPoint->x && endPoint->y == nextPoint->y){
-
-        return ret;
+        std::deque<sf::Vector2i> finalPath;
+        notes[endPoint->x][endPoint->y]->getPathRec(&finalPath);
+        return finalPath;
     }
-    tal++;
+
     return searchNoteRec(nextPoint, endPoint);
 }
 
@@ -122,24 +133,30 @@ void Pathfinder::calcPoint(sf::Vector2i* searchPoint, sf::Vector2i* endPoint, Pa
      }
 
     //calculates moveCost for point
-    if(notes[curPoint.x][curPoint.y]-> getClosedList() == false){
+    if(notes[curPoint.x][curPoint.y]-> isClosedList() == false){
         notes[curPoint.x][curPoint.y]->calcNote(searchNote);
     }
-    // return false;
 }
 
-PathNote* Pathfinder::nextNote(){
-    PathNote* returnValue;
-    int minValue = 999999;
-    for(std::vector<sf::Vector2i>::iterator it = openList.begin(); it != openList.end(); ++it){
-   //     std::cout << (*it)->getCoordinate()->x <<  " , " << (*it)->getCoordinate()->y << std::endl;
-        if(notes[(*it).x][(*it).y]->getClosedList()){
-            //delete
-            openList.erase(it);
-        }else if(notes[(*it).x][(*it).y]->getCombinedValue() < minValue ){
-            minValue = notes[(*it).x][(*it).y]->getCombinedValue();
-            returnValue = notes[(*it).x][(*it).y];
+sf::Vector2i* Pathfinder::getNextPoint(){
+    PathNote* returnNote;
+    int minValue = INT_MAX;
+
+    if(openList.size() > 0){
+        for(std::vector<sf::Vector2i>::iterator it = openList.begin(); it != openList.end(); ++it){
+            //std::cout << (*it).x << " , " << (*it).y << std::endl;
+            if(notes[(*it).x][(*it).y]->isClosedList() && !notes[(*it).x][(*it).y]->isWall()){
+                //delete
+                openList.erase(it);
+            }else if(notes[(*it).x][(*it).y]->getCombinedValue() < minValue ){
+                minValue = notes[(*it).x][(*it).y]->getCombinedValue();
+                returnNote = notes[(*it).x][(*it).y];
+            }
         }
+    }else{
+        return NULL;
     }
-    return returnValue;
+
+
+    return returnNote->getCoordinate();
 }

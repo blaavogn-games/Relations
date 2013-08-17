@@ -23,7 +23,7 @@ class PathNote{
         int getCombinedValue(){ return combinedValue;}
         sf::Vector2i* getCoordinate() {return &coordinate;}
         void setClosed(){closedList = true;}
-        bool getClosedList(){return closedList;}
+        bool isClosedList(){return closedList;}
         bool isWall(){return wall;}
 
 };

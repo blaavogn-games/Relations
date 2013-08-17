@@ -23,8 +23,8 @@ class Enemy : protected GameObj{
         std::deque<sf::Vector2i> path;
 
 
-		sf::Sprite sprite;
-		sf::Texture texture;
+		sf::Sprite sprite,sprPath;
+		sf::Texture texture, texPath;
 		sf::Vector2f position;
         sf::Vector2i targetPoint;
         sf::Vector2f movement;
@@ -38,9 +38,13 @@ class Enemy : protected GameObj{
 		void init();
 		void update(float delta);
 		void render(sf::RenderWindow &window);
-		ColCircle getColCircle(){return *colCircle;}
+
+        std::deque<sf::Vector2i>* getPath(){return &path;}
+        void setPath(std::deque<sf::Vector2i>);
 
         //Closer inheritance between enemy and player might be a good idea, I should do that for next project at least
 		sf::Vector2i getPosition();
+		ColCircle getColCircle(){return *colCircle;}
+
 };
 #endif
