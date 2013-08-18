@@ -1,5 +1,5 @@
 #include <inc/path/PathNote.h>
-PathNote::PathNote(sf::Vector2i coordinate, int heuristicValue,  bool closedList, bool wall){
+PathNote::PathNote(sf::Vector2i coordinate, int heuristicValue,  bool closedList, bool wall) : MOVE(10){
     this -> coordinate = coordinate;
     this -> heuristicValue = heuristicValue;
     this -> closedList = closedList;

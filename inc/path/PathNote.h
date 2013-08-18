@@ -7,7 +7,7 @@
 
 class PathNote{
     private:
-        const int MOVE = 10;
+        const int MOVE;
         bool closedList, wall;
         int heuristicValue, movementCost, combinedValue;
         sf::Vector2i coordinate;

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Player::Player(GameControl* gameControl){
+Player::Player(GameControl* gameControl) : RADIUS(8){
 	this->gameControl = gameControl;
 }
 Player::~Player(){

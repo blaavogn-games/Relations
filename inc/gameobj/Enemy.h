@@ -14,8 +14,8 @@ class EnemyHandler;
 
 class Enemy : protected GameObj{
 	private:
-        int const GRIDOFFSET = 9;
-        float const SPEED = 20  ;
+        int const GRIDOFFSET; // 9
+        float const SPEED; //20
 
 		EnemyHandler* enemyHandler;
 		ColCircle* colCircle;

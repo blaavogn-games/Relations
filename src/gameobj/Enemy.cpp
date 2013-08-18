@@ -6,7 +6,7 @@
 #include <cmath>
 #include <iostream>
 
-Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate){
+Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(9) , SPEED(20){
     this->enemyHandler = enemyHandler;
 	position.x = startCoordinate.x * GameControl::GRIDSIZE + GRIDOFFSET;
 	position.y = startCoordinate.y * GameControl::GRIDSIZE + GRIDOFFSET;
@@ -49,11 +49,11 @@ void Enemy::render(sf::RenderWindow &window){
 
 	//Just for testing
 	for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
-        sprPath.setPosition((it)->x * 32 + 9 , (it)->y * 32 + 9);
+        sprPath.setPosition((it)->x * 32 , (it)->y * 32);
         window.draw(sprPath);
 	}
 
-		window.draw(sprite);
+	window.draw(sprite);
 
 }
 

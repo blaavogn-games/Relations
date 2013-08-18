@@ -25,7 +25,7 @@ class Player : protected GameObj{
 
 		float speed;
 
-        int const RADIUS = 8;
+        int const RADIUS;
 
         bool collisionHandler(std::vector<Wall*>);
 

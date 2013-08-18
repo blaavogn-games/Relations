@@ -22,7 +22,7 @@ class GridHandler : protected GameObj{
         sf::Sprite sprHighlight;
         sf::Texture txHighlight;
 
-        bool firstMousePress = true;
+        bool firstMousePress;
 
         typedef std::unordered_map<sf::Vector2i, Wall*, CoordinateHash, CoordinateEquals> WallMap;
 

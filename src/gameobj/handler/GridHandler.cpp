@@ -110,6 +110,7 @@ void GridHandler::init(){
 	}
 	sprHighlight.setTexture(txHighlight);
 
+    firstMousePress = true;
 
     //Setup walls for testing
     for(int i = 1; i < 10; i++){
