@@ -22,7 +22,6 @@ Pathfinder::~Pathfinder(){
 
 std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint){
 
-    std::cout << "Finding path:" << std::endl;
 
     clearNotes();
 
@@ -35,7 +34,6 @@ std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vect
 
 void Pathfinder::clearNotes(){
 
-    std::cout << "Clearing notes:" << std::endl;
 
     for(int x = 0; x < 25; x++){
         for(int y = 0; y < 19; y++){
@@ -49,7 +47,6 @@ void Pathfinder::clearNotes(){
     }
 
     openList.clear();
-    std::cout << "SIZESIZESIZE" << openList.size() << std::endl;
 }
 
 void Pathfinder::addWall(sf::Vector2i coordinate){

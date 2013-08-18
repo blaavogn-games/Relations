@@ -29,7 +29,7 @@ void Enemy::init(){
     sprPath.setTexture(texPath);
 
     //Actual position
-    setPath(enemyHandler->getPath(getPosition()));
+    findNewPath();
 }
 
 void Enemy::update(float delta){
@@ -46,13 +46,19 @@ void Enemy::update(float delta){
 }
 
 void Enemy::render(sf::RenderWindow &window){
-	window.draw(sprite);
 
 	//Just for testing
 	for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
         sprPath.setPosition((it)->x * 32 + 9 , (it)->y * 32 + 9);
         window.draw(sprPath);
 	}
+
+		window.draw(sprite);
+
+}
+
+void Enemy::findNewPath(){
+    setPath(enemyHandler->getPath(getPosition()));
 }
 
 void Enemy::setPath(std::deque<sf::Vector2i> newPath){
@@ -82,4 +88,3 @@ void Enemy::newTargetPoint(){
 sf::Vector2i Enemy::getPosition(){
     return sf::Vector2i( (int) position.x, (int) position.y);
 }
-

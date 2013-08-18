@@ -22,9 +22,12 @@ class EnemyHandler : protected GameObj{
 		void update(float delta);
 		void render(sf::RenderWindow &window);
 
+        //Set more or less
+        void findNewPaths();
+
+        //Get
 		std::deque<sf::Vector2i> getPath(sf::Vector2i position);
         std::vector<Enemy*> getEnemiesWithPathPoint(sf::Vector2i);
-
         std::vector<Enemy*>* getEnemies(){ return &enemies;}
 
 };

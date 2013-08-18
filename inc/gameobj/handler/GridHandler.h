@@ -1,5 +1,5 @@
-#ifndef WALLHANDLER_H
-#define WALLHANDLER_H
+#ifndef GRIDHANDLER_H
+#define GRIDHANDLER_H
 
 #include <inc/gameobj/GameObj.h>
 #include <inc/gameobj/Wall.h>

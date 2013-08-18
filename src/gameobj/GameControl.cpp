@@ -37,7 +37,11 @@ void GameControl::render(sf::RenderWindow &window){
 	gridHandler     -> render(window);
 }
 
-//Enemyhandler
+//Enemyhandler pipeline
+void GameControl::enemiesFindNewPath(){
+    enemyHandler -> findNewPaths();
+}
+
 std::vector<Enemy*> GameControl::getEnemiesWithPathPoint(sf::Vector2i point){
     return enemyHandler -> getEnemiesWithPathPoint(point);
 }
@@ -46,16 +50,18 @@ std::vector<Enemy*>* GameControl::getEnemies(){
 	return enemyHandler->getEnemies();
 }
 
+
+
 //GridHandler
 std::vector<Wall*> GameControl::getSurWalls(sf::Vector2i position){
     return gridHandler->getSurWalls(position);
 }
 
 std::deque<sf::Vector2i> GameControl::getPath(sf::Vector2i startPosition){
-    return gridHandler->getPath(startPosition, player->getPosition());
+    return gridHandler->getPath(startPosition, player->getCoordinate());
 }
 
 //player
-sf::Vector2i GameControl::getPlayerPosition(){
-    return player -> getPosition();
+sf::Vector2i GameControl::getPlayerCoordinate(){
+    return player -> getCoordinate();
 }

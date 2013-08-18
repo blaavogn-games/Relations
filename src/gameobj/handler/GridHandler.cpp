@@ -38,7 +38,7 @@ void GridHandler::attemptToAddWall(sf::Vector2i position){
 
         for(unsigned int i = 0; i < enemies.size(); i++){
 
-            std::deque<sf::Vector2i> tempPath = getPath( enemies.at(i)->getPosition(), gameControl -> getPlayerPosition());
+            std::deque<sf::Vector2i> tempPath = getPath( enemies.at(i)->getPosition(), gameControl -> getPlayerCoordinate());
 
             if(tempPath.size() != 0){
                 tempPaths.push_back( tempPath);
@@ -60,7 +60,6 @@ void GridHandler::attemptToAddWall(sf::Vector2i position){
             pathfinder -> removeWall(gridCoordinate);
             addWall(gridCoordinate);
         }
-
 
         //std::cout << enemies.size() << std::endl;
     }
@@ -117,8 +116,8 @@ void GridHandler::init(){
         addWall(sf::Vector2i(i,1));
         addWall(sf::Vector2i(i,10));
 
-        addWall(sf::Vector2i(10,1 + i));
-        addWall(sf::Vector2i(1,2 + i));
+        addWall(sf::Vector2i(10,3 + i));
+        addWall(sf::Vector2i(1,1 + i));
     }
 }
 
@@ -169,10 +168,10 @@ std::vector<Wall*> GridHandler::getSurWalls(sf::Vector2i &position){
     return surWalls;
 }
 
-std::deque<sf::Vector2i> GridHandler::getPath(sf::Vector2i startPosition, sf::Vector2i endPosition){
+std::deque<sf::Vector2i> GridHandler::getPath(sf::Vector2i startPosition, sf::Vector2i endCoordinate_p){
 
     sf::Vector2i startCoordinate = toCoordinate( getGridPosition(startPosition) );
-    sf::Vector2i endCoordinate = toCoordinate( getGridPosition(endPosition) );
+    sf::Vector2i endCoordinate = endCoordinate_p;
 
     return pathfinder->findPath( &startCoordinate, &endCoordinate);
 }

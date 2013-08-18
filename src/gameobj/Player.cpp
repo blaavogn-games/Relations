@@ -13,14 +13,16 @@ Player::~Player(){
 
 void Player::init(){
 	//Variables
-	speed = 80;
+	speed = 8;
+    previousCoordinate = getCoordinate();
+
 
 	//Player at 9,9 just for enemy testing
 	position.x = 32 * 9 + 9;
 	position.y = 32 * 9 + 9;
 
 	//Dynamic vars
-	colCircle = new ColCircle(position, 8);
+	colCircle = new ColCircle(position, RADIUS);
 
 	//Load data
 	if (!texture.loadFromFile("res/img/player.png"))
@@ -28,6 +30,8 @@ void Player::init(){
 		//UNHANDLED ERROR
 	}
 	sprite.setTexture(texture);
+
+
 }
 
 void Player::update(float delta){
@@ -67,7 +71,6 @@ void Player::update(float delta){
         ventil++;
     }
 
-
     sprite.setPosition(position);
 
 	if(keyboard.isKeyPressed(sf::Keyboard::Space) ){
@@ -80,12 +83,20 @@ void Player::update(float delta){
 		}
 	}
 
+    //Check if player moves into a new coordinate, if player does, enemies has to find new path
+    sf::Vector2i currentCoordinate = getCoordinate();
+    if(currentCoordinate.x != previousCoordinate.x || currentCoordinate.y != previousCoordinate.y){
+        //Message enemies about new coordinate
+        gameControl->enemiesFindNewPath();
+    }
+    previousCoordinate = currentCoordinate;
+
+
 }
 
 bool Player::collisionHandler(std::vector<Wall*> walls){
     bool res = false;
-    for(std::vector<Wall*>::iterator it = walls.begin(); it != walls.end(); it++)
-    {
+    for(std::vector<Wall*>::iterator it = walls.begin(); it != walls.end(); it++){
         sf::Vector2f returnVector;
         if(Collision::doesCollide(colCircle,(*it)->getCol(), &returnVector)){
             position -= returnVector;
@@ -106,4 +117,12 @@ ColCircle* Player::getCol(){
 
 sf::Vector2i Player::getPosition(){
     return sf::Vector2i( (int) position.x, (int) position.y);
+}
+
+sf::Vector2i Player::getCoordinate(){
+    //center position
+    int cX = (int)position.x + RADIUS, cY = (int)position.y + RADIUS;
+
+    return sf::Vector2i( (int) ((cX - cX % GameControl::GRIDSIZE) / GameControl::GRIDSIZE),
+                         (int) ((cY - cY % GameControl::GRIDSIZE) / GameControl::GRIDSIZE));
 }

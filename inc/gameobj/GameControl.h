@@ -13,8 +13,6 @@
 //Maybe it is better to let the handlers have a pointer to eachother?
 class GameControl : protected GameObj{
 	public:
-
-
         static const int GRIDSIZE = 32, GRIDX = 25, GRIDY = 19;
 		GameControl();
 		~GameControl();
@@ -23,16 +21,18 @@ class GameControl : protected GameObj{
 		void update( float delta, sf::Event &event, sf::Vector2i &mousePosition);
 		void render(sf::RenderWindow &window);
 
-        //EnemyHandler info
+        //EnemyHandler connection pipe
 		std::vector<Enemy*>* getEnemies();
 		std::vector<Enemy*> getEnemiesWithPathPoint(sf::Vector2i);
+        void enemiesFindNewPath();
 
-        //GridHandler info
+
+        //GridHandler connection pipe
         std::deque<sf::Vector2i> getPath(sf::Vector2i);
 		std::vector<Wall*> getSurWalls(sf::Vector2i position);
 
-        //player info
-        sf::Vector2i getPlayerPosition();
+        //Player connection pipe
+        sf::Vector2i getPlayerCoordinate();
 
 	private:
 		Player* player;

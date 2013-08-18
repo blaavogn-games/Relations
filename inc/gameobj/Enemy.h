@@ -40,6 +40,9 @@ class Enemy : protected GameObj{
 		void render(sf::RenderWindow &window);
 
         std::deque<sf::Vector2i>* getPath(){return &path;}
+
+        //Set
+        void findNewPath();
         void setPath(std::deque<sf::Vector2i>);
 
         //Closer inheritance between enemy and player might be a good idea, I should do that for next project at least

@@ -18,13 +18,17 @@ class Player : protected GameObj{
 		sf::Sprite sprite;
 		sf::Texture texture;
 		sf::Vector2f position;
+        sf::Vector2i previousCoordinate;
 
 		GameControl* gameControl;
 		ColCircle* colCircle;
 
 		float speed;
 
+        int const RADIUS = 8;
+
         bool collisionHandler(std::vector<Wall*>);
+
 
 	public:
 		Player(GameControl* gameControl);
@@ -33,7 +37,10 @@ class Player : protected GameObj{
 		void init();
 		void update(float delta);
 		void render(sf::RenderWindow &window);
+
+        //Get
         ColCircle* getCol();
         sf::Vector2i getPosition();
+        sf::Vector2i getCoordinate();
 };
 #endif

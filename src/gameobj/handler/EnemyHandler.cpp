@@ -15,6 +15,10 @@ EnemyHandler::~EnemyHandler(){
 void EnemyHandler::init(){
 
     enemies.push_back(new Enemy(this,sf::Vector2i(0,0)));
+    enemies.push_back(new Enemy(this,sf::Vector2i(0,10)));
+    enemies.push_back(new Enemy(this,sf::Vector2i(10,0)));
+    enemies.push_back(new Enemy(this,sf::Vector2i(5,12)));
+    enemies.push_back(new Enemy(this,sf::Vector2i(15,15)));
 
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->init();
@@ -34,6 +38,17 @@ void EnemyHandler::render(sf::RenderWindow &window){
 	}
 }
 
+
+//set
+void EnemyHandler::findNewPaths(){
+    for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
+		(*it)->findNewPath();
+	}
+}
+
+
+
+//Get
 std::vector<Enemy*> EnemyHandler::getEnemiesWithPathPoint(sf::Vector2i point){
 	std::vector<Enemy*> enemiesWithPoint;
 
