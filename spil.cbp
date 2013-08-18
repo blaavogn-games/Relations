@@ -46,7 +46,8 @@
 			<Add option="-Wall" />
 			<Add directory="C:/Programmering/cpp/SFML/SFML-master/include" />
 			<Add directory="C:/Programmering/cpp/proj_1/" />
-			<Add directory="../proj_1" />
+			<Add directory="../game_1" />
+			<Add directory="../SFML/SFML-master/include/SFML" />
 		</Compiler>
 		<Unit filename="inc/col/ColCircle.h" />
 		<Unit filename="inc/col/ColRectangle.h" />
@@ -62,7 +63,7 @@
 		<Unit filename="inc/gameobj/Player.h" />
 		<Unit filename="inc/gameobj/Wall.h" />
 		<Unit filename="inc/gameobj/handler/EnemyHandler.h" />
-		<Unit filename="inc/gameobj/handler/WallHandler.h" />
+		<Unit filename="inc/gameobj/handler/GridHandler.h" />
 		<Unit filename="inc/path/PathNote.h" />
 		<Unit filename="inc/path/Pathfinder.h" />
 		<Unit filename="note.txt" />
@@ -80,7 +81,7 @@
 		<Unit filename="src/gameobj/Player.cpp" />
 		<Unit filename="src/gameobj/Wall.cpp" />
 		<Unit filename="src/gameobj/handler/EnemyHandler.cpp" />
-		<Unit filename="src/gameobj/handler/WallHandler.cpp" />
+		<Unit filename="src/gameobj/handler/GridHandler.cpp" />
 		<Unit filename="src/path/PathNote.cpp" />
 		<Unit filename="src/path/Pathfinder.cpp" />
 		<Extensions>
