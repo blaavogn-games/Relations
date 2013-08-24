@@ -21,8 +21,6 @@ Pathfinder::~Pathfinder(){
 }
 
 std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint){
-
-
     clearNotes();
 
     notes[startPoint->x][startPoint->y] = new PathNote(*startPoint, 0);
@@ -33,8 +31,6 @@ std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vect
 }
 
 void Pathfinder::clearNotes(){
-
-
     for(int x = 0; x < 25; x++){
         for(int y = 0; y < 19; y++){
             if(notes[x][y] != NULL){
@@ -153,7 +149,6 @@ sf::Vector2i* Pathfinder::getNextPoint(){
     }else{
         return NULL;
     }
-
 
     return returnNote->getCoordinate();
 }

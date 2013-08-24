@@ -14,7 +14,7 @@ GameControl::~GameControl(){
 }
 
 void GameControl::init(){
-    //enemyHandler dependent on wallhandler
+    //enemyHandler dependent on gridHandler and player atm
 	gridHandler = new GridHandler(this);
 	gridHandler->init();
 
@@ -25,16 +25,17 @@ void GameControl::init(){
 	enemyHandler->init();
 
 }
+
 void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
-	player          -> update(delta);
-	enemyHandler    -> update(delta);
 	gridHandler     -> update(delta, event, mousePosition);
+	enemyHandler    -> update(delta);
+	player          -> update(delta);
 }
 
 void GameControl::render(sf::RenderWindow &window){
-	player          -> render(window);
-	enemyHandler    -> render(window);
 	gridHandler     -> render(window);
+	enemyHandler    -> render(window);
+	player          -> render(window);
 }
 
 //Enemyhandler pipeline
@@ -53,7 +54,7 @@ std::vector<Enemy*>* GameControl::getEnemies(){
 
 
 //GridHandler
-std::vector<Wall*> GameControl::getSurWalls(sf::Vector2i position){
+std::vector<ColShape*> GameControl::getSurWalls(sf::Vector2i position){
     return gridHandler->getSurWalls(position);
 }
 

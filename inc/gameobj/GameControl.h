@@ -29,7 +29,7 @@ class GameControl : protected GameObj{
 
         //GridHandler connection pipe
         std::deque<sf::Vector2i> getPath(sf::Vector2i);
-		std::vector<Wall*> getSurWalls(sf::Vector2i position);
+		std::vector<ColShape*> getSurWalls(sf::Vector2i position);
 
         //Player connection pipe
         sf::Vector2i getPlayerCoordinate();

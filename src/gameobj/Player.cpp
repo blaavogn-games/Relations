@@ -13,7 +13,7 @@ Player::~Player(){
 
 void Player::init(){
 	//Variables
-	speed = 8;
+	speed = 80;
     previousCoordinate = getCoordinate();
 
 
@@ -29,6 +29,7 @@ void Player::init(){
 	{
 		//UNHANDLED ERROR
 	}
+
 	sprite.setTexture(texture);
 
 
@@ -64,10 +65,10 @@ void Player::update(float delta){
 	colCircle->setPosition(position);
 
 	//Collision
-    std::vector<Wall*> walls = gameControl->getSurWalls(getPosition());
+    std::vector<ColShape*> surWalls = gameControl->getSurWalls(getPosition());
 
     int ventil = 0;
-    while(collisionHandler(walls) && ventil < 10){
+    while(collisionHandler(surWalls) && ventil < 10){
         ventil++;
     }
 
@@ -94,11 +95,11 @@ void Player::update(float delta){
 
 }
 
-bool Player::collisionHandler(std::vector<Wall*> walls){
+bool Player::collisionHandler(std::vector<ColShape*> surWalls){
     bool res = false;
-    for(std::vector<Wall*>::iterator it = walls.begin(); it != walls.end(); it++){
+    for(std::vector<ColShape*>::iterator it = surWalls.begin(); it != surWalls.end(); it++){
         sf::Vector2f returnVector;
-        if(Collision::doesCollide(colCircle,(*it)->getCol(), &returnVector)){
+        if(Collision::doesCollide(colCircle, *it , &returnVector)){
             position -= returnVector;
             colCircle->setPosition(position);
             res = true;

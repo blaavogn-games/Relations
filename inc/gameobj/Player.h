@@ -2,7 +2,6 @@
 #define PLAYER_H
 
 #include <inc/gameobj/GameObj.h>
-#include <inc/gameobj/Wall.h>
 #include <inc/col/ColCircle.h>
 #include <inc/col/Collision.h>
 
@@ -27,7 +26,7 @@ class Player : protected GameObj{
 
         int const RADIUS;
 
-        bool collisionHandler(std::vector<Wall*>);
+        bool collisionHandler(std::vector<ColShape*>);
 
 
 	public:
