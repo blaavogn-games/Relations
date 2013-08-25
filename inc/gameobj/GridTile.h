@@ -5,29 +5,53 @@
 #include <inc/gameobj/GameObj.h>
 #include <inc/col/ColRectangle.h>
 
+#include <deque>
+
 class GridTile : protected GameObj{
     private:
-        sf::Sprite sprite;
-        sf::Vector2f position;
+        const int MOVE;
 
-        bool wall;
+        sf::Sprite sprite;
+        sf::Vector2i coordinate;
+        sf::Vector2f position; //In reality gridPos
+
+        bool wall, closedList, firstVisit;
+        int heuristicValue, movementCost, combinedValue;
+
         ColShape* collision;
+        GridTile* parent;
 
     public:
-
         GridTile();
         ~GridTile();
 
-        void init(sf::Texture* texture, sf::Vector2f position);
-        //Nothing happening on update
+        void init(sf::Texture*, sf::Vector2i);
         void render(sf::RenderWindow &window);
 
         void setTexture(sf::Texture* texture);
 
+        void reset(int);
+        void calculate(GridTile*);
+        void setStartTile();
+        void setClosedList();
+        bool onClosedList(){return closedList;}
+        bool isFirstVisit(){ return firstVisit;}
+        int getMovementCost(){ return movementCost;}
+        int getCombinedValue(){ return combinedValue;}
+        void getPathRec(std::deque<sf::Vector2i>*);
+
+
+        sf::Vector2i getCoordinate(){return coordinate; }
+
+        void setTempWall();
+        void removeTempWall();
+
         void setWall();
         bool isWall(){ return wall; }
-
         ColShape* getCollision(){return collision;}
+
+
+
 };
 
 

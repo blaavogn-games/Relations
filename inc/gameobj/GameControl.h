@@ -26,7 +26,6 @@ class GameControl : protected GameObj{
 		std::vector<Enemy*> getEnemiesWithPathPoint(sf::Vector2i);
         void enemiesFindNewPath();
 
-
         //GridHandler connection pipe
         std::deque<sf::Vector2i> getPath(sf::Vector2i);
 		std::vector<ColShape*> getSurWalls(sf::Vector2i position);

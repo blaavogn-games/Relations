@@ -35,7 +35,7 @@ void GridHandler::init(){
     for(int y = 0; y < GameControl::GRIDY; y++){
         for(int x = 0; x < GameControl::GRIDX; x++){
             grid[x][y] = new GridTile();
-            grid[x][y]->init(&(gridTextures[0]) , sf::Vector2f(x * GameControl::GRIDSIZE , y * GameControl::GRIDSIZE));
+            grid[x][y]->init(&(gridTextures[0]) , sf::Vector2i(x, y));
         }
     }
 
@@ -43,7 +43,6 @@ void GridHandler::init(){
     for(int i = 1; i < 10; i++){
         addWall(sf::Vector2i(i,1));
         addWall(sf::Vector2i(i,10));
-
         addWall(sf::Vector2i(10,3 + i));
         addWall(sf::Vector2i(1,1 + i));
     }
@@ -107,10 +106,9 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
         }
 
         //Adding wall temporarily to do search
-        pathfinder -> addWall(coordinate);
+        getGrid(&coordinate) -> setTempWall();
 
         //2
-
         bool legalWall = true;
         std::vector<std::deque<sf::Vector2i>> tempPaths;
 
@@ -123,7 +121,9 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
             }else{
                 //2a
                 std::cout << "Not legal to place wall" << std::endl;
-                pathfinder -> removeWall(coordinate);
+
+                getGrid(&coordinate) -> removeTempWall();
+
                 legalWall = false;
                 break;
             }
@@ -134,8 +134,6 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
             for(unsigned int i = 0; i < enemies.size(); i++){
                 enemies.at(i) -> setPath(tempPaths.at(i));
             }
-            //Redundant to remove wall but necesarry atm
-            pathfinder -> removeWall(coordinate);
             addWall(coordinate);
         }
     }
@@ -143,7 +141,6 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
 
 //Private
 void GridHandler::addWall(sf::Vector2i coordinate){
-    pathfinder->addWall(coordinate);
 
     grid[coordinate.x][coordinate.y] -> setTexture( &(gridTextures[5]) );
     grid[coordinate.x][coordinate.y] -> setWall();
@@ -186,9 +183,8 @@ std::vector<ColShape*> GridHandler::getSurWalls(sf::Vector2i &position){
 
 //public
 std::deque<sf::Vector2i> GridHandler::getPath(sf::Vector2i startPosition, sf::Vector2i endCoordinate_p){
-
     sf::Vector2i startCoordinate = toCoordinate( getGridPosition(startPosition) );
     sf::Vector2i endCoordinate = endCoordinate_p;
 
-    return pathfinder->findPath( &startCoordinate, &endCoordinate);
+    return pathfinder->findPath( startCoordinate, endCoordinate);
 }

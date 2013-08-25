@@ -8,147 +8,109 @@
 
 Pathfinder::Pathfinder(GridHandler* gridHandler){
     this->gridHandler = gridHandler;
-
-    for(int x = 0; x < 25; x++){
-        for(int y = 0; y < 19; y++){
-            notes[x][y] = NULL;
-        }
-    }
 }
 
 Pathfinder::~Pathfinder(){
-    clearNotes();
 }
 
-std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i* startPoint, sf::Vector2i* endPoint){
-    clearNotes();
+std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i startCoordinate, sf::Vector2i endCoordinate){
 
-    notes[startPoint->x][startPoint->y] = new PathNote(*startPoint, 0);
+    resetTiles(&endCoordinate);
 
-    std::deque<sf::Vector2i> finalPath = searchNoteRec(startPoint, endPoint);
+    gridHandler -> getGrid(&startCoordinate) -> setStartTile();
+
+    std::deque<sf::Vector2i> finalPath = searchNoteRec(&startCoordinate, &endCoordinate);
 
     return finalPath;
 }
 
-void Pathfinder::clearNotes(){
-    for(int x = 0; x < 25; x++){
-        for(int y = 0; y < 19; y++){
-            if(notes[x][y] != NULL){
-                if(notes[x][y]->isWall() == false){
-                    delete notes[x][y];
-                    notes[x][y] = NULL;
-                }
-            }
+void Pathfinder::resetTiles(sf::Vector2i* endCoordinate){
+
+    //Resets all tiles to default, and calculates h to endCoordinate
+    for(int y = 0; y < GameControl::GRIDY; y++){
+        for(int x = 0; x < GameControl::GRIDX; x++){
+            int heuristic = (std::abs(x - endCoordinate->x) + std::abs(y - endCoordinate->y)) * 100;
+            gridHandler -> getGrid(x,y) -> reset(heuristic);
         }
     }
 
     openList.clear();
 }
 
-void Pathfinder::addWall(sf::Vector2i coordinate){
+std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchCoordinate, sf::Vector2i* endCoordinate){
 
-    if(notes[coordinate.x][coordinate.y] != NULL){
+    GridTile* searchTile = gridHandler -> getGrid(searchCoordinate);
 
-        delete notes[coordinate.x][coordinate.y];
+    //Puts searchTile on closedList
+    searchTile -> setClosedList();
 
-        notes[coordinate.x][coordinate.y] = NULL;
-    }
-
-    notes[coordinate.x][coordinate.y] = new PathNote((coordinate),0, true,true);
-}
-
-void Pathfinder::removeWall(sf::Vector2i coordinate){
-
-    if(notes[coordinate.x][coordinate.y] != NULL){
-
-        delete notes[coordinate.x][coordinate.y];
-
-        notes[coordinate.x][coordinate.y] = NULL;
-    }
-
-}
-
-std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchPoint, sf::Vector2i* endPoint){
-    //Gets the searchNote, and puts it on the closed list, so the note doesn't search itself.
-    PathNote* searchNote = notes[searchPoint->x][searchPoint->y];
-    searchNote->setClosed();
-
-
+    //And in addition removes it from the openList (openList is a list, closedList an attribute)
     for(std::vector<sf::Vector2i>::iterator it = openList.begin(); it != openList.end(); ++it){
-        if(searchPoint->x == it->x && searchPoint->y == it->y){
+        if(searchCoordinate->x == it->x && searchCoordinate->y == it->y){
             openList.erase(it);
             break;
         }
     }
 
     //Makes sure we stay within grid
-    if(searchPoint->x != 0){
-        calcPoint(searchPoint, endPoint, searchNote,  sf::Vector2i(searchPoint->x -1 , searchPoint->y ));
+    if(searchCoordinate->x != 0){
+        calcTile(gridHandler -> getGrid(searchCoordinate->x-1 , searchCoordinate->y) , searchTile );
     }
 
-    if(searchPoint->x != 24){
-        calcPoint(searchPoint, endPoint, searchNote, sf::Vector2i(searchPoint->x +1 , searchPoint->y ));
+    if(searchCoordinate->x != 24){
+        calcTile(gridHandler -> getGrid(searchCoordinate->x+1 , searchCoordinate->y) , searchTile );
     }
 
-    if(searchPoint->y != 0){
-        calcPoint(searchPoint, endPoint, searchNote, sf::Vector2i(searchPoint->x , searchPoint-> y -1 ));
-    }
-    if(searchPoint->y != 18){
-        calcPoint(searchPoint, endPoint, searchNote, sf::Vector2i(searchPoint->x , searchPoint-> y  +1 ));
+    if(searchCoordinate->y != 0){
+        calcTile(gridHandler -> getGrid(searchCoordinate->x , searchCoordinate->y - 1) , searchTile );
     }
 
-    sf::Vector2i* nextPoint = getNextPoint();
+    if(searchCoordinate->y != 18){
+        calcTile(gridHandler -> getGrid(searchCoordinate->x , searchCoordinate->y + 1) , searchTile );
+    }
 
-    if(nextPoint == NULL){
+    sf::Vector2i nextCoordinate = findNextCoordinate();
+
+    if(nextCoordinate.x == -1){
         std::deque<sf::Vector2i> emptyPath;
         return emptyPath;
     }
 
-    if(endPoint->x == nextPoint->x && endPoint->y == nextPoint->y){
+    if(endCoordinate->x == nextCoordinate.x && endCoordinate->y == nextCoordinate.y){
         std::deque<sf::Vector2i> finalPath;
-        notes[endPoint->x][endPoint->y]->getPathRec(&finalPath);
+        gridHandler -> getGrid(endCoordinate) -> getPathRec(&finalPath);
         return finalPath;
     }
 
-    return searchNoteRec(nextPoint, endPoint);
+    return searchNoteRec(&nextCoordinate, endCoordinate);
 }
 
-void Pathfinder::calcPoint(sf::Vector2i* searchPoint, sf::Vector2i* endPoint, PathNote* searchNote, sf::Vector2i curPoint){
-//
+void Pathfinder::calcTile(GridTile* tile, GridTile* searchTile){
+    if(! tile->onClosedList()){
+        if(tile -> isFirstVisit()){
+            openList.push_back(tile -> getCoordinate());
+        }
 
-    //if a note doesn'r exist, it is created
-    if(notes[curPoint.x][curPoint.y] == NULL ){
-        int heuristicValue = std::abs(curPoint.x - endPoint->x) + std::abs(curPoint.y - endPoint->y);
-
-        notes[curPoint.x][curPoint.y] = new PathNote(curPoint,heuristicValue  * 100);;
-
-        openList.push_back(curPoint);
-     }
-
-    //calculates moveCost for point
-    if(notes[curPoint.x][curPoint.y]-> isClosedList() == false){
-        notes[curPoint.x][curPoint.y]->calcNote(searchNote);
+        tile->calculate(searchTile);
     }
 }
 
-sf::Vector2i* Pathfinder::getNextPoint(){
-    PathNote* returnNote;
+
+sf::Vector2i Pathfinder::findNextCoordinate(){
+    sf::Vector2i returnCoordinate;
     int minValue = INT_MAX;
 
     if(openList.size() > 0){
         for(std::vector<sf::Vector2i>::iterator it = openList.begin(); it != openList.end(); ++it){
-            //std::cout << (*it).x << " , " << (*it).y << std::endl;
-            if(notes[(*it).x][(*it).y]->isClosedList() && !notes[(*it).x][(*it).y]->isWall()){
-                //delete
-                openList.erase(it);
-            }else if(notes[(*it).x][(*it).y]->getCombinedValue() < minValue ){
-                minValue = notes[(*it).x][(*it).y]->getCombinedValue();
-                returnNote = notes[(*it).x][(*it).y];
+            int combinedValue = gridHandler -> getGrid((*it).x,(*it).y) -> getCombinedValue();
+            if(combinedValue < minValue){
+                minValue = combinedValue;
+                returnCoordinate = (*it);
             }
         }
     }else{
-        return NULL;
+        return sf::Vector2i(-1,-1);
     }
 
-    return returnNote->getCoordinate();
+    return returnCoordinate;
 }

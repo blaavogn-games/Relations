@@ -11,15 +11,11 @@
 #include <unordered_map>
 #include <vector>
 
-/*
-Names might be messed up atm, but.
+/*Names might be messed up atm, but in general.
 
 position = Actual position
 gridPoisition = position rounded down to nearest 32
-coordinate = gridposition / 32
-
-
-*/
+coordinate = gridposition / 32 */
 
 //Forward declaration
 class GameControl;
@@ -50,7 +46,10 @@ class GridHandler : protected GameObj{
         void init();
         void update( float delta , sf::Event &event, sf::Vector2i &mousePosition);
         void render(sf::RenderWindow &window);
+
         std::vector<ColShape*> getSurWalls(sf::Vector2i &position);
         std::deque<sf::Vector2i> getPath(sf::Vector2i, sf::Vector2i);
+        GridTile* getGrid(sf::Vector2i* coordinate){ return grid[coordinate->x][coordinate->y];}
+        GridTile* getGrid(int x, int y){return grid[x][y];}
 };
 #endif
