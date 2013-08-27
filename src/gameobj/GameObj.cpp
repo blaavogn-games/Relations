@@ -5,3 +5,7 @@
 void GameObj::init(){}
 void GameObj::update(){}
 void GameObj::render(){}
+
+//Alarm action should run a switch on type and call corresponding function
+//e.g. On player 0 = reload over, 1 = wall cooldown over, 2 = loose hp etc...
+void GameObj::alarmAction(int type){}

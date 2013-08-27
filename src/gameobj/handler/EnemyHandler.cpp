@@ -10,15 +10,17 @@ EnemyHandler::~EnemyHandler(){
         delete (*it);
     }
 	enemies.clear();
+
+	if(alarm){
+        delete alarm;
+	}
 }
 
 void EnemyHandler::init(){
 
-    enemies.push_back(new Enemy(this,sf::Vector2i(0,0)));
-    enemies.push_back(new Enemy(this,sf::Vector2i(0,10)));
-    enemies.push_back(new Enemy(this,sf::Vector2i(10,0)));
-    enemies.push_back(new Enemy(this,sf::Vector2i(5,12)));
-    enemies.push_back(new Enemy(this,sf::Vector2i(15,15)));
+    alarm = new Alarm(this);
+    alarm -> addTimer(0, 1);
+
 
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->init();
@@ -30,12 +32,32 @@ void EnemyHandler::update(float delta){
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->update(delta);
 	}
+	alarm -> update(delta);
 }
 
 void EnemyHandler::render(sf::RenderWindow &window){
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->render(window);
 	}
+}
+
+void EnemyHandler::alarmAction(int type){
+    switch(type){
+        case 0:
+            addEnemy();
+        break;
+    }
+
+}
+
+//private
+void EnemyHandler::addEnemy(){
+
+    Enemy* tempPointer = new Enemy(this,sf::Vector2i(0,0));
+    tempPointer -> init();
+    enemies.push_back(tempPointer);
+
+    alarm -> addTimer(0,3);
 }
 
 

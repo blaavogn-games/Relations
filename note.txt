@@ -1,8 +1,10 @@
-Potentiel optimeringer:
-Wallhandler kører addwall for hver frame mouse.left == true
+Før det sendes til folk to do:
+1. Enemies tilføjes løbende
+2. Enemies crasher ikke programmet når de når mål
+3. Enemies kan dræbe Player
+4. Player har liv
+5. Justering af spawnrate og speed på enemies/Player
+6. evt. Point tilføjes, meget godt hvis folk skal prøve det.
 
-
-
-
-Forskelle på Linux og Windows:
-Windowsopsætning ingen unordered_map.emplace , insert kan bruges kender ikke forskellen.
+/home/holger/documents/cpp/game_1/src/gameobj/handler/EnemyHandler.cpp|48|error: passing ‘const EnemyHandler’ as ‘this’
+ argument of ‘void EnemyHandler::addEnemy()’ discards qualifiers [-fpermissive]|

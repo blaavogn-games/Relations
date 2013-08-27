@@ -3,6 +3,8 @@
 
 #include <inc/gameobj/GameObj.h>
 #include <inc/gameobj/Enemy.h>
+#include <inc/alarm/Alarm.h>
+
 
 #include <SFML/Graphics.hpp>
 
@@ -14,6 +16,9 @@ class EnemyHandler : protected GameObj{
 	private:
 		GameControl* gameControl;
 		std::vector<Enemy*> enemies;
+		Alarm* alarm;
+
+        void addEnemy();
 
 	public:
 		EnemyHandler(GameControl* gameControl);
@@ -21,6 +26,7 @@ class EnemyHandler : protected GameObj{
 		void init();
 		void update(float delta);
 		void render(sf::RenderWindow &window);
+        virtual void alarmAction(int type);
 
         //Set more or less
         void findNewPaths();
