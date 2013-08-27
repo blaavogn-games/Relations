@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Player::Player(GameControl* gameControl) : RADIUS(8){
+Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(3){
 	this->gameControl = gameControl;
 }
 Player::~Player(){
@@ -16,7 +16,6 @@ void Player::init(){
 	speed = 80;
     previousCoordinate = getCoordinate();
 
-
 	//Player at 9,9 just for enemy testing
 	position.x = 32 * 9 + 9;
 	position.y = 32 * 9 + 9;
@@ -25,14 +24,18 @@ void Player::init(){
 	colCircle = new ColCircle(position, RADIUS);
 
 	//Load data
-	if (!texture.loadFromFile("res/img/player.png"))
-	{
-		//UNHANDLED ERROR
-	}
+	texPlayer.loadFromFile("res/img/player/player.png");
+    texLife.loadFromFile("res/img/player/life.png");
 
-	sprite.setTexture(texture);
+    const int STARTX = 760, STARTY = 10, HEARTSPACE = 22;
 
+    for(int i = 0; i < MAXLIVES; i++){
+        sf::Sprite* tempSprite = new sf::Sprite(texLife);
+        tempSprite -> setPosition(STARTX - i * HEARTSPACE , STARTY);
+        lives.push_back(tempSprite);
+    }
 
+	sprPlayer.setTexture(texPlayer);
 }
 
 void Player::update(float delta){
@@ -64,7 +67,7 @@ void Player::update(float delta){
 	position += curMovement;
 	colCircle->setPosition(position);
 
-	//Collision
+	//Collision wall
     std::vector<ColShape*> surWalls = gameControl->getSurWalls(getPosition());
 
     int ventil = 0;
@@ -72,17 +75,24 @@ void Player::update(float delta){
         ventil++;
     }
 
-    sprite.setPosition(position);
+    sprPlayer.setPosition(position);
 
-	if(keyboard.isKeyPressed(sf::Keyboard::Space) ){
-		std::vector<Enemy*>* enemies = gameControl->getEnemies();
+    //Collision enemy
+	std::vector<Enemy*>* enemies = gameControl->getEnemies();
+    std::vector<Enemy*>::iterator it = enemies->begin();
 
-		for(std::vector<Enemy*>::iterator it = enemies->begin(); it != enemies->end();++it){
-			if(Collision::doesCollide(*colCircle,(*it)->getColCircle())){
-				std::cout << "Yahooo" << std::endl;
-			}
-		}
-	}
+    while(it != enemies->end()){
+
+        if(Collision::doesCollide(*colCircle,(*it)->getColCircle())){
+            delete (*it);
+            it = enemies -> erase(it);
+            looseLife();
+
+        }else{
+            it++;
+        }
+
+    }
 
     //Check if player moves into a new coordinate, if player does, enemies has to find new path
     sf::Vector2i currentCoordinate = getCoordinate();
@@ -91,8 +101,6 @@ void Player::update(float delta){
         gameControl->enemiesFindNewPath();
     }
     previousCoordinate = currentCoordinate;
-
-
 }
 
 bool Player::collisionHandler(std::vector<ColShape*> surWalls){
@@ -109,7 +117,21 @@ bool Player::collisionHandler(std::vector<ColShape*> surWalls){
 }
 
 void Player::render(sf::RenderWindow &window){
-	window.draw(sprite);
+	window.draw(sprPlayer);
+
+    for(std::vector<sf::Sprite*>::iterator it = lives.begin(); it != lives.end(); ++it){
+        window.draw(**it);
+    }
+}
+
+void Player::looseLife(){
+
+    if(lives.size() == 1){
+        std::cout << "DØØØØØØØØØD" << std::endl;
+    }
+
+    delete lives.back();
+    lives.pop_back();
 }
 
 ColCircle* Player::getCol(){
@@ -127,3 +149,4 @@ sf::Vector2i Player::getCoordinate(){
     return sf::Vector2i( (int) ((cX - cX % GameControl::GRIDSIZE) / GameControl::GRIDSIZE),
                          (int) ((cY - cY % GameControl::GRIDSIZE) / GameControl::GRIDSIZE));
 }
+

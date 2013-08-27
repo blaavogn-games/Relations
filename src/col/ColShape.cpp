@@ -86,10 +86,13 @@ std::vector<sf::Vector2f> ColShape::getCorners(){
 }
 
 int ColShape::getCorner(int baseCorner, int relation){
+
     signed int relCorner = baseCorner + relation;
+
     if(relCorner < 0){
         relCorner += absCorners.size();
-    }if(relCorner >= absCorners.size()){
+    }
+    else if(relCorner >= (signed int) absCorners.size()){
         relCorner -= absCorners.size();
     }
 

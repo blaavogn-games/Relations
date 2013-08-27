@@ -14,7 +14,7 @@ class EnemyHandler;
 
 class Enemy : protected GameObj{
 	private:
-        int const GRIDOFFSET; // 9
+        signed int const GRIDOFFSET, RADIUS; // -4 , 20
         float const SPEED; //20
 
 		EnemyHandler* enemyHandler;

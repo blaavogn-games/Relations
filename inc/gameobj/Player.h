@@ -14,20 +14,22 @@ class GameControl;
 
 class Player : protected GameObj{
 	private:
-		sf::Sprite sprite;
-		sf::Texture texture;
-		sf::Vector2f position;
-        sf::Vector2i previousCoordinate;
-
 		GameControl* gameControl;
 		ColCircle* colCircle;
 
-		float speed;
+		sf::Sprite sprPlayer;
+		sf::Texture texPlayer, texLife;
+		sf::Vector2f position;
+        sf::Vector2i previousCoordinate;
 
-        int const RADIUS;
+        std::vector<sf::Sprite*> lives;
+
+		float speed;
+        int const RADIUS, MAXLIVES;
+
 
         bool collisionHandler(std::vector<ColShape*>);
-
+        void looseLife();
 
 	public:
 		Player(GameControl* gameControl);

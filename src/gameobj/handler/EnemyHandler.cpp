@@ -10,7 +10,6 @@ EnemyHandler::~EnemyHandler(){
         delete (*it);
     }
 	enemies.clear();
-
 	if(alarm){
         delete alarm;
 	}
@@ -24,6 +23,7 @@ void EnemyHandler::init(){
 
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->init();
+
 	}
 
 }

@@ -6,7 +6,7 @@
 #include <cmath>
 #include <iostream>
 
-Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(9) , SPEED(20){
+Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(-4) , SPEED(20), RADIUS(20){
     this->enemyHandler = enemyHandler;
 	position.x = startCoordinate.x * GameControl::GRIDSIZE + GRIDOFFSET;
 	position.y = startCoordinate.y * GameControl::GRIDSIZE + GRIDOFFSET;
@@ -18,7 +18,7 @@ Enemy::~Enemy(){
 }
 
 void Enemy::init(){
-	colCircle = new ColCircle(position,8);
+	colCircle = new ColCircle(position,RADIUS);
 
 	if (!texture.loadFromFile("res/img/enemy.png") or !texPath.loadFromFile("res/img/temp_path.png"))
 	{
@@ -48,10 +48,10 @@ void Enemy::update(float delta){
 void Enemy::render(sf::RenderWindow &window){
 
 	//Just for testing
-	for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
+	/*for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
         sprPath.setPosition((it)->x * 32 , (it)->y * 32);
         window.draw(sprPath);
-	}
+	}*/
 
 	window.draw(sprite);
 
@@ -86,5 +86,5 @@ void Enemy::newTargetPoint(){
 }
 
 sf::Vector2i Enemy::getPosition(){
-    return sf::Vector2i( (int) position.x, (int) position.y);
+    return sf::Vector2i( (int) position.x + RADIUS, (int) position.y + RADIUS);
 }

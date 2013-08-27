@@ -34,7 +34,6 @@ void Alarm::update(float delta){
         }else{
             ++it;
         }
-
     }
 }
 

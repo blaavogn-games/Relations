@@ -26,7 +26,7 @@ class EnemyHandler : protected GameObj{
 		void init();
 		void update(float delta);
 		void render(sf::RenderWindow &window);
-        virtual void alarmAction(int type);
+        void alarmAction(int type);
 
         //Set more or less
         void findNewPaths();

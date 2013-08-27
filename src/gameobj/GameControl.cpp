@@ -23,7 +23,6 @@ void GameControl::init(){
 
 	enemyHandler = new EnemyHandler(this);
 	enemyHandler->init();
-
 }
 
 void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){

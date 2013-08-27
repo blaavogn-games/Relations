@@ -9,6 +9,7 @@ class GameObj{
 		GameObj(){
 			init();
 		}
+		virtual ~GameObj(){}
 		void init();
 		void update();
 		void render();
