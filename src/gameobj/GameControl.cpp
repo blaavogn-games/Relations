@@ -11,6 +11,8 @@ GameControl::~GameControl(){
 		delete enemyHandler;
     if(gridHandler)
         delete gridHandler;
+    if(pointHandler)
+        delete pointHandler;
 }
 
 void GameControl::init(){
@@ -18,21 +20,27 @@ void GameControl::init(){
 	gridHandler = new GridHandler(this);
 	gridHandler->init();
 
+	pointHandler = new PointHandler(this);
+	pointHandler->init();
+
 	player = new Player(this);
 	player->init();
 
 	enemyHandler = new EnemyHandler(this);
 	enemyHandler->init();
+
 }
 
 void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
 	gridHandler     -> update(delta, event, mousePosition);
+	pointHandler    -> update(delta);
 	enemyHandler    -> update(delta);
 	player          -> update(delta);
 }
 
 void GameControl::render(sf::RenderWindow &window){
 	gridHandler     -> render(window);
+	pointHandler    -> render(window);
 	enemyHandler    -> render(window);
 	player          -> render(window);
 }
@@ -50,7 +58,10 @@ std::vector<Enemy*>* GameControl::getEnemies(){
 	return enemyHandler->getEnemies();
 }
 
-
+//PointHandler
+std::vector<Point*>* GameControl::getPoints(){
+    return pointHandler->getPoints();
+}
 
 //GridHandler
 std::vector<ColShape*> GameControl::getSurWalls(sf::Vector2i position){

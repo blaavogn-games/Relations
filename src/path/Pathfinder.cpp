@@ -21,9 +21,6 @@ std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i startCoordinate, sf::
 
     std::deque<sf::Vector2i> finalPath = searchNoteRec(&startCoordinate, &endCoordinate);
 
-    if(finalPath.size() == 0){
-        finalPath.push_back(endCoordinate);
-    }
 
     return finalPath;
 }
@@ -83,6 +80,13 @@ std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchCoordinat
     if(endCoordinate->x == nextCoordinate.x && endCoordinate->y == nextCoordinate.y){
         std::deque<sf::Vector2i> finalPath;
         gridHandler -> getGrid(endCoordinate) -> getPathRec(&finalPath);
+
+        if(finalPath.size() == 0){
+            //In case endCoordinate is startCoordinate... This check is probably retardedly late...
+            //FIXFIXFIXIFIXFIXIFIXFIXIFIXIFIXIFIXIFIXI
+            finalPath.push_front(*endCoordinate);
+        }
+
         return finalPath;
     }
 

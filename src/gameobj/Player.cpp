@@ -1,6 +1,7 @@
 #include <inc/gameobj/Player.h>
 #include <inc/gameobj/GameControl.h>
 
+
 #include <iostream>
 
 Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(9){
@@ -77,6 +78,22 @@ void Player::update(float delta){
 
     sprPlayer.setPosition(position);
 
+    //Collision points
+    std::vector<Point*>* points = gameControl->getPoints();
+    std::vector<Point*>::iterator pointsIt = points->begin();
+
+    while(pointsIt != points->end()){
+        if(Collision::doesCollide(*colCircle , (*pointsIt)->getColCircle())){
+            std::cout << "HURAA POINT" << std::endl;
+            delete (*pointsIt);
+            pointsIt = points -> erase (pointsIt);
+        }else{
+            pointsIt++;
+        }
+
+    }
+
+
     //Collision enemy
 	std::vector<Enemy*>* enemies = gameControl->getEnemies();
     std::vector<Enemy*>::iterator it = enemies->begin();
@@ -92,6 +109,7 @@ void Player::update(float delta){
         }
 
     }
+
 
     //Check if player moves into a new coordinate, if player does, enemies has to find new path
     sf::Vector2i currentCoordinate = getCoordinate();

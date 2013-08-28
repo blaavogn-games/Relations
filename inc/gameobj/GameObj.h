@@ -9,9 +9,9 @@ class GameObj{
 		GameObj(){
 		}
 		virtual ~GameObj(){}
-		void init();
-		void update();
-		void render();
+		virtual void init();
+		virtual void update(float delta);
+		virtual void render(sf::RenderWindow &window);
 
     public:
         //Need to look up what virtual means, but apparently I am able to override it

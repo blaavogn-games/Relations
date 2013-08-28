@@ -1,11 +1,14 @@
 Før det sendes til folk to do:
-1. Enemies tilføjes løbende - Check
+1. Enemies tilføjes løbende - Mangler semi-random spawn
 2. Enemies crasher ikke programmet når de når mål +++++
 3. Enemies kan dræbe Player - Check
 4. Player har liv - Check
 5. Justering af spawnrate og speed på enemies/Player
-6. Bedre path
+6. Bedre path (Nyeste tilføjelse er det dummeste kode længe)
 7. evt. Point tilføjes, meget godt hvis folk skal prøve det.
 
-/home/holger/documents/cpp/game_1/src/gameobj/handler/EnemyHandler.cpp|48|error: passing ‘const EnemyHandler’ as ‘this’
- argument of ‘void EnemyHandler::addEnemy()’ discards qualifiers [-fpermissive]|
+
+Næste spil struktur forbedring:
+Udbyg GameObj med sprite collision position og lignende
+Lav en Handler_base der har std::vector<GameObj*> som kan evt arver fra noget der minder om nuværende GameObj.
+Ny GameObj kan også arve fra den.

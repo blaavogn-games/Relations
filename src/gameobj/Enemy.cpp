@@ -64,8 +64,6 @@ void Enemy::setPath(std::deque<sf::Vector2i> newPath){
 
     path = newPath;
 
-    std::cout << "Set path: " << path.size() << std::endl;
-
     if(std::fabs(path.at(0).x - position.x ) + std::fabs(path.at(0).y - position.y ) < 20.0f){
         if(path.size() > 1){
             path.pop_front();
