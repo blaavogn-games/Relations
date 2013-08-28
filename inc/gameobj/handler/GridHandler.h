@@ -20,7 +20,7 @@ coordinate = gridposition / 32 */
 //Forward declaration
 class GameControl;
 
-class GridHandler : protected GameObj{
+class GridHandler : public GameObj{
     private:
         GameControl* gameControl;
         Pathfinder* pathfinder;

@@ -6,7 +6,7 @@
 #include <cmath>
 #include <iostream>
 
-Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(-4) , SPEED(20), RADIUS(20){
+Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(-4) , RADIUS(20) , SPEED(20){
     this->enemyHandler = enemyHandler;
 	position.x = startCoordinate.x * GameControl::GRIDSIZE + GRIDOFFSET;
 	position.y = startCoordinate.y * GameControl::GRIDSIZE + GRIDOFFSET;
@@ -20,10 +20,8 @@ Enemy::~Enemy(){
 void Enemy::init(){
 	colCircle = new ColCircle(position,RADIUS);
 
-	if (!texture.loadFromFile("res/img/enemy.png") or !texPath.loadFromFile("res/img/temp_path.png"))
-	{
-		//std::cout << "Error while loading player texture" << std::endl;
-	}
+	texture.loadFromFile("res/img/enemy.png");
+	texPath.loadFromFile("res/img/temp_path.png");
 
 	sprite.setTexture(texture);
     sprPath.setTexture(texPath);
@@ -34,7 +32,8 @@ void Enemy::init(){
 
 void Enemy::update(float delta){
 
-    if(std::fabs(targetPoint.x - position.x ) + std::fabs(targetPoint.y - position.y ) < 0.5f){
+    if(std::fabs(targetPoint.x - position.x) + std::fabs(targetPoint.y - position.y) < 0.5){
+
         newTargetPoint();
     }
 
@@ -65,24 +64,31 @@ void Enemy::setPath(std::deque<sf::Vector2i> newPath){
 
     path = newPath;
 
-    if(std::fabs(path.at(0).x - position.x ) + std::fabs(path.at(0).y - position.y ) < 1.0f){
-        path.pop_front();
+    std::cout << "Set path: " << path.size() << std::endl;
+
+    if(std::fabs(path.at(0).x - position.x ) + std::fabs(path.at(0).y - position.y ) < 20.0f){
+        if(path.size() > 1){
+            path.pop_front();
+        }
     }
 
     newTargetPoint();
 }
 
 void Enemy::newTargetPoint(){
-    path.pop_front();
 
-	targetPoint.x = path.at(0).x * GameControl::GRIDSIZE + GRIDOFFSET;
-	targetPoint.y = path.at(0).y * GameControl::GRIDSIZE + GRIDOFFSET;
+        if(path.size() > 1){
+            path.pop_front();
+        }
+
+    targetPoint.x = path.at(0).x * GameControl::GRIDSIZE + GRIDOFFSET;
+    targetPoint.y = path.at(0).y * GameControl::GRIDSIZE + GRIDOFFSET;
 
     sf::Vector2f tempMovement;
     tempMovement.x = targetPoint.x - position.x;
     tempMovement.y = targetPoint.y - position.y;
 
-	movement = MathVector::scale( MathVector::normalize(tempMovement) , SPEED);
+    movement = MathVector::scale( MathVector::normalize(tempMovement) , SPEED);
 }
 
 sf::Vector2i Enemy::getPosition(){

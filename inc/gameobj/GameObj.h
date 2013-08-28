@@ -7,7 +7,6 @@ class GameObj{
 
 	protected:
 		GameObj(){
-			init();
 		}
 		virtual ~GameObj(){}
 		void init();

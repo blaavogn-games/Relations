@@ -3,7 +3,7 @@
 #include <inc/gameobj/GameObj.h>
 #include <SFML/Graphics.hpp>
 
-class FpsDisplay{
+class FpsDisplay : public GameObj{
 
 private:
 

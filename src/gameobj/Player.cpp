@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(3){
+Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(9){
 	this->gameControl = gameControl;
 }
 Player::~Player(){
@@ -87,7 +87,6 @@ void Player::update(float delta){
             delete (*it);
             it = enemies -> erase(it);
             looseLife();
-
         }else{
             it++;
         }

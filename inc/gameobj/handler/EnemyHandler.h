@@ -12,7 +12,7 @@
 
 class GameControl;
 
-class EnemyHandler : protected GameObj{
+class EnemyHandler : public GameObj{
 	private:
 		GameControl* gameControl;
 		std::vector<Enemy*> enemies;

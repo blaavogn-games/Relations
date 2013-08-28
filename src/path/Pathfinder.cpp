@@ -21,6 +21,10 @@ std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i startCoordinate, sf::
 
     std::deque<sf::Vector2i> finalPath = searchNoteRec(&startCoordinate, &endCoordinate);
 
+    if(finalPath.size() == 0){
+        finalPath.push_back(endCoordinate);
+    }
+
     return finalPath;
 }
 

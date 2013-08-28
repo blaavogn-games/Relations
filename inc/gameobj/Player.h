@@ -12,7 +12,7 @@
 
 class GameControl;
 
-class Player : protected GameObj{
+class Player : public GameObj{
 	private:
 		GameControl* gameControl;
 		ColCircle* colCircle;

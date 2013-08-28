@@ -12,9 +12,10 @@
 //Forward declaration
 class EnemyHandler;
 
-class Enemy : protected GameObj{
+class Enemy : public GameObj{
 	private:
-        signed int const GRIDOFFSET, RADIUS; // -4 , 20
+        signed int const GRIDOFFSET; // -4 , 20
+        signed int const RADIUS;
         float const SPEED; //20
 
 		EnemyHandler* enemyHandler;

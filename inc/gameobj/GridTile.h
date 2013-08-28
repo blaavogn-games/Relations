@@ -7,7 +7,7 @@
 
 #include <deque>
 
-class GridTile : protected GameObj{
+class GridTile : public GameObj{
     private:
         const int MOVE;
 

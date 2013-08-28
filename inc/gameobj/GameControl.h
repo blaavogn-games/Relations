@@ -11,7 +11,7 @@
 
 //GameControl is becomming a path for communication between my handlers.
 //Maybe it is better to let the handlers have a pointer to eachother?
-class GameControl : protected GameObj{
+class GameControl : public GameObj{
 	public:
         static const int GRIDSIZE = 32, GRIDX = 25, GRIDY = 19;
 		GameControl();
