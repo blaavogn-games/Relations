@@ -18,13 +18,10 @@ PointHandler::~PointHandler(){
 
 //public
 void PointHandler::init(){
-
-
     texPoint.loadFromFile("res/img/point.png");
 
     alarm = new Alarm(this);
-    alarm->addTimer(0, 1);
-
+    addPoint(sf::Vector2i(19,9));
 }
 
 void PointHandler::update(float delta){
@@ -45,7 +42,7 @@ void PointHandler::render(sf::RenderWindow &window){
 void PointHandler::alarmAction(int type){
     //Currently only 0
     addPoint();
-    alarm->addTimer(0,12);
+    alarm->addTimer(0,10);
 }
 
 void PointHandler::addPoint(){
@@ -58,7 +55,10 @@ void PointHandler::addPoint(){
         coordinate.x = rand() % GameControl::GRIDX; //Might need a seed, but it doesn't seem like it
         coordinate.y = rand() % GameControl::GRIDY;
     }
+    addPoint(coordinate);
+}
 
+void PointHandler::addPoint(sf::Vector2i coordinate){
     Point* tempPoint = new Point();
     tempPoint->init(&texPoint, coordinate);
     points.push_back(tempPoint);

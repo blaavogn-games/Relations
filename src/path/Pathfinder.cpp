@@ -78,8 +78,6 @@ std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchCoordinat
     }
 
     //Makes sure we stay within grid
-
-
     sf::Vector2i nextCoordinate = findNextCoordinate();
 
     if(nextCoordinate.x == -1){
@@ -99,7 +97,7 @@ std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchCoordinat
 
 void Pathfinder::calcTile(sf::Vector2i coordinate, GridTile* searchTile){
     //Checks if coordinate is within grid
-    if(coordinate.x == -1 || coordinate.x == GameControl::GRIDX || coordinate.y == -1 || coordinate.y == GameControl::GRIDX){
+    if(coordinate.x == -1 || coordinate.x == GameControl::GRIDX || coordinate.y == -1 || coordinate.y == GameControl::GRIDY){
         return;
     }
 

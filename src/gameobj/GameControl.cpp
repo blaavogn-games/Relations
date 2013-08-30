@@ -13,12 +13,12 @@ GameControl::~GameControl(){
 
 void GameControl::init(){
 
-	pointHandler = new PointHandler(this);
-	pointHandler->init();
-
     //enemyHandler dependent on gridHandler and player atm
 	gridHandler = new GridHandler(this);
 	gridHandler->init();
+
+	pointHandler = new PointHandler(this);
+	pointHandler->init();
 
 	player = new Player(this);
 	player->init();

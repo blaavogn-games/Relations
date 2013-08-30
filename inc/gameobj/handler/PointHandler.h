@@ -29,6 +29,8 @@ class PointHandler : public GameObj{
         void render(sf::RenderWindow &window);
 
         void addPoint();
+        void addPoint(sf::Vector2i);
+
         void alarmAction(int);
         std::vector<Point*>* getPoints(){ return &points;}
 

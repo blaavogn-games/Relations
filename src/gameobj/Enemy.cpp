@@ -34,7 +34,7 @@ void Enemy::init(){
 
 void Enemy::update(float delta){
 
-    if(std::fabs(targetPoint.x - position.x) + std::fabs(targetPoint.y - position.y) < 0.5){
+    if(std::fabs(targetPoint.x - position.x) + std::fabs(targetPoint.y - position.y) < 1){
 
         newTargetPoint();
     }
@@ -49,10 +49,10 @@ void Enemy::update(float delta){
 void Enemy::render(sf::RenderWindow &window){
 
 	//Just for testing
-	/*for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
+	for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
         sprPath.setPosition((it)->x * 32 , (it)->y * 32);
         window.draw(sprPath);
-	}*/
+	}
 
 	window.draw(sprite);
 

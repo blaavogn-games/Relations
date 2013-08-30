@@ -23,7 +23,7 @@ class Pathfinder{
         std::vector<sf::Vector2i> openList;
 
         void calcTile(sf::Vector2i, GridTile*);
-        void resetTiles(sf::Vector2i*);                                                      // 1
+        void resetTiles(sf::Vector2i*);
         sf::Vector2i findNextCoordinate();
 
 

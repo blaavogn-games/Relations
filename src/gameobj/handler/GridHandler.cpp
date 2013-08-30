@@ -15,7 +15,6 @@ GridHandler::~GridHandler(){
             }
         }
     }
-
 }
 
 void GridHandler::init(){
@@ -74,7 +73,6 @@ void GridHandler::render(sf::RenderWindow &window){
     }
 
     window.draw(sprHighlight);
-
 }
 
 
@@ -105,33 +103,53 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
         //For enemies
         //In order for placing a wall following checks should be made
         //1. Get all enemies that has the wallPoint as a point in their path
-        //1a.      if 0: Place wall
+        // --- Place tempwall
+        //1a.If player isn't walled in, place wall
 
         //2. Does an alternative path exist for all of these enemies?
         //2a     false: don't place wall
 
-        //3. Place wall and find make the alternative paths the new paths
+        //3. ind make the alternative paths the new paths
+
+
+        //Adding wall temporarily to do search
+        getGrid(&coordinate) -> setTempWall();
 
         //1.
         std::vector<Enemy*> enemies = gameControl -> getEnemiesWithPathPoint(coordinate);
 
         //1a
         if( enemies.size() == 0){
-            addWall(coordinate);
+            std::deque<sf::Vector2i> tempPath = getPath(sf::Vector2i(0,0), gameControl -> getPlayerCoordinate());
+
+            for(std::deque<sf::Vector2i>::iterator it = tempPath.begin() ; it != tempPath.end(); ++it){
+                std::cout << (*it).x << " , " << (*it).y << std::endl;
+            }
+
+            if(tempPath.size() != 0){
+                addWall(coordinate);
+
+                return;
+            }else{
+                std::cout << "Not legal wall yourself in" << std::endl;
+            }
+
+            getGrid(&coordinate) -> removeTempWall();
             return;
         }
 
-        //Adding wall temporarily to do search
-        getGrid(&coordinate) -> setTempWall();
 
         //2
         bool legalWall = true;
         std::vector<std::deque<sf::Vector2i>> tempPaths;
 
+        std::cout << enemies.size() << std::endl;
+
         for(unsigned int i = 0; i < enemies.size(); i++){
 
             std::deque<sf::Vector2i> tempPath = getPath(enemies.at(i)->getPosition(), gameControl -> getPlayerCoordinate());
 
+            std::cout << i << std::endl;
             if(tempPath.size() != 0){
                 tempPaths.push_back( tempPath);
             }else{
@@ -144,6 +162,7 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
                 break;
             }
         }
+
 
         //3
         if(legalWall){
