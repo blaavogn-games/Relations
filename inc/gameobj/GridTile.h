@@ -15,13 +15,15 @@ class GridTile : public GameObj{
         sf::Vector2i coordinate;
         sf::Vector2f position; //In reality gridPos
 
-        bool wall, closedList, firstVisit;
+        bool wall, firstVisit;
         int heuristicValue, movementCost, combinedValue;
 
         ColShape* collision;
         GridTile* parent;
 
     public:
+        bool closedList;
+
         GridTile();
         ~GridTile();
 
@@ -33,8 +35,6 @@ class GridTile : public GameObj{
         void reset(int);
         void calculate(GridTile*);
         void setStartTile();
-        void setClosedList();
-        bool onClosedList(){return closedList;}
         bool isFirstVisit(){ return firstVisit;}
         int getMovementCost(){ return movementCost;}
         int getCombinedValue(){ return combinedValue;}

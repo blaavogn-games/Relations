@@ -50,6 +50,8 @@ void GridHandler::init(){
 
 void GridHandler::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
     //Handles highlight and mouse position
+
+
     sf::Vector2i mouseGridPosition = getGridPosition(mousePosition);
     sprHighlight.setPosition(sf::Vector2f(mouseGridPosition.x,mouseGridPosition.y));
 

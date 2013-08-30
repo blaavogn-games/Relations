@@ -77,9 +77,9 @@ void GridTile::setStartTile(){
     movementCost = 0;
 }
 
-void GridTile::setClosedList(){
-    closedList = true;
-}
+//void GridTile::setClosedList(){
+//    closedList = true;
+//}
 
 void GridTile::getPathRec(std::deque<sf::Vector2i>* path){
     path->push_front(coordinate);

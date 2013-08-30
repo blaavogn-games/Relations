@@ -1,7 +1,6 @@
 #include <inc/gameobj/Player.h>
 #include <inc/gameobj/GameControl.h>
 
-
 #include <iostream>
 
 Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(9){
@@ -18,7 +17,7 @@ Player::~Player(){
 
 void Player::init(){
 	//Variables
-	speed = 30;
+	speed = 33;
     previousCoordinate = getCoordinate();
 
 	//Player at 9,9 just for enemy testing
@@ -59,17 +58,17 @@ void Player::update(float delta){
 
 	float deltaSpeed = speed * delta;
 
-	if(keyboard.isKeyPressed(sf::Keyboard::A) ){
+	if(keyboard.isKeyPressed(sf::Keyboard::A) && position.x > 0){
 		curMovement.x -= deltaSpeed;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::D) ){
+	if(keyboard.isKeyPressed(sf::Keyboard::D)  && position.x < 784){
 		curMovement.x += deltaSpeed;
 	}
 
-	if(keyboard.isKeyPressed(sf::Keyboard::W) ){
+	if(keyboard.isKeyPressed(sf::Keyboard::W) && position.y > 0 ){
 		curMovement.y -= deltaSpeed;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::S) ){
+	if(keyboard.isKeyPressed(sf::Keyboard::S) && position.y < 584){
 		curMovement.y += deltaSpeed;
 	}
 

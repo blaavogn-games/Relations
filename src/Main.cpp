@@ -45,7 +45,7 @@ int main()
                 window.close();
         }
 
-        mousePosition = sf::Mouse::getPosition() - window.getPosition();
+        mousePosition = sf::Mouse::getPosition(window);
 
         gameControl->update(deltaTime, event, mousePosition);
         fpsDisplay.update(deltaTime);

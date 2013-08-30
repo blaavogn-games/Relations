@@ -14,13 +14,25 @@ Pathfinder::~Pathfinder(){
 }
 
 std::deque<sf::Vector2i> Pathfinder::findPath(sf::Vector2i startCoordinate, sf::Vector2i endCoordinate){
+    std::deque<sf::Vector2i> finalPath;
 
     resetTiles(&endCoordinate);
 
+    //In case player is on top of enemy
+    if(startCoordinate.x == endCoordinate.x && startCoordinate.y == endCoordinate.y){
+        finalPath.push_front(endCoordinate);
+        return finalPath;
+    }
+
+    //Finding searchAxis (It is better for the enemies to prioritize the axis that has the largest delta)
+    //Gives more natural movement
+    int deltaX = std::fabs(startCoordinate.x - endCoordinate.x);
+    int deltaY = std::fabs(startCoordinate.y - endCoordinate.y);
+    searchAxis = (deltaX > deltaY) ? true : false ;
+
     gridHandler -> getGrid(&startCoordinate) -> setStartTile();
 
-    std::deque<sf::Vector2i> finalPath = searchNoteRec(&startCoordinate, &endCoordinate);
-
+    finalPath = searchNoteRec(&startCoordinate, &endCoordinate);
 
     return finalPath;
 }
@@ -43,7 +55,7 @@ std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchCoordinat
     GridTile* searchTile = gridHandler -> getGrid(searchCoordinate);
 
     //Puts searchTile on closedList
-    searchTile -> setClosedList();
+    searchTile -> closedList = true;
 
     //And in addition removes it from the openList (openList is a list, closedList an attribute)
     for(std::vector<sf::Vector2i>::iterator it = openList.begin(); it != openList.end(); ++it){
@@ -53,22 +65,20 @@ std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchCoordinat
         }
     }
 
+    if(searchAxis){
+        calcTile(sf::Vector2i(searchCoordinate->x-1 , searchCoordinate->y) , searchTile); //Horizontal first
+        calcTile(sf::Vector2i(searchCoordinate->x+1 , searchCoordinate->y) , searchTile);
+        calcTile(sf::Vector2i(searchCoordinate->x , searchCoordinate->y - 1) , searchTile);
+        calcTile(sf::Vector2i(searchCoordinate->x , searchCoordinate->y + 1) , searchTile);
+    }else{
+        calcTile(sf::Vector2i(searchCoordinate->x , searchCoordinate->y - 1) , searchTile); //Vertical first
+        calcTile(sf::Vector2i(searchCoordinate->x , searchCoordinate->y + 1) , searchTile);
+        calcTile(sf::Vector2i(searchCoordinate->x-1 , searchCoordinate->y) , searchTile);
+        calcTile(sf::Vector2i(searchCoordinate->x+1 , searchCoordinate->y) , searchTile);
+    }
+
     //Makes sure we stay within grid
-    if(searchCoordinate->x != 0){
-        calcTile(gridHandler -> getGrid(searchCoordinate->x-1 , searchCoordinate->y) , searchTile );
-    }
 
-    if(searchCoordinate->x != 24){
-        calcTile(gridHandler -> getGrid(searchCoordinate->x+1 , searchCoordinate->y) , searchTile );
-    }
-
-    if(searchCoordinate->y != 0){
-        calcTile(gridHandler -> getGrid(searchCoordinate->x , searchCoordinate->y - 1) , searchTile );
-    }
-
-    if(searchCoordinate->y != 18){
-        calcTile(gridHandler -> getGrid(searchCoordinate->x , searchCoordinate->y + 1) , searchTile );
-    }
 
     sf::Vector2i nextCoordinate = findNextCoordinate();
 
@@ -81,20 +91,21 @@ std::deque<sf::Vector2i> Pathfinder::searchNoteRec(sf::Vector2i* searchCoordinat
         std::deque<sf::Vector2i> finalPath;
         gridHandler -> getGrid(endCoordinate) -> getPathRec(&finalPath);
 
-        if(finalPath.size() == 0){
-            //In case endCoordinate is startCoordinate... This check is probably retardedly late...
-            //FIXFIXFIXIFIXFIXIFIXFIXIFIXIFIXIFIXIFIXI
-            finalPath.push_front(*endCoordinate);
-        }
-
         return finalPath;
     }
 
     return searchNoteRec(&nextCoordinate, endCoordinate);
 }
 
-void Pathfinder::calcTile(GridTile* tile, GridTile* searchTile){
-    if(! tile->onClosedList()){
+void Pathfinder::calcTile(sf::Vector2i coordinate, GridTile* searchTile){
+    //Checks if coordinate is within grid
+    if(coordinate.x == -1 || coordinate.x == GameControl::GRIDX || coordinate.y == -1 || coordinate.y == GameControl::GRIDX){
+        return;
+    }
+
+    GridTile* tile = gridHandler -> getGrid(&coordinate);
+
+    if(! tile-> closedList){
         if(tile -> isFirstVisit()){
             openList.push_back(tile -> getCoordinate());
         }
