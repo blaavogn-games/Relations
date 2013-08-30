@@ -6,7 +6,7 @@
 #include <cmath>
 #include <iostream>
 
-Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(-4) , RADIUS(20) , SPEED(28){
+Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(0) , RADIUS(16) , SPEED(28){
     this->enemyHandler = enemyHandler;
 	position.x = startCoordinate.x * GameControl::GRIDSIZE + GRIDOFFSET;
 	position.y = startCoordinate.y * GameControl::GRIDSIZE + GRIDOFFSET;

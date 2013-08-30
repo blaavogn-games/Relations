@@ -12,3 +12,8 @@ Næste spil struktur forbedring:
 Udbyg GameObj med sprite collision position og lignende
 Lav en Handler_base der har std::vector<GameObj*> som kan evt arver fra noget der minder om nuværende GameObj.
 Ny GameObj kan også arve fra den.
+
+
+
+LEKTIE:
+SÆT POINTERE = NULL HVIS DU IKKE INITIALISERER DEM MED DET SAMME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

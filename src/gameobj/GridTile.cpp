@@ -9,7 +9,9 @@ GridTile::GridTile() : MOVE(10){
     firstVisit = true;
 }
 GridTile::~GridTile(){
-    delete collision;
+    if(colShape != NULL){
+        delete colShape;
+    }
 }
 
 void GridTile::init(sf::Texture* texture, sf::Vector2i coordinate){
@@ -19,6 +21,8 @@ void GridTile::init(sf::Texture* texture, sf::Vector2i coordinate){
 
     sprite.setTexture(*texture);
     sprite.setPosition(position);
+
+    colShape = NULL;
 }
 
 void GridTile::render(sf::RenderWindow &window){
@@ -34,7 +38,7 @@ void GridTile::setTexture(sf::Texture* texture){
 void GridTile::setWall(){
     wall = true;
     closedList = true;
-    collision = new ColRectangle(position, GameControl::GRIDSIZE, GameControl::GRIDSIZE);
+    colShape = new ColRectangle(position, GameControl::GRIDSIZE, GameControl::GRIDSIZE);
 }
 
 void GridTile::setTempWall(){

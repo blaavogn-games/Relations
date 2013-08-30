@@ -3,20 +3,15 @@
 
 #include <iostream>
 
-GameControl::GameControl(){}
+GameControl::GameControl() : pause(false){
+    pausePress = false;
+    resetPress = false;
+}
 GameControl::~GameControl(){
-	if(player)
-		delete player;
-	if(enemyHandler)
-		delete enemyHandler;
-    if(gridHandler)
-        delete gridHandler;
-    if(pointHandler)
-        delete pointHandler;
+    clearGame();
 }
 
 void GameControl::init(){
-
 
 	pointHandler = new PointHandler(this);
 	pointHandler->init();
@@ -33,18 +28,62 @@ void GameControl::init(){
 
 }
 
+void GameControl::clearGame(){
+    if(player){
+		delete player;
+	}
+    if(enemyHandler){
+		delete enemyHandler;
+	}
+    if(gridHandler){
+        delete gridHandler;
+    }
+    if(pointHandler){
+        delete pointHandler;
+    }
+}
+
 void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
-	gridHandler     -> update(delta, event, mousePosition);
-	pointHandler    -> update(delta);
-	enemyHandler    -> update(delta);
-	player          -> update(delta);
+
+    //Dev code
+    sf::Keyboard keyboard;
+
+    if(keyboard.isKeyPressed(sf::Keyboard::Space)){
+        if(resetPress == false){
+            resetPress = true;
+            resetGame();
+        }
+    }else{
+        resetPress = false;
+    }
+
+ 	if(keyboard.isKeyPressed(sf::Keyboard::Q)){
+		if(pausePress == false){
+            pause = (pause) ? false : true;
+            pausePress = true;
+		}
+	}else{
+        pausePress = false;
+	}
+
+	if(!pause){
+        gridHandler     -> update(delta, event, mousePosition);
+        pointHandler    -> update(delta);
+        enemyHandler    -> update(delta);
+        player          -> update(delta);
+	}
 }
 
 void GameControl::render(sf::RenderWindow &window){
-	gridHandler     -> render(window);
-	pointHandler    -> render(window);
-	enemyHandler    -> render(window);
-	player          -> render(window);
+    gridHandler     -> render(window);
+    pointHandler    -> render(window);
+    enemyHandler    -> render(window);
+    player          -> render(window);
+}
+
+void GameControl::resetGame(){
+    clearGame();
+    init();
 }
 
 //Enemyhandler pipeline

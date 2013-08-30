@@ -17,7 +17,7 @@ EnemyHandler::~EnemyHandler(){
 
 void EnemyHandler::init(){
     alarm = new Alarm(this);
-    alarm -> addTimer(0, 6);
+    alarm -> addTimer(0, 13);
 
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->init();
@@ -39,12 +39,8 @@ void EnemyHandler::render(sf::RenderWindow &window){
 }
 
 void EnemyHandler::alarmAction(int type){
-    switch(type){
-        case 0:
-            addEnemy();
-        break;
-    }
-
+    //Only 0 atm
+    addEnemy();
 }
 
 //private
@@ -56,7 +52,7 @@ void EnemyHandler::addEnemy(){
     sf::Vector2i coordinate;
     coordinate.x = rand() % GameControl::GRIDX;
     coordinate.y = rand() % GameControl::GRIDY;
-    std::cout << site << std::endl;
+
     switch(site){
         case 0:
             coordinate.y = 0;
@@ -76,9 +72,8 @@ void EnemyHandler::addEnemy(){
     tempPointer -> init();
     enemies.push_back(tempPointer);
 
-    alarm -> addTimer(0,12);
+    alarm -> addTimer(0,15);
 }
-
 
 //set
 void EnemyHandler::findNewPaths(){

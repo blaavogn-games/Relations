@@ -43,5 +43,10 @@ class GameControl : public GameObj{
 		EnemyHandler* enemyHandler;
 		GridHandler* gridHandler;
 		PointHandler* pointHandler;
+
+        bool pause, pausePress, resetPress;
+
+        void clearGame();
+        void resetGame();
 };
 #endif

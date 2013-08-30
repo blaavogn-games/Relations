@@ -10,13 +10,12 @@ GridHandler::GridHandler(GameControl* gameControl) : firstMousePress(true){
 GridHandler::~GridHandler(){
     for(int y = 0; y < GameControl::GRIDY; y++){
         for(int x = 0; x < GameControl::GRIDX; x++){
-            delete grid[x][y];
+            if(grid[x][y]){
+                delete grid[x][y];
+            }
         }
     }
 
-	if(pathfinder){
-        delete pathfinder;
-	}
 }
 
 void GridHandler::init(){
@@ -50,8 +49,6 @@ void GridHandler::init(){
 
 void GridHandler::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
     //Handles highlight and mouse position
-
-
     sf::Vector2i mouseGridPosition = getGridPosition(mousePosition);
     sprHighlight.setPosition(sf::Vector2f(mouseGridPosition.x,mouseGridPosition.y));
 
@@ -95,10 +92,15 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
             sf::Vector2i pointCoordinate = (*it)->getCoordinate();
             if(pointCoordinate.x == coordinate.x && pointCoordinate.y == coordinate.y){
                 return;
-                //Not legaæ, perhaps delete
+                //Not legal, perhaps delete
             }
         }
 
+        //For player
+        sf::Vector2i playerCoordinate = gameControl->getPlayerCoordinate();
+        if(coordinate.x == playerCoordinate.x && coordinate.y == playerCoordinate.y){
+            return;
+        }
 
         //For enemies
         //In order for placing a wall following checks should be made
@@ -128,7 +130,7 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
 
         for(unsigned int i = 0; i < enemies.size(); i++){
 
-            std::deque<sf::Vector2i> tempPath = getPath( enemies.at(i)->getPosition(), gameControl -> getPlayerCoordinate());
+            std::deque<sf::Vector2i> tempPath = getPath(enemies.at(i)->getPosition(), gameControl -> getPlayerCoordinate());
 
             if(tempPath.size() != 0){
                 tempPaths.push_back( tempPath);

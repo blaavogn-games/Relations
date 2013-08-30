@@ -3,6 +3,17 @@
 #include "inc/col/math/MathEssential.h"
 
 #include <iostream>
+
+ColShape::ColShape(sf::Vector2f position){
+    absCornersCalculated = false;
+    //sepAxesCalculated isn't used but will be if I decide to implement a roation function
+    sepAxesCalculated = false;
+    setPosition(position);
+}
+ColShape::~ColShape(){
+    std::cout << "12121212" << std::endl;
+}
+
 //Private
 void ColShape::calculateAbsCorners(){
     absCorners.clear();
@@ -54,12 +65,7 @@ bool ColShape::sepAxisExists(sf::Vector2f newSepAxis){
 }
 
 //Public
-ColShape::ColShape(sf::Vector2f position){
-    absCornersCalculated = false;
-    //sepAxesCalculated isn't used but will be if I decide to implement a roation function
-    sepAxesCalculated = false;
-    setPosition(position);
-}
+
 
 void ColShape::setPosition(sf::Vector2f position){
     this->position = position;

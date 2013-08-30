@@ -18,7 +18,7 @@ class GridTile : public GameObj{
         bool wall, firstVisit;
         int heuristicValue, movementCost, combinedValue;
 
-        ColShape* collision;
+        ColShape* colShape;
         GridTile* parent;
 
     public:
@@ -48,7 +48,7 @@ class GridTile : public GameObj{
 
         void setWall();
         bool isWall(){ return wall; }
-        ColShape* getCollision(){return collision;}
+        ColShape* getCollision(){return colShape;}
 
 
 

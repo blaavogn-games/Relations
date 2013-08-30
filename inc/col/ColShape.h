@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 
-/*All Shapes must convex for collisiontest to work
+/*All Shapes must be convex for collisiontest to work
 Corners must be added clockwise as well. (ccw should work ass well just in "a->b->c->d format")
 */
 
@@ -20,6 +20,7 @@ class ColShape{
 
     public:
         ColShape(sf::Vector2f);
+        virtual ~ColShape(); // I am not sure about this being virtual
         void setPosition(sf::Vector2f);
         void move(sf::Vector2f);
         void addCorner(sf::Vector2f);

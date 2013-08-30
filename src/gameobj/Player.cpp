@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(9){
+Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(3){
 	this->gameControl = gameControl;
 }
 Player::~Player(){
@@ -17,7 +17,7 @@ Player::~Player(){
 
 void Player::init(){
 	//Variables
-	speed = 33;
+	speed = 22;
     previousCoordinate = getCoordinate();
 
 	//Player at 9,9 just for enemy testing
@@ -54,7 +54,7 @@ void Player::update(float delta){
     sf::Keyboard keyboard;
 
 	//Movement
-	sf::Vector2f curMovement;
+	sf::Vector2f curMovement(0,0);
 
 	float deltaSpeed = speed * delta;
 
@@ -64,12 +64,16 @@ void Player::update(float delta){
 	if(keyboard.isKeyPressed(sf::Keyboard::D)  && position.x < 784){
 		curMovement.x += deltaSpeed;
 	}
-
 	if(keyboard.isKeyPressed(sf::Keyboard::W) && position.y > 0 ){
 		curMovement.y -= deltaSpeed;
 	}
 	if(keyboard.isKeyPressed(sf::Keyboard::S) && position.y < 584){
 		curMovement.y += deltaSpeed;
+	}
+
+	if((curMovement.x != 0) ^ (curMovement.y != 0)){ //First need for exclusive or !?!?!?!?!?!?!?
+        curMovement.x *= 1.4f;
+        curMovement.y *= 1.4f;
 	}
 
 	position += curMovement;
@@ -116,7 +120,6 @@ void Player::update(float delta){
 
     }
 
-
     //Check if player moves into a new coordinate, if player does, enemies has to find new path
     sf::Vector2i currentCoordinate = getCoordinate();
     if(currentCoordinate.x != previousCoordinate.x || currentCoordinate.y != previousCoordinate.y){
@@ -124,7 +127,6 @@ void Player::update(float delta){
         gameControl->enemiesFindNewPath();
     }
     previousCoordinate = currentCoordinate;
-
 
     scoreDisplay->update(delta);
 }

@@ -6,6 +6,7 @@
 class ColRectangle : public ColShape{
 public:
     ColRectangle(sf::Vector2f, float width, float height);
+    ~ColRectangle();
 };
 
 #endif
