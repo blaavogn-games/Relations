@@ -19,7 +19,7 @@ void FpsDisplay::render(sf::RenderWindow &window){
     displayText.setCharacterSize(16);
     displayText.setStyle(sf::Text::Bold);
     displayText.setColor(sf::Color::White);
-    displayText.setPosition(6,0);
+    displayText.setPosition(6,570);
     displayText.setString(ss.str());
 
     window.draw(displayText);

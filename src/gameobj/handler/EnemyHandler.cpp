@@ -16,16 +16,13 @@ EnemyHandler::~EnemyHandler(){
 }
 
 void EnemyHandler::init(){
-
     alarm = new Alarm(this);
     alarm -> addTimer(0, 1);
-
 
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->init();
 
 	}
-
 }
 
 void EnemyHandler::update(float delta){
@@ -53,11 +50,33 @@ void EnemyHandler::alarmAction(int type){
 //private
 void EnemyHandler::addEnemy(){
 
-    Enemy* tempPointer = new Enemy(this,sf::Vector2i(0,0));
+    //Finding position version 1 (Should be points mutating into enemy)
+    //Finde out which site to spawn on. 0=top, 1=bot, 2=left, 3right
+    int site = rand() % 4;
+    sf::Vector2i coordinate;
+    coordinate.x = rand() % GameControl::GRIDX;
+    coordinate.y = rand() % GameControl::GRIDY;
+    std::cout << site << std::endl;
+    switch(site){
+        case 0:
+            coordinate.y = 0;
+        break;
+        case 1:
+            coordinate.y = GameControl::GRIDY - 1;
+        break;
+        case 2:
+            coordinate.x = 0;
+        break;
+        case 3:
+            coordinate.x = GameControl::GRIDX - 1;
+        break;
+    }
+
+    Enemy* tempPointer = new Enemy(this,coordinate);
     tempPointer -> init();
     enemies.push_back(tempPointer);
 
-    alarm -> addTimer(0,3);
+    alarm -> addTimer(0,10);
 }
 
 
@@ -67,8 +86,6 @@ void EnemyHandler::findNewPaths(){
 		(*it)->findNewPath();
 	}
 }
-
-
 
 //Get
 std::vector<Enemy*> EnemyHandler::getEnemiesWithPathPoint(sf::Vector2i point){

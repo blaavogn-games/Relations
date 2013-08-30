@@ -40,14 +40,13 @@ void GridHandler::init(){
     }
 
     //Setup walls for testing
-    for(int i = 1; i < 10; i++){
-        addWall(sf::Vector2i(i,1));
-        addWall(sf::Vector2i(i,10));
-        addWall(sf::Vector2i(10,3 + i));
-        addWall(sf::Vector2i(1,1 + i));
-    }
+//    for(int i = 1; i < 10; i++){
+//        addWall(sf::Vector2i(i,1));
+//        addWall(sf::Vector2i(i,10));
+//        addWall(sf::Vector2i(10,3 + i));
+//        addWall(sf::Vector2i(1,1 + i));
+//    }
 }
-
 
 void GridHandler::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
     //Handles highlight and mouse position
@@ -87,6 +86,19 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
     //Is mouse coordinates within the window
     if(1 <= coordinate.x && coordinate.x < GameControl::GRIDX - 1 && 1 <= coordinate.y &&  coordinate.y < GameControl::GRIDY - 1 && !grid[coordinate.x][coordinate.y]->isWall() ){
 
+        //For points
+        std::vector<Point*>* points = gameControl->getPoints();
+
+        for(std::vector<Point*>::iterator it = points->begin(); it != points->end(); ++it){
+            sf::Vector2i pointCoordinate = (*it)->getCoordinate();
+            if(pointCoordinate.x == coordinate.x && pointCoordinate.y == coordinate.y){
+                return;
+                //Not legaæ, perhaps delete
+            }
+        }
+
+
+        //For enemies
         //In order for placing a wall following checks should be made
         //1. Get all enemies that has the wallPoint as a point in their path
         //1a.      if 0: Place wall

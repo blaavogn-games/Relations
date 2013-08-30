@@ -1,10 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+
+#include <inc/gameobj/ScoreDisplay.h>
 #include <inc/gameobj/GameObj.h>
 #include <inc/col/ColCircle.h>
 #include <inc/col/Collision.h>
-
 
 #include <SFML/Graphics.hpp>
 
@@ -17,6 +18,7 @@ class Player : public GameObj{
 	private:
 		GameControl* gameControl;
 		ColCircle* colCircle;
+        ScoreDisplay* scoreDisplay;
 
 		sf::Sprite sprPlayer;
 		sf::Texture texPlayer, texLife;

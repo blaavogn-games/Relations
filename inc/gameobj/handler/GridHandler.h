@@ -33,7 +33,6 @@ class GridHandler : public GameObj{
 
         bool firstMousePress;
 
-
         void attemptToAddWall(sf::Vector2i);
         void addWall(sf::Vector2i);
 

@@ -1,5 +1,5 @@
 #ifndef FPSDISPLAY_H
-#define FPSDISLAY_H
+#define FPSDISPLAY_H
 #include <inc/gameobj/GameObj.h>
 #include <SFML/Graphics.hpp>
 

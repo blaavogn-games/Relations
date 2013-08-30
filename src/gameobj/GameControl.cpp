@@ -16,12 +16,14 @@ GameControl::~GameControl(){
 }
 
 void GameControl::init(){
-    //enemyHandler dependent on gridHandler and player atm
-	gridHandler = new GridHandler(this);
-	gridHandler->init();
+
 
 	pointHandler = new PointHandler(this);
 	pointHandler->init();
+
+    //enemyHandler dependent on gridHandler and player atm
+	gridHandler = new GridHandler(this);
+	gridHandler->init();
 
 	player = new Player(this);
 	player->init();
@@ -70,6 +72,10 @@ std::vector<ColShape*> GameControl::getSurWalls(sf::Vector2i position){
 
 std::deque<sf::Vector2i> GameControl::getPath(sf::Vector2i startPosition){
     return gridHandler->getPath(startPosition, player->getCoordinate());
+}
+
+GridTile* GameControl::getGrid(sf::Vector2i* coordinate){
+    return gridHandler->getGrid(coordinate);
 }
 
 //player

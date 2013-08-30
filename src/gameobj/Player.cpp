@@ -8,13 +8,17 @@ Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(9){
 	this->gameControl = gameControl;
 }
 Player::~Player(){
-	if(colCircle)
-		delete colCircle;
+	if(colCircle){
+        delete colCircle;
+	}
+    if(scoreDisplay){
+        delete scoreDisplay;
+    }
 }
 
 void Player::init(){
 	//Variables
-	speed = 80;
+	speed = 30;
     previousCoordinate = getCoordinate();
 
 	//Player at 9,9 just for enemy testing
@@ -23,6 +27,9 @@ void Player::init(){
 
 	//Dynamic vars
 	colCircle = new ColCircle(position, RADIUS);
+
+	scoreDisplay = new ScoreDisplay();
+	scoreDisplay->init();
 
 	//Load data
 	texPlayer.loadFromFile("res/img/player/player.png");
@@ -38,6 +45,7 @@ void Player::init(){
 
 	sprPlayer.setTexture(texPlayer);
 }
+
 
 void Player::update(float delta){
 	//Two phases
@@ -84,7 +92,7 @@ void Player::update(float delta){
 
     while(pointsIt != points->end()){
         if(Collision::doesCollide(*colCircle , (*pointsIt)->getColCircle())){
-            std::cout << "HURAA POINT" << std::endl;
+            scoreDisplay->addScore((*pointsIt)->getValue());
             delete (*pointsIt);
             pointsIt = points -> erase (pointsIt);
         }else{
@@ -92,7 +100,6 @@ void Player::update(float delta){
         }
 
     }
-
 
     //Collision enemy
 	std::vector<Enemy*>* enemies = gameControl->getEnemies();
@@ -118,6 +125,9 @@ void Player::update(float delta){
         gameControl->enemiesFindNewPath();
     }
     previousCoordinate = currentCoordinate;
+
+
+    scoreDisplay->update(delta);
 }
 
 bool Player::collisionHandler(std::vector<ColShape*> surWalls){
@@ -139,6 +149,8 @@ void Player::render(sf::RenderWindow &window){
     for(std::vector<sf::Sprite*>::iterator it = lives.begin(); it != lives.end(); ++it){
         window.draw(**it);
     }
+
+    scoreDisplay->render(window);
 }
 
 void Player::looseLife(){

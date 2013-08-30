@@ -8,10 +8,11 @@
 
 class Point : public GameObj{
     private:
-        const int RADIUS;
-        int value;
+        const int RADIUS, GRIDOFFSET;
+        float value;
 
         sf::Sprite sprPoint;
+        sf::Vector2i coordinate;
         sf::Vector2f position;
 
         ColCircle* colCircle;
@@ -20,10 +21,13 @@ class Point : public GameObj{
         Point();
         ~Point();
 
-        void init(sf::Texture*, sf::Vector2f);
+        void init(sf::Texture*, sf::Vector2i);
         void update(float delta);
         void render(sf::RenderWindow &window);
 
+        float getValue();
+
+        sf::Vector2i getCoordinate(){ return coordinate; }
         ColCircle getColCircle(){ return *colCircle; }
 };
 

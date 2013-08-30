@@ -1,6 +1,7 @@
 #include <inc/gameobj/Point.h>
+#include <inc/gameobj/GameControl.h>
 
-Point::Point() : RADIUS(4){}
+Point::Point() : RADIUS(7) , GRIDOFFSET(9){}
 
 Point::~Point(){
 	if(colCircle){
@@ -8,8 +9,11 @@ Point::~Point(){
     }
 }
 
-void Point::init(sf::Texture* texture, sf::Vector2f position){
-    this->position = position;
+void Point::init(sf::Texture* texture, sf::Vector2i coordinate){
+    this->coordinate = coordinate;
+    position.x = coordinate.x * GameControl::GRIDSIZE + GRIDOFFSET;
+    position.y = coordinate.y * GameControl::GRIDSIZE + GRIDOFFSET;
+
     sprPoint.setTexture(*texture);
 
     value = 20;
@@ -24,6 +28,10 @@ void Point::update(float delta){
 
 void Point::render(sf::RenderWindow &window){
     window.draw(sprPoint);
+}
+
+float Point::getValue(){
+    return value;
 }
 
 

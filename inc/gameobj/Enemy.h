@@ -23,7 +23,6 @@ class Enemy : public GameObj{
 
         std::deque<sf::Vector2i> path;
 
-
 		sf::Sprite sprite,sprPath;
 		sf::Texture texture, texPath;
 		sf::Vector2f position;

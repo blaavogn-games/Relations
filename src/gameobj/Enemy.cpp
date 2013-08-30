@@ -6,7 +6,7 @@
 #include <cmath>
 #include <iostream>
 
-Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(-4) , RADIUS(20) , SPEED(20){
+Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2i startCoordinate) : GRIDOFFSET(-4) , RADIUS(20) , SPEED(28){
     this->enemyHandler = enemyHandler;
 	position.x = startCoordinate.x * GameControl::GRIDSIZE + GRIDOFFSET;
 	position.y = startCoordinate.y * GameControl::GRIDSIZE + GRIDOFFSET;
@@ -25,6 +25,8 @@ void Enemy::init(){
 
 	sprite.setTexture(texture);
     sprPath.setTexture(texPath);
+
+    sprite.setPosition(position);
 
     //Actual position
     findNewPath();
