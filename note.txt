@@ -1,11 +1,12 @@
 Før det sendes til folk to do:
-1. Enemies tilføjes løbende - Mangler semi-random spawn
-2. Enemies crasher ikke programmet når de når mål +++++
+1. Enemies tilføjes løbende - Mangler semi-random spawn -- Check
+2. Enemies crasher ikke programmet når de når mål -- Check
 3. Enemies kan dræbe Player - Check
 4. Player har liv - Check
-5. Justering af spawnrate og speed på enemies/Player
-6. Bedre path (Nyeste tilføjelse er det dummeste kode længe)
-7. evt. Point tilføjes, meget godt hvis folk skal prøve det.
+5. Justering af spawnrate og speed på enemies/Player  -- Semicheck
+6. Bedre path -- Lidt bedrer, måske skal der tilføjes direkte path-tjek
+7. evt. Point tilføjes, meget godt hvis folk skal prøve det. -- Check
+8. Pause ved død
 
 
 Næste spil struktur forbedring:
@@ -14,6 +15,7 @@ Lav en Handler_base der har std::vector<GameObj*> som kan evt arver fra noget de
 Ny GameObj kan også arve fra den.
 
 
-
 LEKTIE:
 SÆT POINTERE = NULL HVIS DU IKKE INITIALISERER DEM MED DET SAMME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Måske skal jeg bruge flere shorts, jeg tror nærmest alle mine ints, kunne have været shorts

@@ -20,6 +20,9 @@ class GridTile : public GameObj{
 
         ColShape* colShape;
         GridTile* parent;
+        sf::Texture (*textures)[6];
+        int shadow[4] = {0}; //Shadow from top, bot, left, right
+
 
     public:
         bool closedList;
@@ -27,10 +30,11 @@ class GridTile : public GameObj{
         GridTile();
         ~GridTile();
 
-        void init(sf::Texture*, sf::Vector2i);
+        void init(sf::Texture (*textures)[6], sf::Vector2i);
         void render(sf::RenderWindow &window);
 
         void setTexture(sf::Texture* texture);
+        void setShadow(int);
 
         void reset(int);
         void calculate(GridTile*);
@@ -49,10 +53,6 @@ class GridTile : public GameObj{
         void setWall();
         bool isWall(){ return wall; }
         ColShape* getCollision(){return colShape;}
-
-
-
 };
-
 
 #endif

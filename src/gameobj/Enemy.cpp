@@ -49,10 +49,10 @@ void Enemy::update(float delta){
 void Enemy::render(sf::RenderWindow &window){
 
 	//Just for testing
-	for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
-        sprPath.setPosition((it)->x * 32 , (it)->y * 32);
-        window.draw(sprPath);
-	}
+//	for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
+//        sprPath.setPosition((it)->x * 32 , (it)->y * 32);
+//        window.draw(sprPath);
+//	}
 
 	window.draw(sprite);
 
@@ -77,9 +77,9 @@ void Enemy::setPath(std::deque<sf::Vector2i> newPath){
 
 void Enemy::newTargetPoint(){
 
-        if(path.size() > 1){
-            path.pop_front();
-        }
+    if(path.size() > 1){
+        path.pop_front();
+    }
 
     targetPoint.x = path.at(0).x * GameControl::GRIDSIZE + GRIDOFFSET;
     targetPoint.y = path.at(0).y * GameControl::GRIDSIZE + GRIDOFFSET;

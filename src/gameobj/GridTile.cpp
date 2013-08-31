@@ -14,12 +14,14 @@ GridTile::~GridTile(){
     }
 }
 
-void GridTile::init(sf::Texture* texture, sf::Vector2i coordinate){
+void GridTile::init(sf::Texture (*textures)[6], sf::Vector2i coordinate){
     this->coordinate = coordinate;
+    this->textures = textures;
+
     position.x = coordinate.x * GameControl::GRIDSIZE;
     position.y = coordinate.y * GameControl::GRIDSIZE;
 
-    sprite.setTexture(*texture);
+    sprite.setTexture((*textures)[0]);
     sprite.setPosition(position);
 
     colShape = NULL;
@@ -32,6 +34,20 @@ void GridTile::render(sf::RenderWindow &window){
 //public
 void GridTile::setTexture(sf::Texture* texture){
     sprite.setTexture(*texture);
+}
+
+void GridTile::setShadow(int direction){
+
+    if(shadow[direction] == 0 && !wall){
+        shadow[direction] = 1;
+
+        int sum = 0;
+        for(int i = 0; i < 4; i++){
+            sum += shadow[i];
+        }
+
+        setTexture( &(*textures)[sum] );
+    }
 }
 
 //public
@@ -50,7 +66,6 @@ void GridTile::removeTempWall(){
     wall = false;
     closedList = false;
 }
-
 
 //public
 void GridTile::reset(int heuristic){

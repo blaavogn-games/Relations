@@ -33,7 +33,7 @@ void GridHandler::init(){
     for(int y = 0; y < GameControl::GRIDY; y++){
         for(int x = 0; x < GameControl::GRIDX; x++){
             grid[x][y] = new GridTile();
-            grid[x][y]->init(&(gridTextures[0]) , sf::Vector2i(x, y));
+            grid[x][y]->init(&(gridTextures) , sf::Vector2i(x, y));
         }
     }
 
@@ -122,10 +122,6 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
         if( enemies.size() == 0){
             std::deque<sf::Vector2i> tempPath = getPath(sf::Vector2i(0,0), gameControl -> getPlayerCoordinate());
 
-            for(std::deque<sf::Vector2i>::iterator it = tempPath.begin() ; it != tempPath.end(); ++it){
-                std::cout << (*it).x << " , " << (*it).y << std::endl;
-            }
-
             if(tempPath.size() != 0){
                 addWall(coordinate);
 
@@ -143,13 +139,10 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
         bool legalWall = true;
         std::vector<std::deque<sf::Vector2i>> tempPaths;
 
-        std::cout << enemies.size() << std::endl;
-
         for(unsigned int i = 0; i < enemies.size(); i++){
 
             std::deque<sf::Vector2i> tempPath = getPath(enemies.at(i)->getPosition(), gameControl -> getPlayerCoordinate());
 
-            std::cout << i << std::endl;
             if(tempPath.size() != 0){
                 tempPaths.push_back( tempPath);
             }else{
@@ -176,9 +169,26 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
 
 //Private
 void GridHandler::addWall(sf::Vector2i coordinate){
+    const int shadowLength = 6;
 
     grid[coordinate.x][coordinate.y] -> setTexture( &(gridTextures[5]) );
     grid[coordinate.x][coordinate.y] -> setWall();
+
+    //Add shadow tiles
+    for(int i = 0; i < shadowLength; i++){
+        if(coordinate.y - i >= 0){
+            grid[coordinate.x][coordinate.y - i] -> setShadow(1); //From bot
+        }
+        if(coordinate.y + i < GameControl::GRIDY){
+            grid[coordinate.x][coordinate.y + i] -> setShadow(0); //From top
+        }
+        if(coordinate.x - i >= 0){
+            grid[coordinate.x - i][coordinate.y] -> setShadow(3); //From right
+        }
+        if(coordinate.x + i < GameControl::GRIDX){
+            grid[coordinate.x + i][coordinate.y] -> setShadow(2); //From left
+        }
+    }
 }
 
 //Private

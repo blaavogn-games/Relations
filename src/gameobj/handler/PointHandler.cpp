@@ -42,7 +42,6 @@ void PointHandler::render(sf::RenderWindow &window){
 void PointHandler::alarmAction(int type){
     //Currently only 0
     addPoint();
-    alarm->addTimer(0,10);
 }
 
 void PointHandler::addPoint(){
@@ -56,6 +55,8 @@ void PointHandler::addPoint(){
         coordinate.y = rand() % GameControl::GRIDY;
     }
     addPoint(coordinate);
+
+    alarm->addTimer(0,10);
 }
 
 void PointHandler::addPoint(sf::Vector2i coordinate){
