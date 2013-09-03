@@ -7,8 +7,8 @@ Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(3){
 	this->gameControl = gameControl;
 }
 Player::~Player(){
-	if(colCircle){
-        delete colCircle;
+	if(col){
+        delete col;
 	}
     if(scoreDisplay){
         delete scoreDisplay;
@@ -21,11 +21,15 @@ void Player::init(){
     previousCoordinate = getCoordinate();
 
 	//Player at 9,9 just for enemy testing
-	position.x = 32 * 9 + 9;
-	position.y = 32 * 9 + 9;
+	position.x = 32 * 0 + 9;
+	position.y = 32 * 0 + 9;
 
 	//Dynamic vars
-	colCircle = new ColCircle(position, RADIUS);
+	col = new ColRectangle(position, 24,20);
+    col = new ColShape(position);
+    col->addCorner(sf::Vector2f(12,0));
+    col->addCorner(sf::Vector2f(24,20));
+    col->addCorner(sf::Vector2f(0,20));
 
 	scoreDisplay = new ScoreDisplay();
 	scoreDisplay->init();
@@ -50,7 +54,6 @@ void Player::update(float delta){
 	//Two phases
 	//1. Movement
 	//2. CollisionChecking
-
     sf::Keyboard keyboard;
 
 	//Movement
@@ -77,15 +80,17 @@ void Player::update(float delta){
 	}
 
 	position += curMovement;
-	colCircle->setPosition(position);
+	col->setPosition(position);
 
 	//Collision wall
     std::vector<ColShape*> surWalls = gameControl->getSurWalls(getPosition());
 
-    int ventil = 0;
-    while(collisionHandler(surWalls) && ventil < 10){
-        ventil++;
-    }
+	//if(keyboard.isKeyPressed(sf::Keyboard::P)){
+        int ventil = 0;
+        while(collisionHandler(surWalls) && ventil < 1){
+            ventil++;
+        }
+   // }
 
     sprPlayer.setPosition(position);
 
@@ -93,8 +98,10 @@ void Player::update(float delta){
     std::vector<Point*>* points = gameControl->getPoints();
     std::vector<Point*>::iterator pointsIt = points->begin();
 
+    sf::Vector2f notUsedReturn;
+
     while(pointsIt != points->end()){
-        if(Collision::doesCollide(*colCircle , (*pointsIt)->getColCircle())){
+        if(Collision::doesCollide((*pointsIt)->getColCircle() , col , &notUsedReturn)){
             scoreDisplay->addScore((*pointsIt)->getValue());
             delete (*pointsIt);
             pointsIt = points -> erase (pointsIt);
@@ -103,7 +110,7 @@ void Player::update(float delta){
         }
 
     }
-
+/*
     //Collision enemy
 	std::vector<Enemy*>* enemies = gameControl->getEnemies();
     std::vector<Enemy*>::iterator it = enemies->begin();
@@ -113,13 +120,17 @@ void Player::update(float delta){
         if(Collision::doesCollide(*colCircle,(*it)->getColCircle())){
             delete (*it);
             it = enemies -> erase(it);
-            looseLife();
+            if(looseLife()){ //Returns true on dead
+                std::cout << "DØØØØØØØØØD" << std::endl;
+                gameControl -> resetGame();
+                return;
+            }
         }else{
             it++;
         }
 
     }
-
+*/
     //Check if player moves into a new coordinate, if player does, enemies has to find new path
     sf::Vector2i currentCoordinate = getCoordinate();
     if(currentCoordinate.x != previousCoordinate.x || currentCoordinate.y != previousCoordinate.y){
@@ -129,17 +140,20 @@ void Player::update(float delta){
     previousCoordinate = currentCoordinate;
 
     scoreDisplay->update(delta);
+
 }
 
 bool Player::collisionHandler(std::vector<ColShape*> surWalls){
     bool res = false;
+
     for(std::vector<ColShape*>::iterator it = surWalls.begin(); it != surWalls.end(); it++){
         sf::Vector2f returnVector;
-        if(Collision::doesCollide(colCircle, *it , &returnVector)){
-            position -= returnVector;
-            colCircle->setPosition(position);
+        if(Collision::doesCollide(col, *it , &returnVector)){
+            position += returnVector;
+            col->setPosition(position);
             res = true;
         }
+
     }
     return res;
 }
@@ -154,18 +168,18 @@ void Player::render(sf::RenderWindow &window){
     scoreDisplay->render(window);
 }
 
-void Player::looseLife(){
+bool Player::looseLife(){
 
     if(lives.size() == 1){
-        std::cout << "DØØØØØØØØØD" << std::endl;
+        return true;
     }
-
     delete lives.back();
     lives.pop_back();
+    return false;
 }
 
-ColCircle* Player::getCol(){
-    return colCircle;
+ColShape* Player::getCol(){
+    return col;
 }
 
 sf::Vector2i Player::getPosition(){

@@ -10,5 +10,6 @@ public:
 	static sf::Vector2f normalize(sf::Vector2f);
     static sf::Vector2f project(sf::Vector2f, sf::Vector2f, sf::Vector2f offset = sf::Vector2f(0,0));
     static sf::Vector2f scale(sf::Vector2f, float);
+    static float lengthSquared(sf::Vector2f*);
 };
 #endif

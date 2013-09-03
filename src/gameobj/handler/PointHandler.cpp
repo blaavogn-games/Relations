@@ -18,7 +18,9 @@ PointHandler::~PointHandler(){
 
 //public
 void PointHandler::init(){
-    texPoint.loadFromFile("res/img/point.png");
+    if(!texPoint.loadFromFile("res/img/point.png")){
+        std::cout << "HEJEHJEHEJ" << std::endl;
+    }
 
     alarm = new Alarm(this);
     addPoint(sf::Vector2i(19,9));
@@ -40,6 +42,7 @@ void PointHandler::render(sf::RenderWindow &window){
 }
 
 void PointHandler::alarmAction(int type){
+
     //Currently only 0
     addPoint();
 }
@@ -51,16 +54,17 @@ void PointHandler::addPoint(){
     coordinate.y = rand() % GameControl::GRIDY;
 
     while(gameControl->getGrid(&coordinate) -> isWall()){
-        coordinate.x = rand() % GameControl::GRIDX; //Might need a seed, but it doesn't seem like it
+        coordinate.x = rand() % GameControl::GRIDX;
         coordinate.y = rand() % GameControl::GRIDY;
     }
     addPoint(coordinate);
 
-    alarm->addTimer(0,10);
 }
 
 void PointHandler::addPoint(sf::Vector2i coordinate){
     Point* tempPoint = new Point();
     tempPoint->init(&texPoint, coordinate);
     points.push_back(tempPoint);
+
+    alarm->addTimer(0,40);
 }

@@ -1,4 +1,5 @@
 #include "inc/col/ColShape.h"
+#include "inc/col/Collision.h"
 #include "inc/col/math/MathVector.h"
 #include "inc/col/math/MathEssential.h"
 
@@ -10,8 +11,8 @@ ColShape::ColShape(sf::Vector2f position){
     sepAxesCalculated = false;
     setPosition(position);
 }
-ColShape::~ColShape(){
-    std::cout << "12121212" << std::endl;
+
+    ColShape::~ColShape(){
 }
 
 //Private
@@ -39,15 +40,13 @@ void ColShape::calculateSepAxes(){
         //The nomalization is also assumed by the Collision class when corners are projected
         tempSepAxis = MathVector::normalize(tempSepAxis);
 
-
-
         if((tempSepAxis.x < 0) || (tempSepAxis.x == 0 && tempSepAxis.y < 0)) {
             tempSepAxis.x *= -1;
             tempSepAxis.y *= -1;
         }
 
 
-        if(!sepAxisExists(tempSepAxis)){
+        if(Collision::doesAxisExist(tempSepAxis, &sepAxes) == false){
             sepAxes.push_back(tempSepAxis);
         }
 
@@ -55,14 +54,7 @@ void ColShape::calculateSepAxes(){
     }
 }
 
-bool ColShape::sepAxisExists(sf::Vector2f newSepAxis){
-    for(std::vector<sf::Vector2f>::iterator it = sepAxes.begin(); it != sepAxes.end(); ++it){
-        if(MathEssential::fIsEqual(it->x,newSepAxis.x) && MathEssential::fIsEqual(it->y,newSepAxis.y)){
-            return true;
-        }
-    }
-    return false;
-}
+
 
 //Public
 
@@ -82,13 +74,13 @@ void ColShape::addCorner(sf::Vector2f position){
     absCornersCalculated = false;
 }
 
-std::vector<sf::Vector2f> ColShape::getCorners(){
+std::vector<sf::Vector2f>* ColShape::getCorners(){
     if(!absCornersCalculated){
         calculateAbsCorners();
         absCornersCalculated = true;
     }
 
-    return absCorners;
+    return &absCorners;
 }
 
 int ColShape::getCorner(int baseCorner, int relation){

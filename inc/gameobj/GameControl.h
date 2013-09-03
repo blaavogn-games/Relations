@@ -22,6 +22,9 @@ class GameControl : public GameObj{
 		void update( float delta, sf::Event &event, sf::Vector2i &mousePosition);
 		void render(sf::RenderWindow &window);
 
+        void pauseGame();
+        void resetGame();
+
         //EnemyHandler connection pipe
 		std::vector<Enemy*>* getEnemies();
 		std::vector<Enemy*> getEnemiesWithPathPoint(sf::Vector2i);
@@ -38,6 +41,7 @@ class GameControl : public GameObj{
         //Player connection pipe
         sf::Vector2i getPlayerCoordinate();
 
+
 	private:
 		Player* player;
 		EnemyHandler* enemyHandler;
@@ -47,6 +51,6 @@ class GameControl : public GameObj{
         bool pause, pausePress, resetPress;
 
         void clearGame();
-        void resetGame();
+
 };
 #endif

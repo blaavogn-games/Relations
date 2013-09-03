@@ -28,7 +28,7 @@ class Point : public GameObj{
         float getValue();
 
         sf::Vector2i getCoordinate(){ return coordinate; }
-        ColCircle getColCircle(){ return *colCircle; }
+        ColCircle* getColCircle(){ return colCircle; }
 };
 
 

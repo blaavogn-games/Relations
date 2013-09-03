@@ -11,5 +11,4 @@ ColRectangle::ColRectangle(sf::Vector2f position, float width, float height) : C
 }
 
 ColRectangle::~ColRectangle(){
-    std::cout << "Alhoa" << std::endl;
 }

@@ -17,7 +17,7 @@ EnemyHandler::~EnemyHandler(){
 
 void EnemyHandler::init(){
     alarm = new Alarm(this);
-    alarm -> addTimer(0, 13);
+    alarm -> addTimer(0, 1);
 
 	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
 		(*it)->init();
@@ -72,7 +72,7 @@ void EnemyHandler::addEnemy(){
     tempPointer -> init();
     enemies.push_back(tempPointer);
 
-    alarm -> addTimer(0,15);
+    alarm -> addTimer(0,30);
 }
 
 //set

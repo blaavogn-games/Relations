@@ -23,7 +23,6 @@ sf::Vector2f MathVector::scale(sf::Vector2f vector, float scale){
 
 }
 
-
 sf::Vector2f MathVector::project(sf::Vector2f point, sf::Vector2f vector, sf::Vector2f offset){
     //Projects point onto vector
 
@@ -37,4 +36,8 @@ sf::Vector2f MathVector::project(sf::Vector2f point, sf::Vector2f vector, sf::Ve
     proj.y = ( dp / vectorLengthP ) * vector.y;
 
     return proj;
+}
+
+float MathVector::lengthSquared(sf::Vector2f* v){
+    return v->x * v->x + v->y * v->y;
 }

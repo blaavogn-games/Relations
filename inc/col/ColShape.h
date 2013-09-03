@@ -24,7 +24,7 @@ class ColShape{
         void setPosition(sf::Vector2f);
         void move(sf::Vector2f);
         void addCorner(sf::Vector2f);
-        std::vector<sf::Vector2f> getCorners();
+        std::vector<sf::Vector2f>* getCorners();
         std::vector<sf::Vector2f> getSepAxes();
         int getCorner(int, int);
 };

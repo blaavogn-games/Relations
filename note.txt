@@ -19,3 +19,22 @@ LEKTIE:
 SÆT POINTERE = NULL HVIS DU IKKE INITIALISERER DEM MED DET SAMME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Måske skal jeg bruge flere shorts, jeg tror nærmest alle mine ints, kunne have været shorts
+
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp||In member function ‘virtual void Player::update(float)’:|
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|97|error: no matching function for call to
+‘Collision::doesCollide(ColCircle*, ColShape*&, sf::Vector2f)’|
+
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|97|note: candidates are:|
+../game_1/inc/col/Collision.h|22|note: static bool Collision::doesCollide(ColCircle, ColCircle)|
+../game_1/inc/col/Collision.h|22|note:   candidate expects 2 arguments, 3 provided|
+../game_1/inc/col/Collision.h|23|note: static bool Collision::doesCollide(ColCircle*, ColShape*, sf::Vector2f*)|
+../game_1/inc/col/Collision.h|23|note:   no known conversion for argument 3 from ‘sf::Vector2f {aka sf::Vector2<float>}’ to ‘sf::Vector2f* {aka sf::Vector2<float>*}’|
+../game_1/inc/col/Collision.h|24|note: static bool Collision::doesCollide(ColShape*, ColShape*, sf::Vector2f*)|
+../game_1/inc/col/Collision.h|24|note:   no known conversion for argument 1 from ‘ColCircle*’ to ‘ColShape*’|
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp||In member function ‘bool Player::collisionHandler(std::vector<ColShape*>)’:|
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|143|error: ‘colCircle’ was not declared in this scope|
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp||In member function ‘ColCircle* Player::getCol()’:|
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|173|error: ‘colCircle’ was not declared in this scope|
+/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|174|warning: control reaches end of non-void function [-Wreturn-type]|
+||=== Build finished: 10 errors, 1 warnings ===|
+|

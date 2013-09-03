@@ -17,7 +17,7 @@ class GameControl;
 class Player : public GameObj{
 	private:
 		GameControl* gameControl;
-		ColCircle* colCircle;
+		ColShape* col;
         ScoreDisplay* scoreDisplay;
 
 		sf::Sprite sprPlayer;
@@ -32,7 +32,7 @@ class Player : public GameObj{
 
 
         bool collisionHandler(std::vector<ColShape*>);
-        void looseLife();
+        bool looseLife();
 
 	public:
 		Player(GameControl* gameControl);
@@ -43,7 +43,7 @@ class Player : public GameObj{
 		void render(sf::RenderWindow &window);
 
         //Get
-        ColCircle* getCol();
+        ColShape* getCol();
         sf::Vector2i getPosition();
         sf::Vector2i getCoordinate();
 };

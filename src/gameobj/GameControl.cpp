@@ -50,7 +50,6 @@ void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosit
 
     if(keyboard.isKeyPressed(sf::Keyboard::Space)){
         if(resetPress == false){
-            resetPress = true;
             resetGame();
         }
     }else{
@@ -59,14 +58,15 @@ void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosit
 
  	if(keyboard.isKeyPressed(sf::Keyboard::Q)){
 		if(pausePress == false){
-            pause = (pause) ? false : true;
             pausePress = true;
+            pauseGame();
 		}
 	}else{
         pausePress = false;
 	}
 
 	if(!pause){
+	    //std::cout << "Update" << std::endl;
         gridHandler     -> update(delta, event, mousePosition);
         pointHandler    -> update(delta);
         enemyHandler    -> update(delta);
@@ -75,15 +75,24 @@ void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosit
 }
 
 void GameControl::render(sf::RenderWindow &window){
-    gridHandler     -> render(window);
-    pointHandler    -> render(window);
-    enemyHandler    -> render(window);
-    player          -> render(window);
+
+    if(!resetPress){
+        //std::cout << "render" << std::endl;
+        gridHandler     -> render(window);
+        pointHandler    -> render(window);
+        enemyHandler    -> render(window);
+        player          -> render(window);
+    }
 }
 
 void GameControl::resetGame(){
+    resetPress = true;
     clearGame();
     init();
+}
+
+void GameControl::pauseGame(){
+    pause = (pause) ? false : true;
 }
 
 //Enemyhandler pipeline
