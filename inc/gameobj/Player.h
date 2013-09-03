@@ -20,6 +20,9 @@ class Player : public GameObj{
 		ColShape* col;
         ScoreDisplay* scoreDisplay;
 
+        sf::Vector2f const CENTER;
+        int const MAXLIVES;
+
 		sf::Sprite sprPlayer;
 		sf::Texture texPlayer, texLife;
 		sf::Vector2f position;
@@ -28,8 +31,6 @@ class Player : public GameObj{
         std::vector<sf::Sprite*> lives;
 
 		float speed;
-        int const RADIUS, MAXLIVES;
-
 
         bool collisionHandler(std::vector<ColShape*>);
         bool looseLife();

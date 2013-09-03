@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Player::Player(GameControl* gameControl) : RADIUS(8) , MAXLIVES(3){
+Player::Player(GameControl* gameControl) : CENTER(12,10) , MAXLIVES(3){
 	this->gameControl = gameControl;
 }
 Player::~Player(){
@@ -26,10 +26,7 @@ void Player::init(){
 
 	//Dynamic vars
 	col = new ColRectangle(position, 24,20);
-    col = new ColShape(position);
-    col->addCorner(sf::Vector2f(12,0));
-    col->addCorner(sf::Vector2f(24,20));
-    col->addCorner(sf::Vector2f(0,20));
+   // col->setRotation(90);
 
 	scoreDisplay = new ScoreDisplay();
 	scoreDisplay->init();
@@ -188,7 +185,7 @@ sf::Vector2i Player::getPosition(){
 
 sf::Vector2i Player::getCoordinate(){
     //center position
-    int cX = (int)position.x + RADIUS, cY = (int)position.y + RADIUS;
+    int cX = (int)position.x + CENTER.x, cY = (int)position.y + CENTER.y;
 
     return sf::Vector2i( (int) ((cX - cX % GameControl::GRIDSIZE) / GameControl::GRIDSIZE),
                          (int) ((cY - cY % GameControl::GRIDSIZE) / GameControl::GRIDSIZE));

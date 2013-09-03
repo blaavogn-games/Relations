@@ -5,29 +5,36 @@
 
 #include <iostream>
 
-ColShape::ColShape(sf::Vector2f position){
-    absCornersCalculated = false;
-    //sepAxesCalculated isn't used but will be if I decide to implement a roation function
-    sepAxesCalculated = false;
-    setPosition(position);
+ColShape::ColShape(sf::Vector2f position, sf::Vector2f center){
+    this->position = position;
+    this->center = center;
+    rotation = 0;
 }
 
-    ColShape::~ColShape(){
+ColShape::~ColShape(){}
+
+void ColShape::init(){
+
+    rotCorners = relCorners;
+
+    calculateSepAxes();
+    calculateAbsCorners();
 }
 
 //Private
 void ColShape::calculateAbsCorners(){
     absCorners.clear();
-    for(std::vector<sf::Vector2f>::iterator it = relCorners.begin(); it != relCorners.end(); ++it){
+
+    for(std::vector<sf::Vector2f>::iterator it = rotCorners.begin(); it != rotCorners.end(); ++it){
         absCorners.push_back(sf::Vector2f(position.x + it->x,position.y + it->y));
     }
-    absCornersCalculated = true;
+
 }
 
 void ColShape::calculateSepAxes(){
     sepAxes.clear();
-    sf::Vector2f tempCorner = relCorners.back();
-    for(std::vector<sf::Vector2f>::iterator it = relCorners.begin(); it != relCorners.end(); ++it){
+    sf::Vector2f tempCorner = rotCorners.back();
+    for(std::vector<sf::Vector2f>::iterator it = rotCorners.begin(); it != rotCorners.end(); ++it){
         float xEdge = it->x - tempCorner.x;
         float yEdge = it->y - tempCorner.y;
 
@@ -56,36 +63,41 @@ void ColShape::calculateSepAxes(){
 
 
 
-//Public
+void ColShape::setRotation(float degree){
+    rotation = degree;
+    float radians = MathEssential::toRadians(degree);
 
+    for(unsigned int i = 0; i < relCorners.size(); i++){
+        sf::Vector2f delta = relCorners.at(i) - center;
+
+        rotCorners.at(i).x = delta.x * cos(radians) - delta.y * sin(radians) + center.x;
+        rotCorners.at(i).y = delta.x * sin(radians) + delta.y * cos(radians) + center.y;
+
+        std::cout << rotCorners.at(i).x << " , " << rotCorners.at(i).y << std::endl;
+    }
+
+    calculateSepAxes();
+    calculateAbsCorners();
+}
 
 void ColShape::setPosition(sf::Vector2f position){
     this->position = position;
-    absCornersCalculated = false;
+    calculateAbsCorners();
 }
-
 void ColShape::move(sf::Vector2f movement){
     position += movement;
-    absCornersCalculated = false;
+    calculateAbsCorners();
 }
 
 void ColShape::addCorner(sf::Vector2f position){
     relCorners.push_back(position);
-    absCornersCalculated = false;
 }
 
-std::vector<sf::Vector2f>* ColShape::getCorners(){
-    if(!absCornersCalculated){
-        calculateAbsCorners();
-        absCornersCalculated = true;
-    }
 
-    return &absCorners;
-}
 
 int ColShape::getCorner(int baseCorner, int relation){
 
-    signed int relCorner = baseCorner + relation;
+    signed int relCorner = baseCorner + relation; //SHITTY NAMING, this is NOT relCornerssssssssss
 
     if(relCorner < 0){
         relCorner += absCorners.size();
@@ -95,14 +107,12 @@ int ColShape::getCorner(int baseCorner, int relation){
     }
 
     return relCorner;
+}
 
+std::vector<sf::Vector2f>* ColShape::getCorners(){
+    return &absCorners;
 }
 
 std::vector<sf::Vector2f> ColShape::getSepAxes(){
-    if(!sepAxesCalculated){
-        calculateSepAxes();
-        sepAxesCalculated = true;
-    }
-
-    return sepAxes;
+    return sepAxes; //I am so inconsitent with using pointers
 }
