@@ -27,10 +27,14 @@ class ColShape{
         void calculateSepAxes();
         bool sepAxisExists(sf::Vector2f newSepAxis);
 
+        //For testing
+        sf::Texture* texture;
+        sf::Sprite* sprite;
     public:
         ColShape(sf::Vector2f, sf::Vector2f);
         virtual ~ColShape();
         void init();
+        void render(sf::RenderWindow &window);
 
         void move(sf::Vector2f);
         void addCorner(sf::Vector2f);

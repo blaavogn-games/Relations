@@ -26,7 +26,7 @@ void Player::init(){
 
 	//Dynamic vars
 	col = new ColRectangle(position, 24,20);
-   // col->setRotation(90);
+    col->setRotation(45);
 
 	scoreDisplay = new ScoreDisplay();
 	scoreDisplay->init();
@@ -156,8 +156,8 @@ bool Player::collisionHandler(std::vector<ColShape*> surWalls){
 }
 
 void Player::render(sf::RenderWindow &window){
-	window.draw(sprPlayer);
-
+	//window.draw(sprPlayer);
+    col->render(window);
     for(std::vector<sf::Sprite*>::iterator it = lives.begin(); it != lives.end(); ++it){
         window.draw(**it);
     }

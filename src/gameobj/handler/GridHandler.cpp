@@ -212,10 +212,10 @@ std::vector<ColShape*> GridHandler::getSurWalls(sf::Vector2i &position){
     sf::Vector2i gridPosition = getGridPosition(position);
     sf::Vector2i coordinate = toCoordinate(gridPosition);
 
-    //Get the 2x2 grid expanding from coordinate
-    for(int y = coordinate.y; y < coordinate.y + 2; y++){
-        for(int x = coordinate.x; x < coordinate.x + 2; x++){
-            if(x < GameControl::GRIDX && y < GameControl::GRIDY){
+    //Get the 3x3 grid expanding from coordinate
+    for(int y = coordinate.y - 1; y < coordinate.y + 2; y++){
+        for(int x = coordinate.x - 1; x < coordinate.x + 2; x++){
+            if(x < GameControl::GRIDX && x >=0 && y < GameControl::GRIDY && y >= 0 ){
                 if(grid[x][y] -> isWall()){
                     surWalls.push_back(grid[x][y] -> getCollision());
                 }
