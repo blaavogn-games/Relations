@@ -7,7 +7,6 @@
 #include <inc/path/Pathfinder.h>
 #include <inc/path/PathNote.h>
 
-
 #include <unordered_map>
 #include <vector>
 

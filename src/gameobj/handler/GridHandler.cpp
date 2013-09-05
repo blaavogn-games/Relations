@@ -1,4 +1,4 @@
-#include <inc/gameobj/handler/GridHandler.h>
+//#include <inc/gameobj/handler/GridHandler.h>
 #include <inc/gameobj/GameControl.h>
 
 #include <iostream>
@@ -84,9 +84,9 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
     if(1 <= coordinate.x && coordinate.x < GameControl::GRIDX - 1 && 1 <= coordinate.y &&  coordinate.y < GameControl::GRIDY - 1 && !grid[coordinate.x][coordinate.y]->isWall() ){
 
         //For points
-        std::vector<Point*>* points = gameControl->getPoints();
+        std::vector<Friend*>* friends = gameControl->getFriends();
 
-        for(std::vector<Point*>::iterator it = points->begin(); it != points->end(); ++it){
+        for(std::vector<Friend*>::iterator it = friends->begin(); it != friends->end(); ++it){
             sf::Vector2i pointCoordinate = (*it)->getCoordinate();
             if(pointCoordinate.x == coordinate.x && pointCoordinate.y == coordinate.y){
                 return;

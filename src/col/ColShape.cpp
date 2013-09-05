@@ -87,8 +87,6 @@ void ColShape::setRotation(float degree){
 
         rotCorners.at(i).x = delta.x * cos(radians) - delta.y * sin(radians) + center.x;
         rotCorners.at(i).y = delta.x * sin(radians) + delta.y * cos(radians) + center.y;
-
-        std::cout << rotCorners.at(i).x << " , " << rotCorners.at(i).y << std::endl;
     }
 
     calculateSepAxes();

@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-Player::Player(GameControl* gameControl) : CENTER(12,10) , MAXLIVES(3){
+Player::Player(GameControl* gameControl) : CENTER(8 , 12) , MAXLIVES(3){
 	this->gameControl = gameControl;
 }
 Player::~Player(){
@@ -25,8 +25,12 @@ void Player::init(){
 	position.y = 32 * 0 + 9;
 
 	//Dynamic vars
-	col = new ColRectangle(position, 24,20);
-    col->setRotation(45);
+	col = new ColShape(position, sf::Vector2f(0,0));
+	col->addCorner(sf::Vector2f(0 , -CENTER.y));
+	col->addCorner(sf::Vector2f(CENTER.x , 0));
+	col->addCorner(sf::Vector2f(0 , CENTER.y));
+	col->addCorner(sf::Vector2f(-CENTER.x , 0));
+	col->init();
 
 	scoreDisplay = new ScoreDisplay();
 	scoreDisplay->init();
@@ -44,6 +48,7 @@ void Player::init(){
     }
 
 	sprPlayer.setTexture(texPlayer);
+	sprPlayer.setOrigin(CENTER);
 }
 
 
@@ -58,63 +63,65 @@ void Player::update(float delta){
 
 	float deltaSpeed = speed * delta;
 
-	if(keyboard.isKeyPressed(sf::Keyboard::A) && position.x > 0){
+	if(keyboard.isKeyPressed(sf::Keyboard::A) && position.x > 0 + CENTER.x){
 		curMovement.x -= deltaSpeed;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::D)  && position.x < 784){
+	if(keyboard.isKeyPressed(sf::Keyboard::D)  && position.x < 800 - CENTER.x){
 		curMovement.x += deltaSpeed;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::W) && position.y > 0 ){
+	if(keyboard.isKeyPressed(sf::Keyboard::W) && position.y > 0 + CENTER.y){
 		curMovement.y -= deltaSpeed;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::S) && position.y < 584){
+	if(keyboard.isKeyPressed(sf::Keyboard::S) && position.y < 600 - CENTER.x){
 		curMovement.y += deltaSpeed;
 	}
 
-	if((curMovement.x != 0) ^ (curMovement.y != 0)){ //First need for exclusive or !?!?!?!?!?!?!?
+    //Diaognal movement not faster
+    if((curMovement.x != 0) ^ (curMovement.y != 0)){ //Going sideways
         curMovement.x *= 1.4f;
         curMovement.y *= 1.4f;
-	}
+    }
 
 	position += curMovement;
 	col->setPosition(position);
 
+    setRotation(curMovement);
+
 	//Collision wall
     std::vector<ColShape*> surWalls = gameControl->getSurWalls(getPosition());
 
-	//if(keyboard.isKeyPressed(sf::Keyboard::P)){
-        int ventil = 0;
-        while(collisionHandler(surWalls) && ventil < 1){
-            ventil++;
-        }
-   // }
+    int ventil = 0;
+    while(collisionHandler(surWalls) && ventil < 1){
+        ventil++;
+    }
 
     sprPlayer.setPosition(position);
 
-    //Collision points
-    std::vector<Point*>* points = gameControl->getPoints();
-    std::vector<Point*>::iterator pointsIt = points->begin();
+    //Collision friend
+    std::vector<Friend*>* friends = gameControl->getFriends();
+    std::vector<Friend*>::iterator friendsIt = friends->begin();
 
     sf::Vector2f notUsedReturn;
 
-    while(pointsIt != points->end()){
-        if(Collision::doesCollide((*pointsIt)->getColCircle() , col , &notUsedReturn)){
-            scoreDisplay->addScore((*pointsIt)->getValue());
-            delete (*pointsIt);
-            pointsIt = points -> erase (pointsIt);
+    while(friendsIt != friends->end()){
+        if(Collision::doesCollide((*friendsIt)->getCol() , col , &notUsedReturn)){
+            scoreDisplay->addScore((*friendsIt)->getValue());
+            delete (*friendsIt);
+            friendsIt = friends -> erase (friendsIt);
         }else{
-            pointsIt++;
+            friendsIt++;
         }
 
     }
-/*
+
+
     //Collision enemy
 	std::vector<Enemy*>* enemies = gameControl->getEnemies();
     std::vector<Enemy*>::iterator it = enemies->begin();
 
     while(it != enemies->end()){
 
-        if(Collision::doesCollide(*colCircle,(*it)->getColCircle())){
+        if(Collision::doesCollide((*it)->getColCircle(), col, &notUsedReturn )){
             delete (*it);
             it = enemies -> erase(it);
             if(looseLife()){ //Returns true on dead
@@ -127,7 +134,7 @@ void Player::update(float delta){
         }
 
     }
-*/
+
     //Check if player moves into a new coordinate, if player does, enemies has to find new path
     sf::Vector2i currentCoordinate = getCoordinate();
     if(currentCoordinate.x != previousCoordinate.x || currentCoordinate.y != previousCoordinate.y){
@@ -156,8 +163,8 @@ bool Player::collisionHandler(std::vector<ColShape*> surWalls){
 }
 
 void Player::render(sf::RenderWindow &window){
-	//window.draw(sprPlayer);
-    col->render(window);
+	window.draw(sprPlayer);
+  //  col->render(window);
     for(std::vector<sf::Sprite*>::iterator it = lives.begin(); it != lives.end(); ++it){
         window.draw(**it);
     }
@@ -179,15 +186,25 @@ ColShape* Player::getCol(){
     return col;
 }
 
+void Player::setRotation(sf::Vector2f curMovement){
+    if(curMovement.y != 0 || curMovement.x != 0){
+        float newRotation = MathEssential::toDegrees(atan2(curMovement.y, curMovement.x));
+        if(newRotation != rotation){
+            rotation = newRotation;
+            sprPlayer.setRotation(rotation);
+            col->setRotation(rotation);
+        }
+    }
+}
+
 sf::Vector2i Player::getPosition(){
     return sf::Vector2i( (int) position.x, (int) position.y);
 }
 
 sf::Vector2i Player::getCoordinate(){
     //center position
-    int cX = (int)position.x + CENTER.x, cY = (int)position.y + CENTER.y;
+    int cX = (int)position.x, cY = (int)position.y;
 
     return sf::Vector2i( (int) ((cX - cX % GameControl::GRIDSIZE) / GameControl::GRIDSIZE),
                          (int) ((cY - cY % GameControl::GRIDSIZE) / GameControl::GRIDSIZE));
 }
-

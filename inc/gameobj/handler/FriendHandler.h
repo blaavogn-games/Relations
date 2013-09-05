@@ -3,7 +3,7 @@
 
 #include <inc/alarm/Alarm.h>
 #include <inc/gameobj/GameObj.h>
-#include <inc/gameobj/Point.h>
+#include <inc/gameobj/Friend.h>
 
 #include <SFML/Graphics.hpp>
 
@@ -13,26 +13,26 @@
 //Forward dec
 class GameControl;
 
-class PointHandler : public GameObj{
+class FriendHandler : public GameObj{
     private:
         GameControl* gameControl;
         Alarm* alarm;
-        sf::Texture texPoint;
-        std::vector<Point*> points;
+        sf::Texture texFriend;
+        std::vector<Friend*> friends;
 
     public:
-        PointHandler(GameControl* gameControl);
-        ~PointHandler();
+        FriendHandler(GameControl* gameControl);
+        ~FriendHandler();
 
         void init();
         void update(float delta);
         void render(sf::RenderWindow &window);
 
-        void addPoint();
-        void addPoint(sf::Vector2i);
+        void addFriend();
+        void addFriend(sf::Vector2f);
 
         void alarmAction(int);
-        std::vector<Point*>* getPoints(){ return &points;}
+        std::vector<Friend*>* getFriends(){ return &friends;}
 
 };
 

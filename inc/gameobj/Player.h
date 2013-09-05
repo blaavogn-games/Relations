@@ -30,8 +30,9 @@ class Player : public GameObj{
 
         std::vector<sf::Sprite*> lives;
 
-		float speed;
+		float rotation,speed;
 
+		void setRotation(sf::Vector2f);
         bool collisionHandler(std::vector<ColShape*>);
         bool looseLife();
 
@@ -45,7 +46,7 @@ class Player : public GameObj{
 
         //Get
         ColShape* getCol();
-        sf::Vector2i getPosition();
+        sf::Vector2i getPosition(); //Should be changed
         sf::Vector2i getCoordinate();
 };
 #endif

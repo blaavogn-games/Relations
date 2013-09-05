@@ -47,7 +47,7 @@ class Enemy : public GameObj{
 
         //Closer inheritance between enemy and player might be a good idea, I should do that for next project at least
 		sf::Vector2i getPosition();
-		ColCircle getColCircle(){return *colCircle;}
+		ColCircle* getColCircle(){return colCircle;}
 
 };
 #endif

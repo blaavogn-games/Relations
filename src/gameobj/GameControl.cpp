@@ -17,8 +17,8 @@ void GameControl::init(){
 	gridHandler = new GridHandler(this);
 	gridHandler->init();
 
-	pointHandler = new PointHandler(this);
-	pointHandler->init();
+	friendHandler = new FriendHandler(this);
+	friendHandler->init();
 
 	player = new Player(this);
 	player->init();
@@ -38,8 +38,8 @@ void GameControl::clearGame(){
     if(gridHandler){
         delete gridHandler;
     }
-    if(pointHandler){
-        delete pointHandler;
+    if(friendHandler){
+        delete friendHandler;
     }
 }
 
@@ -68,7 +68,7 @@ void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosit
 	if(!pause){
 	    //std::cout << "Update" << std::endl;
         gridHandler     -> update(delta, event, mousePosition);
-        pointHandler    -> update(delta);
+        friendHandler    -> update(delta);
         enemyHandler    -> update(delta);
         player          -> update(delta);
 	}
@@ -79,7 +79,7 @@ void GameControl::render(sf::RenderWindow &window){
     if(!resetPress){
         //std::cout << "render" << std::endl;
         gridHandler     -> render(window);
-        pointHandler    -> render(window);
+        friendHandler    -> render(window);
         enemyHandler    -> render(window);
         player          -> render(window);
     }
@@ -108,9 +108,9 @@ std::vector<Enemy*>* GameControl::getEnemies(){
 	return enemyHandler->getEnemies();
 }
 
-//PointHandler
-std::vector<Point*>* GameControl::getPoints(){
-    return pointHandler->getPoints();
+//friendHandler
+std::vector<Friend*>* GameControl::getFriends(){
+    return friendHandler->getFriends();
 }
 
 //GridHandler

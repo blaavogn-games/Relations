@@ -4,7 +4,7 @@
 #include <inc/gameobj/Player.h>
 #include <inc/gameobj/handler/EnemyHandler.h>
 #include <inc/gameobj/handler/GridHandler.h>
-#include <inc/gameobj/handler/PointHandler.h>
+#include <inc/gameobj/handler/FriendHandler.h>
 
 #include <deque>
 #include <vector>
@@ -35,8 +35,8 @@ class GameControl : public GameObj{
 		std::vector<ColShape*> getSurWalls(sf::Vector2i position);
 		GridTile* getGrid(sf::Vector2i*);
 
-        //PointHandler pipe
-        std::vector<Point*>* getPoints();
+        //FriendHandler pipe
+        std::vector<Friend*>* getFriends();
 
         //Player connection pipe
         sf::Vector2i getPlayerCoordinate();
@@ -46,7 +46,7 @@ class GameControl : public GameObj{
 		Player* player;
 		EnemyHandler* enemyHandler;
 		GridHandler* gridHandler;
-		PointHandler* pointHandler;
+		FriendHandler* friendHandler;
 
         bool pause, pausePress, resetPress;
 
