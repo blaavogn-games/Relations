@@ -206,11 +206,8 @@ sf::Vector2i GridHandler::getGridPosition(sf::Vector2i position){
 }
 
 //public
-std::vector<ColShape*> GridHandler::getSurWalls(sf::Vector2i &position){
+std::vector<ColShape*> GridHandler::getSurWalls(sf::Vector2i &coordinate){
     std::vector<ColShape*> surWalls;
-
-    sf::Vector2i gridPosition = getGridPosition(position);
-    sf::Vector2i coordinate = toCoordinate(gridPosition);
 
     //Get the 3x3 grid expanding from coordinate
     for(int y = coordinate.y - 1; y < coordinate.y + 2; y++){

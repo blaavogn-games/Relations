@@ -1,58 +1,31 @@
 #include <inc/gameobj/Player.h>
-#include <inc/gameobj/GameControl.h>
+#include <inc/gameobj/handler/PlayerHandler.h>
 
 #include <iostream>
 
-Player::Player(GameControl* gameControl) : CENTER(8 , 12) , MAXLIVES(3){
-	this->gameControl = gameControl;
+Player::Player(PlayerHandler* playerHandler, sf::Vector2f position, sf::Texture* texture) :
+        PersonBase(position, texture)
+{
+	this->playerHandler = playerHandler;
 }
 Player::~Player(){
 	if(col){
         delete col;
 	}
-    if(scoreDisplay){
-        delete scoreDisplay;
-    }
 }
 
 void Player::init(){
+    PersonBase::init();
+
 	//Variables
 	speed = 22;
     previousCoordinate = getCoordinate();
-
-	//Player at 9,9 just for enemy testing
-	position.x = 32 * 0 + 9;
-	position.y = 32 * 0 + 9;
-
-	//Dynamic vars
-	col = new ColShape(position, sf::Vector2f(0,0));
-	col->addCorner(sf::Vector2f(0 , -CENTER.y));
-	col->addCorner(sf::Vector2f(CENTER.x , 0));
-	col->addCorner(sf::Vector2f(0 , CENTER.y));
-	col->addCorner(sf::Vector2f(-CENTER.x , 0));
-	col->init();
-
-	scoreDisplay = new ScoreDisplay();
-	scoreDisplay->init();
-
-	//Load data
-	texPlayer.loadFromFile("res/img/player/player.png");
-    texLife.loadFromFile("res/img/player/life.png");
-
-    const int STARTX = 760, STARTY = 10, HEARTSPACE = 22;
-
-    for(int i = 0; i < MAXLIVES; i++){
-        sf::Sprite* tempSprite = new sf::Sprite(texLife);
-        tempSprite -> setPosition(STARTX - i * HEARTSPACE , STARTY);
-        lives.push_back(tempSprite);
-    }
-
-	sprPlayer.setTexture(texPlayer);
-	sprPlayer.setOrigin(CENTER);
 }
 
 
 void Player::update(float delta){
+
+
 	//Two phases
 	//1. Movement
 	//2. CollisionChecking
@@ -85,27 +58,29 @@ void Player::update(float delta){
 	position += curMovement;
 	col->setPosition(position);
 
-    setRotation(curMovement);
+    calculateRotation(&curMovement);
 
 	//Collision wall
-    std::vector<ColShape*> surWalls = gameControl->getSurWalls(getPosition());
+    std::vector<ColShape*> surWalls = playerHandler->getSurWalls(previousCoordinate);
 
     int ventil = 0;
-    while(collisionHandler(surWalls) && ventil < 1){
+    while(collisionHandler(surWalls) && ventil < 2){
         ventil++;
     }
 
-    sprPlayer.setPosition(position);
+    setPosition(position);
 
     //Collision friend
-    std::vector<Friend*>* friends = gameControl->getFriends();
+    std::vector<Friend*>* friends = playerHandler->getFriends();
     std::vector<Friend*>::iterator friendsIt = friends->begin();
 
     sf::Vector2f notUsedReturn;
 
     while(friendsIt != friends->end()){
         if(Collision::doesCollide((*friendsIt)->getCol() , col , &notUsedReturn)){
-            scoreDisplay->addScore((*friendsIt)->getValue());
+
+            playerHandler->addScore((*friendsIt)->getValue());
+
             delete (*friendsIt);
             friendsIt = friends -> erase (friendsIt);
         }else{
@@ -114,9 +89,8 @@ void Player::update(float delta){
 
     }
 
-
     //Collision enemy
-	std::vector<Enemy*>* enemies = gameControl->getEnemies();
+	std::vector<Enemy*>* enemies = playerHandler->getEnemies();
     std::vector<Enemy*>::iterator it = enemies->begin();
 
     while(it != enemies->end()){
@@ -124,10 +98,10 @@ void Player::update(float delta){
         if(Collision::doesCollide((*it)->getColCircle(), col, &notUsedReturn )){
             delete (*it);
             it = enemies -> erase(it);
-            if(looseLife()){ //Returns true on dead
+            if(playerHandler -> looseLife()){ //Returns true on dead
                 std::cout << "DØØØØØØØØØD" << std::endl;
-                gameControl -> resetGame();
-                return;
+                playerHandler -> resetGame();
+                return; //Exits update
             }
         }else{
             it++;
@@ -139,12 +113,9 @@ void Player::update(float delta){
     sf::Vector2i currentCoordinate = getCoordinate();
     if(currentCoordinate.x != previousCoordinate.x || currentCoordinate.y != previousCoordinate.y){
         //Message enemies about new coordinate
-        gameControl->enemiesFindNewPath();
+        playerHandler -> enemiesFindNewPath();
     }
     previousCoordinate = currentCoordinate;
-
-    scoreDisplay->update(delta);
-
 }
 
 bool Player::collisionHandler(std::vector<ColShape*> surWalls){
@@ -162,49 +133,4 @@ bool Player::collisionHandler(std::vector<ColShape*> surWalls){
     return res;
 }
 
-void Player::render(sf::RenderWindow &window){
-	window.draw(sprPlayer);
-  //  col->render(window);
-    for(std::vector<sf::Sprite*>::iterator it = lives.begin(); it != lives.end(); ++it){
-        window.draw(**it);
-    }
 
-    scoreDisplay->render(window);
-}
-
-bool Player::looseLife(){
-
-    if(lives.size() == 1){
-        return true;
-    }
-    delete lives.back();
-    lives.pop_back();
-    return false;
-}
-
-ColShape* Player::getCol(){
-    return col;
-}
-
-void Player::setRotation(sf::Vector2f curMovement){
-    if(curMovement.y != 0 || curMovement.x != 0){
-        float newRotation = MathEssential::toDegrees(atan2(curMovement.y, curMovement.x));
-        if(newRotation != rotation){
-            rotation = newRotation;
-            sprPlayer.setRotation(rotation);
-            col->setRotation(rotation);
-        }
-    }
-}
-
-sf::Vector2i Player::getPosition(){
-    return sf::Vector2i( (int) position.x, (int) position.y);
-}
-
-sf::Vector2i Player::getCoordinate(){
-    //center position
-    int cX = (int)position.x, cY = (int)position.y;
-
-    return sf::Vector2i( (int) ((cX - cX % GameControl::GRIDSIZE) / GameControl::GRIDSIZE),
-                         (int) ((cY - cY % GameControl::GRIDSIZE) / GameControl::GRIDSIZE));
-}

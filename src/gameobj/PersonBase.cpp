@@ -10,7 +10,6 @@ PersonBase::PersonBase(sf::Vector2f position, sf::Texture* texture) : CENTER(8,1
 PersonBase::~PersonBase(){} //Texture neeed to be deleted if it is not loaded by a handler
 
 void PersonBase::init(){
-
     sprPerson.setTexture(*texPerson);
     sprPerson.setOrigin(CENTER);
 

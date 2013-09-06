@@ -15,7 +15,7 @@ class Friend : public PersonBase{
         Alarm* alarm;
 
     public:
-        Friend(sf::Vector2f position , sf::Texture* texture);
+        Friend(sf::Vector2f, sf::Texture*);
         ~Friend();
 
         void init();

@@ -1,7 +1,7 @@
 #ifndef GAMECONTROL_H
 #define GAMECONTROL_H
 #include <inc/gameobj/GameObj.h>
-#include <inc/gameobj/Player.h>
+#include <inc/gameobj/handler/PlayerHandler.h>
 #include <inc/gameobj/handler/EnemyHandler.h>
 #include <inc/gameobj/handler/GridHandler.h>
 #include <inc/gameobj/handler/FriendHandler.h>
@@ -32,7 +32,7 @@ class GameControl : public GameObj{
 
         //GridHandler connection pipe
         std::deque<sf::Vector2i> getPath(sf::Vector2i);
-		std::vector<ColShape*> getSurWalls(sf::Vector2i position);
+		std::vector<ColShape*> getSurWalls(sf::Vector2i coordinate);
 		GridTile* getGrid(sf::Vector2i*);
 
         //FriendHandler pipe
@@ -43,7 +43,7 @@ class GameControl : public GameObj{
 
 
 	private:
-		Player* player;
+		PlayerHandler* playerHandler;
 		EnemyHandler* enemyHandler;
 		GridHandler* gridHandler;
 		FriendHandler* friendHandler;

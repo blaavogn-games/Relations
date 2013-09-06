@@ -20,8 +20,8 @@ void GameControl::init(){
 	friendHandler = new FriendHandler(this);
 	friendHandler->init();
 
-	player = new Player(this);
-	player->init();
+	playerHandler = new PlayerHandler(this);
+	playerHandler->init();
 
 	enemyHandler = new EnemyHandler(this);
 	enemyHandler->init();
@@ -29,8 +29,8 @@ void GameControl::init(){
 }
 
 void GameControl::clearGame(){
-    if(player){
-		delete player;
+    if(playerHandler){
+		delete playerHandler;
 	}
     if(enemyHandler){
 		delete enemyHandler;
@@ -68,9 +68,9 @@ void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosit
 	if(!pause){
 	    //std::cout << "Update" << std::endl;
         gridHandler     -> update(delta, event, mousePosition);
-        friendHandler    -> update(delta);
+        friendHandler   -> update(delta);
         enemyHandler    -> update(delta);
-        player          -> update(delta);
+        playerHandler   -> update(delta);
 	}
 }
 
@@ -79,9 +79,9 @@ void GameControl::render(sf::RenderWindow &window){
     if(!resetPress){
         //std::cout << "render" << std::endl;
         gridHandler     -> render(window);
-        friendHandler    -> render(window);
+        friendHandler   -> render(window);
         enemyHandler    -> render(window);
-        player          -> render(window);
+        playerHandler   -> render(window);
     }
 }
 
@@ -119,7 +119,7 @@ std::vector<ColShape*> GameControl::getSurWalls(sf::Vector2i position){
 }
 
 std::deque<sf::Vector2i> GameControl::getPath(sf::Vector2i startPosition){
-    return gridHandler->getPath(startPosition, player->getCoordinate());
+    return gridHandler->getPath(startPosition, getPlayerCoordinate());
 }
 
 GridTile* GameControl::getGrid(sf::Vector2i* coordinate){
@@ -128,5 +128,5 @@ GridTile* GameControl::getGrid(sf::Vector2i* coordinate){
 
 //player
 sf::Vector2i GameControl::getPlayerCoordinate(){
-    return player -> getCoordinate();
+    return playerHandler -> getPlayerCoordinate();
 }
