@@ -25,7 +25,7 @@ class Pathfinder{
         void calcTile(sf::Vector2i, GridTile*);
         void resetTiles(sf::Vector2i*);
         sf::Vector2i findNextCoordinate();
-
+        bool lineOfSight(sf::Vector2i* , sf::Vector2i*);
 
 
     public:

@@ -18,7 +18,8 @@ FriendHandler::~FriendHandler(){
 
 //public
 void FriendHandler::init(){
-    texFriend.loadFromFile("res/img/enemies/0.png");
+    texFriend.loadFromFile("res/img/friends/0.png");
+    texEnemy.loadFromFile("res/img/enemies/enemy.png");
 
     alarm = new Alarm(this);
     addFriend(sf::Vector2f(19 * 32 + 16,9 * 32 + 16));
@@ -59,9 +60,13 @@ void FriendHandler::addFriend(){
 }
 
 void FriendHandler::addFriend(sf::Vector2f position){
-    Friend* tempFriend = new Friend(position , &texFriend);
+    Friend* tempFriend = new Friend(this, position , &texFriend, &texEnemy);
     tempFriend->init();
     friends.push_back(tempFriend);
 
     alarm->addTimer(0,40);
+}
+
+bool FriendHandler::isWall(int x, int y){
+    return gameControl->isWall(x, y);
 }

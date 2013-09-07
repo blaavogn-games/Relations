@@ -32,11 +32,12 @@ class GridHandler : public GameObj{
 
         bool firstMousePress;
 
-        void attemptToAddWall(sf::Vector2i);
+        bool attemptToAddWall(sf::Vector2i);
         void addWall(sf::Vector2i);
 
         sf::Vector2i getGridPosition(sf::Vector2i);
         sf::Vector2i toCoordinate(sf::Vector2i position);
+
 
     public:
         GridHandler(GameControl* gameControl);
@@ -49,5 +50,6 @@ class GridHandler : public GameObj{
         std::deque<sf::Vector2i> getPath(sf::Vector2i, sf::Vector2i);
         GridTile* getGrid(sf::Vector2i* coordinate){ return grid[coordinate->x][coordinate->y];}
         GridTile* getGrid(int x, int y){return grid[x][y];}
+        bool isWall(int x,int y);
 };
 #endif

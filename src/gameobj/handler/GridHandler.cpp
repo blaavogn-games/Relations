@@ -37,13 +37,6 @@ void GridHandler::init(){
         }
     }
 
-    //Setup walls for testing
-//    for(int i = 1; i < 10; i++){
-//        addWall(sf::Vector2i(i,1));
-//        addWall(sf::Vector2i(i,10));
-//        addWall(sf::Vector2i(10,3 + i));
-//        addWall(sf::Vector2i(1,1 + i));
-//    }
 }
 
 void GridHandler::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
@@ -77,27 +70,42 @@ void GridHandler::render(sf::RenderWindow &window){
 
 
 //Private
-void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
+bool GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
     sf::Vector2i coordinate = toCoordinate(gridPosition);
 
     //Is mouse coordinates within the window
     if(1 <= coordinate.x && coordinate.x < GameControl::GRIDX - 1 && 1 <= coordinate.y &&  coordinate.y < GameControl::GRIDY - 1 && !grid[coordinate.x][coordinate.y]->isWall() ){
 
-        //For points
+        //Adding wall temporarily to do search
+        getGrid(&coordinate) -> setTempWall();
+
+        //For friends
         std::vector<Friend*>* friends = gameControl->getFriends();
 
         for(std::vector<Friend*>::iterator it = friends->begin(); it != friends->end(); ++it){
             sf::Vector2i pointCoordinate = (*it)->getCoordinate();
+
             if(pointCoordinate.x == coordinate.x && pointCoordinate.y == coordinate.y){
-                return;
-                //Not legal, perhaps delete
+                std::cout << "May not place wall on friend" << std::endl;
+                getGrid(&coordinate) -> removeTempWall();
+                return false;
             }
+
+            std::deque<sf::Vector2i> tempPath = getPath(sf::Vector2i(14,0), pointCoordinate);
+            if(tempPath.size() == 0){
+                std::cout << "May not surround friend" << std::endl;
+                getGrid(&coordinate) -> removeTempWall();
+                return false;
+            }
+
         }
 
         //For player
         sf::Vector2i playerCoordinate = gameControl->getPlayerCoordinate();
         if(coordinate.x == playerCoordinate.x && coordinate.y == playerCoordinate.y){
-            return;
+            std::cout << "May not place wall on player" << std::endl;
+            getGrid(&coordinate) -> removeTempWall();
+            return false;
         }
 
         //For enemies
@@ -111,60 +119,57 @@ void GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
 
         //3. ind make the alternative paths the new paths
 
-
-        //Adding wall temporarily to do search
-        getGrid(&coordinate) -> setTempWall();
-
         //1.
         std::vector<Enemy*> enemies = gameControl -> getEnemiesWithPathPoint(coordinate);
 
         //1a
         if( enemies.size() == 0){
-            std::deque<sf::Vector2i> tempPath = getPath(sf::Vector2i(0,0), gameControl -> getPlayerCoordinate());
+            std::deque<sf::Vector2i> tempPath = getPath(sf::Vector2i(14,0), gameControl -> getPlayerCoordinate());
 
             if(tempPath.size() != 0){
+                getGrid(&coordinate) -> removeTempWall();
                 addWall(coordinate);
-
-                return;
+                return true;
             }else{
                 std::cout << "Not legal wall yourself in" << std::endl;
+                getGrid(&coordinate) -> removeTempWall();
+                return false;
             }
-
-            getGrid(&coordinate) -> removeTempWall();
-            return;
         }
 
 
         //2
-        bool legalWall = true;
         std::vector<std::deque<sf::Vector2i>> tempPaths;
-
         for(unsigned int i = 0; i < enemies.size(); i++){
+            sf::Vector2i enemyCoordinate = enemies.at(i)->getCoordinate();
 
-            std::deque<sf::Vector2i> tempPath = getPath(enemies.at(i)->getPosition(), gameControl -> getPlayerCoordinate());
+            /*if(enemyCoordinate.x == coordinate.x && enemyCoordinate.y == coordinate.y){
+                std::cout << "May not place wall on enemy" << std::endl;
+                getGrid(&coordinate) -> removeTempWall();
+                return false;
+            }*/
+
+            std::deque<sf::Vector2i> tempPath = getPath(enemyCoordinate, playerCoordinate);
 
             if(tempPath.size() != 0){
                 tempPaths.push_back( tempPath);
             }else{
                 //2a
                 std::cout << "Not legal to place wall" << std::endl;
-
                 getGrid(&coordinate) -> removeTempWall();
-
-                legalWall = false;
-                break;
+                return false;
             }
         }
 
 
         //3
-        if(legalWall){
-            for(unsigned int i = 0; i < enemies.size(); i++){
-                enemies.at(i) -> setPath(tempPaths.at(i));
-            }
-            addWall(coordinate);
+        for(unsigned int i = 0; i < enemies.size(); i++){
+            enemies.at(i) -> setPath(tempPaths.at(i));
         }
+        addWall(coordinate);
+        return true;
     }
+    return false;
 }
 
 //Private
@@ -224,9 +229,15 @@ std::vector<ColShape*> GridHandler::getSurWalls(sf::Vector2i &coordinate){
 }
 
 //public
-std::deque<sf::Vector2i> GridHandler::getPath(sf::Vector2i startPosition, sf::Vector2i endCoordinate_p){
-    sf::Vector2i startCoordinate = toCoordinate( getGridPosition(startPosition) );
-    sf::Vector2i endCoordinate = endCoordinate_p;
+std::deque<sf::Vector2i> GridHandler::getPath(sf::Vector2i startCoordinate, sf::Vector2i endCoordinate){
+    return pathfinder->findPath(startCoordinate, endCoordinate);
+}
 
-    return pathfinder->findPath( startCoordinate, endCoordinate);
+bool GridHandler::isWall(int x, int y){
+
+    if(x >= 0 && x < GameControl::GRIDX && y >= 0 && y < GameControl::GRIDY){
+        return grid[x][y] -> isWall();
+    }else{
+        return false;
+    }
 }

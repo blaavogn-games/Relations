@@ -17,7 +17,7 @@ class FriendHandler : public GameObj{
     private:
         GameControl* gameControl;
         Alarm* alarm;
-        sf::Texture texFriend;
+        sf::Texture texFriend, texEnemy;
         std::vector<Friend*> friends;
 
     public:
@@ -33,6 +33,9 @@ class FriendHandler : public GameObj{
 
         void alarmAction(int);
         std::vector<Friend*>* getFriends(){ return &friends;}
+
+        //pipeline
+        bool isWall(int x, int y);
 
 };
 

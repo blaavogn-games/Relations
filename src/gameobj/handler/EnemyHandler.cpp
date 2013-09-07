@@ -16,13 +16,14 @@ EnemyHandler::~EnemyHandler(){
 }
 
 void EnemyHandler::init(){
+    texEnemy.loadFromFile("res/img/enemies/enemy.png");
+
     alarm = new Alarm(this);
-    alarm -> addTimer(0, 1);
+    alarm -> addTimer(0, 100);
 
-	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
-		(*it)->init();
-
-	}
+//	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
+//		(*it)->init();
+//	}
 }
 
 void EnemyHandler::update(float delta){
@@ -68,7 +69,9 @@ void EnemyHandler::addEnemy(){
         break;
     }
 
-    Enemy* tempPointer = new Enemy(this,coordinate);
+    sf::Vector2f position(coordinate.x * GameControl::GRIDSIZE , coordinate.y * GameControl::GRIDSIZE);
+
+    Enemy* tempPointer = new Enemy(this,position, &texEnemy);
     tempPointer -> init();
     enemies.push_back(tempPointer);
 
@@ -100,6 +103,6 @@ std::vector<Enemy*> EnemyHandler::getEnemiesWithPathPoint(sf::Vector2i point){
 	return enemiesWithPoint;
 }
 
-std::deque<sf::Vector2i> EnemyHandler::getPath(sf::Vector2i position){
-    return gameControl->getPath(position);
+std::deque<sf::Vector2i> EnemyHandler::getPath(sf::Vector2i coordinate){
+    return gameControl->getPath(coordinate);
 }

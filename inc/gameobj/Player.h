@@ -10,11 +10,13 @@
 
 #include <vector>
 
+class GameControl;
 class PlayerHandler;
 
 class Player : public PersonBase{
 	private:
         PlayerHandler* playerHandler;
+        GameControl* gameControl;
 
         sf::Vector2i previousCoordinate;
 
@@ -24,7 +26,7 @@ class Player : public PersonBase{
         bool looseLife();
 
 	public:
-		Player(PlayerHandler*, sf::Vector2f, sf::Texture*);
+		Player(PlayerHandler*, GameControl*, sf::Vector2f, sf::Texture*);
 		~Player();
 
 		void init();

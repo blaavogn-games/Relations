@@ -7,15 +7,27 @@
 
 #include <SFML/Graphics.hpp>
 
+class FriendHandler;
+
 class Friend : public PersonBase{
     private:
-        float value;
-
-
+        FriendHandler* friendHandler;
+        float value, blinkTime, blinkDefault;
         Alarm* alarm;
+        sf::Texture* texEnemy;
+        sf::Vector2f target, movement;
+        sf::Vector2i coordinate;
+        bool moving;
+
+        const float SPEED;
+
+        void alarmReset();
+        void setEnemy();
+        void setFriend();
+        void findTarget();
 
     public:
-        Friend(sf::Vector2f, sf::Texture*);
+        Friend(FriendHandler*, sf::Vector2f, sf::Texture*, sf::Texture*);
         ~Friend();
 
         void init();

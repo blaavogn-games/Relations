@@ -38,15 +38,7 @@ class PlayerHandler : public GameObj{
         void addScore(float);
         bool looseLife();
 
-
         sf::Vector2i getPlayerCoordinate();
-
-        //Communication line
-		std::vector<ColShape*> getSurWalls(sf::Vector2i coordinate);
-        std::vector<Enemy*>* getEnemies();
-        std::vector<Friend*>* getFriends();
-        void resetGame();
-        void enemiesFindNewPath();
 };
 
 #endif

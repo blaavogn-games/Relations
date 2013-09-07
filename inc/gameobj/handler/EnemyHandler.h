@@ -17,6 +17,7 @@ class EnemyHandler : public GameObj{
 		GameControl* gameControl;
 		std::vector<Enemy*> enemies;
 		Alarm* alarm;
+		sf::Texture texEnemy;
 
         void addEnemy();
 
@@ -32,7 +33,7 @@ class EnemyHandler : public GameObj{
         void findNewPaths();
 
         //Get
-		std::deque<sf::Vector2i> getPath(sf::Vector2i position);
+		std::deque<sf::Vector2i> getPath(sf::Vector2i coordinate);
         std::vector<Enemy*> getEnemiesWithPathPoint(sf::Vector2i);
         std::vector<Enemy*>* getEnemies(){ return &enemies;}
 

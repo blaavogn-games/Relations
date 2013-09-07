@@ -29,6 +29,7 @@ void GameControl::init(){
 }
 
 void GameControl::clearGame(){
+
     if(playerHandler){
 		delete playerHandler;
 	}
@@ -124,6 +125,10 @@ std::deque<sf::Vector2i> GameControl::getPath(sf::Vector2i startPosition){
 
 GridTile* GameControl::getGrid(sf::Vector2i* coordinate){
     return gridHandler->getGrid(coordinate);
+}
+
+bool GameControl::isWall(int x, int y){
+    return gridHandler->isWall(x,y);
 }
 
 //player

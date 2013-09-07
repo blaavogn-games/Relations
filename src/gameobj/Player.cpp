@@ -1,17 +1,15 @@
 #include <inc/gameobj/Player.h>
+#include <inc/gameobj/GameControl.h>
 #include <inc/gameobj/handler/PlayerHandler.h>
 
 #include <iostream>
 
-Player::Player(PlayerHandler* playerHandler, sf::Vector2f position, sf::Texture* texture) :
-        PersonBase(position, texture)
-{
-	this->playerHandler = playerHandler;
+Player::Player(PlayerHandler* playerHandler, GameControl* gameControl, sf::Vector2f position, sf::Texture* texture) :
+        PersonBase(position, texture){
+    this->playerHandler = playerHandler;
+	this->gameControl = gameControl;
 }
 Player::~Player(){
-	if(col){
-        delete col;
-	}
 }
 
 void Player::init(){
@@ -24,7 +22,7 @@ void Player::init(){
 
 
 void Player::update(float delta){
-
+    PersonBase::update(delta);
 
 	//Two phases
 	//1. Movement
@@ -58,10 +56,10 @@ void Player::update(float delta){
 	position += curMovement;
 	col->setPosition(position);
 
-    calculateRotation(&curMovement);
+    calculateSprite(delta, &curMovement);
 
 	//Collision wall
-    std::vector<ColShape*> surWalls = playerHandler->getSurWalls(previousCoordinate);
+    std::vector<ColShape*> surWalls = gameControl->getSurWalls(previousCoordinate);
 
     int ventil = 0;
     while(collisionHandler(surWalls) && ventil < 2){
@@ -71,7 +69,7 @@ void Player::update(float delta){
     setPosition(position);
 
     //Collision friend
-    std::vector<Friend*>* friends = playerHandler->getFriends();
+    std::vector<Friend*>* friends = gameControl->getFriends();
     std::vector<Friend*>::iterator friendsIt = friends->begin();
 
     sf::Vector2f notUsedReturn;
@@ -90,17 +88,17 @@ void Player::update(float delta){
     }
 
     //Collision enemy
-	std::vector<Enemy*>* enemies = playerHandler->getEnemies();
+	std::vector<Enemy*>* enemies = gameControl->getEnemies();
     std::vector<Enemy*>::iterator it = enemies->begin();
 
     while(it != enemies->end()){
 
-        if(Collision::doesCollide((*it)->getColCircle(), col, &notUsedReturn )){
+        if(Collision::doesCollide((*it)->getCol(), col, &notUsedReturn )){
             delete (*it);
             it = enemies -> erase(it);
             if(playerHandler -> looseLife()){ //Returns true on dead
                 std::cout << "DØØØØØØØØØD" << std::endl;
-                playerHandler -> resetGame();
+                gameControl -> resetGame();
                 return; //Exits update
             }
         }else{
@@ -113,7 +111,7 @@ void Player::update(float delta){
     sf::Vector2i currentCoordinate = getCoordinate();
     if(currentCoordinate.x != previousCoordinate.x || currentCoordinate.y != previousCoordinate.y){
         //Message enemies about new coordinate
-        playerHandler -> enemiesFindNewPath();
+        gameControl -> enemiesFindNewPath();
     }
     previousCoordinate = currentCoordinate;
 }

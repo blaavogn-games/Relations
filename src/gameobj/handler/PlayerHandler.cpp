@@ -21,9 +21,9 @@ PlayerHandler::~PlayerHandler(){
 void PlayerHandler::init(){
 	//Load data
     texLife.loadFromFile("res/img/player/life.png");
-    texPlayer.loadFromFile("res/img/player/player.png");
+    texPlayer.loadFromFile("res/img/player/sheet.png");
 
-    player = new Player(this, sf::Vector2f(160,280) , &texPlayer);
+    player = new Player(this, gameControl, sf::Vector2f(160,280) , &texPlayer);
     player -> init();
 
     scoreDisplay = new ScoreDisplay();
@@ -43,8 +43,8 @@ void PlayerHandler::init(){
 }
 
 void PlayerHandler::update(float delta){
-    player      -> update(delta);
     scoreDisplay-> update(delta);
+    player      -> update(delta);
 }
 
 void PlayerHandler::render(sf::RenderWindow &window){
@@ -78,23 +78,4 @@ sf::Vector2i PlayerHandler::getPlayerCoordinate(){
     return player -> getCoordinate();
 }
 
-//Connection line
-std::vector<ColShape*> PlayerHandler::getSurWalls(sf::Vector2i coordinate){
-    return gameControl -> getSurWalls(coordinate);
-}
 
-std::vector<Enemy*>* PlayerHandler::getEnemies(){
-    return gameControl -> getEnemies();
-}
-
-std::vector<Friend*>* PlayerHandler::getFriends(){
-    return gameControl -> getFriends();
-}
-
-void PlayerHandler::resetGame(){
-    gameControl -> resetGame();
-}
-
-void PlayerHandler::enemiesFindNewPath(){
-    gameControl -> enemiesFindNewPath();
-}

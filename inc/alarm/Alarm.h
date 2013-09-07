@@ -16,7 +16,8 @@ class Alarm{
         Alarm(GameObj* owner);
         ~Alarm();
         void update(float delta);
-        void addTimer(int , int);
+        void addTimer(int , float);
+        void reset();
 };
 
 #endif

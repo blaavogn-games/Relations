@@ -7,7 +7,12 @@ PersonBase::PersonBase(sf::Vector2f position, sf::Texture* texture) : CENTER(8,1
     this->texPerson = texture;
 }
 
-PersonBase::~PersonBase(){} //Texture neeed to be deleted if it is not loaded by a handler
+PersonBase::~PersonBase(){
+    if(col){
+        delete col;
+    }
+
+} //Texture neeed to be deleted if it is not loaded by a handler
 
 void PersonBase::init(){
     sprPerson.setTexture(*texPerson);
@@ -19,13 +24,17 @@ void PersonBase::init(){
 	col->addCorner(sf::Vector2f(0 , CENTER.y));
 	col->addCorner(sf::Vector2f(-CENTER.x , 0));
 	col->init();
+
+	time = 0;
+	animationSpeed = 6;
 }
+
 
 void PersonBase::render(sf::RenderWindow &window){
     window.draw(sprPerson);
 }
 
-void PersonBase::calculateRotation(sf::Vector2f* movement){
+void PersonBase::calculateSprite(float delta, sf::Vector2f* movement){
     if(movement->y != 0 || movement->x != 0){
         float newRotation = MathEssential::toDegrees(atan2(movement->y, movement->x));
         if(rotation != newRotation){
@@ -33,7 +42,19 @@ void PersonBase::calculateRotation(sf::Vector2f* movement){
             sprPerson.setRotation(rotation);
             col->setRotation(rotation);
         }
+
+        //Animation
+        time = (time + delta * animationSpeed);
+        if(time >= 4){
+            time -= 4;
+        }
+    }else{
+        time = 0;
     }
+
+    int frame = (int) time;
+
+    sprPerson.setTextureRect(sf::IntRect(frame * 16,0,16,24));
 }
 
 void PersonBase::setPosition(sf::Vector2f newPosition){

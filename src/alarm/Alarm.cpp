@@ -1,5 +1,7 @@
 #include <inc/alarm/Alarm.h>
 
+#include <iostream>
+
 Alarm::Alarm(GameObj* owner){
     this->owner = owner;
 
@@ -14,7 +16,6 @@ Alarm::~Alarm(){
 
 //public
 void Alarm::update(float delta){
-
     for(std::vector<Timer*>::iterator it = addBuffer.begin(); it != addBuffer.end(); ++it){
         timers.push_back((*it));
     }
@@ -38,6 +39,13 @@ void Alarm::update(float delta){
 }
 
 //public
-void Alarm::addTimer(int type, int time){
+void Alarm::addTimer(int type, float time){
     addBuffer.push_back(new Timer(type, time));
+}
+
+void Alarm::reset(){
+    for(std::vector<Timer*>::iterator it = timers.begin(); it != timers.end() ; ++it ){
+        delete *it;
+    }
+    timers.clear();
 }

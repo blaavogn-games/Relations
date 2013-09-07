@@ -34,6 +34,7 @@ class GameControl : public GameObj{
         std::deque<sf::Vector2i> getPath(sf::Vector2i);
 		std::vector<ColShape*> getSurWalls(sf::Vector2i coordinate);
 		GridTile* getGrid(sf::Vector2i*);
+		bool isWall(int x, int y);
 
         //FriendHandler pipe
         std::vector<Friend*>* getFriends();
