@@ -66,28 +66,41 @@ void Player::update(float delta){
         ventil++;
     }
 
-    setPosition(position);
-
     //Collision friend
     std::vector<Friend*>* friends = gameControl->getFriends();
-    std::vector<Friend*>::iterator friendsIt = friends->begin();
 
-    sf::Vector2f notUsedReturn;
+    bool atFriends = false;
 
-    while(friendsIt != friends->end()){
-        if(Collision::doesCollide((*friendsIt)->getCol() , col , &notUsedReturn)){
+    for(std::vector<Friend*>::iterator it = friends->begin(); it != friends->end(); ++it){
+        ColCircle* aggroCircle = (*it)->getAggroCircle();
 
-            playerHandler->addScore((*friendsIt)->getValue());
+        if(Collision::isWithin(position, aggroCircle)){
+            (*it)->setAtPlayer(true);
+            atFriends = true;
 
-            delete (*friendsIt);
-            friendsIt = friends -> erase (friendsIt);
+            sf::Vector2f returnVector;
+
+            if(Collision::doesCollide(col, (*it)->getCol(), &returnVector)){
+                position += returnVector;
+            }
+
         }else{
-            friendsIt++;
+            (*it)->setAtPlayer(false);
         }
+
 
     }
 
+    setPosition(position);
+
+    if(atFriends){
+        playerHandler->addScore(delta);
+        //Player doesn't get extra points for being close to several persons
+        //Maybe it this is a bad rule, but it seems to deal with RNG luck problem.
+    }
+
     //Collision enemy
+	sf::Vector2f notUsedReturn;
 	std::vector<Enemy*>* enemies = gameControl->getEnemies();
     std::vector<Enemy*>::iterator it = enemies->begin();
 
@@ -126,9 +139,6 @@ bool Player::collisionHandler(std::vector<ColShape*> surWalls){
             col->setPosition(position);
             res = true;
         }
-
     }
     return res;
 }
-
-

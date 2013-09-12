@@ -1,40 +1,23 @@
-Før det sendes til folk to do:
-1. Enemies tilføjes løbende - Mangler semi-random spawn -- Check
-2. Enemies crasher ikke programmet når de når mål -- Check
-3. Enemies kan dræbe Player - Check
-4. Player har liv - Check
-5. Justering af spawnrate og speed på enemies/Player  -- Semicheck
-6. Bedre path -- Lidt bedrer, måske skal der tilføjes direkte path-tjek
-7. evt. Point tilføjes, meget godt hvis folk skal prøve det. -- Check
-8. Pause ved død
-
+Ny todo:
+-1. Få transform til at virke
+0. Forbedre friend behaviour
+1. Find på point system
+2. Lav pointSystem
+    a. Venner skal ikke fjernes ved kontakt
+    b. Venners spawnRate skal tilpasses
+3. Bedre visuelt
+4. Musik og lyd
+5. "Menu"
+6. publish
 
 Næste spil struktur forbedring:
 Udbyg GameObj med sprite collision position og lignende
 Lav en Handler_base der har std::vector<GameObj*> som kan evt arver fra noget der minder om nuværende GameObj.
 Ny GameObj kan også arve fra den.
-
+Kan man lave events a la actionsScript? Kan ikke finde ud af om mine "pipelines" er god praksis
 
 LEKTIE:
 SÆT POINTERE = NULL HVIS DU IKKE INITIALISERER DEM MED DET SAMME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Lær at initialiser collections at pointere til null på en nem måde.
 
-Måske skal jeg bruge flere shorts, jeg tror nærmest alle mine ints, kunne have været shorts
-
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp||In member function ‘virtual void Player::update(float)’:|
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|97|error: no matching function for call to
-‘Collision::doesCollide(ColCircle*, ColShape*&, sf::Vector2f)’|
-
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|97|note: candidates are:|
-../game_1/inc/col/Collision.h|22|note: static bool Collision::doesCollide(ColCircle, ColCircle)|
-../game_1/inc/col/Collision.h|22|note:   candidate expects 2 arguments, 3 provided|
-../game_1/inc/col/Collision.h|23|note: static bool Collision::doesCollide(ColCircle*, ColShape*, sf::Vector2f*)|
-../game_1/inc/col/Collision.h|23|note:   no known conversion for argument 3 from ‘sf::Vector2f {aka sf::Vector2<float>}’ to ‘sf::Vector2f* {aka sf::Vector2<float>*}’|
-../game_1/inc/col/Collision.h|24|note: static bool Collision::doesCollide(ColShape*, ColShape*, sf::Vector2f*)|
-../game_1/inc/col/Collision.h|24|note:   no known conversion for argument 1 from ‘ColCircle*’ to ‘ColShape*’|
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp||In member function ‘bool Player::collisionHandler(std::vector<ColShape*>)’:|
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|143|error: ‘colCircle’ was not declared in this scope|
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp||In member function ‘ColCircle* Player::getCol()’:|
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|173|error: ‘colCircle’ was not declared in this scope|
-/home/holger/documents/cpp/game_1/src/gameobj/Player.cpp|174|warning: control reaches end of non-void function [-Wreturn-type]|
-||=== Build finished: 10 errors, 1 warnings ===|
-|
+Måske skal jeg bruge flere shorts, jeg tror nærmest alle mine ints, kunne have været shorts.

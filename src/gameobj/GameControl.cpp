@@ -109,6 +109,10 @@ std::vector<Enemy*>* GameControl::getEnemies(){
 	return enemyHandler->getEnemies();
 }
 
+void GameControl::addEnemy(sf::Vector2f position){
+    enemyHandler->addEnemy(position);
+}
+
 //friendHandler
 std::vector<Friend*>* GameControl::getFriends(){
     return friendHandler->getFriends();

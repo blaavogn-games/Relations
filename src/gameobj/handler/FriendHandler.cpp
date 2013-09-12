@@ -32,6 +32,25 @@ void FriendHandler::update(float delta){
         (*it)->update(delta);
     }
 
+    std::vector<sf::Vector2f>::iterator transformIt = transformBuffer.begin();
+    while(transformIt != transformBuffer.end()){
+        sf::Vector2f friendPosition = (*transformIt);
+
+        //Finds friend at position, deletes friend and asks gameControl to add an enemy at position
+        for(std::vector<Friend*>::iterator friendIt = friends.begin(); friendIt != friends.end(); ++friendIt){
+            sf::Vector2f itPos = (*friendIt) -> getPosition();
+
+            if(itPos.x == friendPosition.x && itPos.y == friendPosition.y){
+                delete (*friendIt);
+                friends.erase(friendIt);
+                gameControl->addEnemy(itPos);
+                break;
+            }
+        }
+
+        transformIt = transformBuffer.erase(transformIt);
+    }
+
     alarm->update(delta);
 }
 
@@ -57,16 +76,18 @@ void FriendHandler::addFriend(){
         coordinate.y = rand() % GameControl::GRIDY;
     }
     addFriend(sf::Vector2f(coordinate.x * GameControl::GRIDSIZE + 16, coordinate.y * GameControl::GRIDSIZE + 16));
-
 }
 
 void FriendHandler::addFriend(sf::Vector2f position){
-
     Friend* tempFriend = new Friend(this, position, &texFriend);
     tempFriend->init(&texEnemy, &texStillF);
     friends.push_back(tempFriend);
 
-    alarm->addTimer(0,40);
+    alarm->addTimer(0,25);
+}
+
+void FriendHandler::transform(sf::Vector2f position){
+    transformBuffer.push_back(position);
 }
 
 bool FriendHandler::isWall(int x, int y){

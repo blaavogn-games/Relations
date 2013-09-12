@@ -43,6 +43,19 @@ void Alarm::addTimer(int type, float time){
     addBuffer.push_back(new Timer(type, time));
 }
 
+void Alarm::deleteTimer(int deleteType){
+    std::vector<Timer*>::iterator it = timers.begin();
+    while(it != timers.end()){
+        if((*it)->type == deleteType){
+            delete (*it);
+            it = timers.erase(it);
+        }else{
+            ++it;
+        }
+    }
+
+}
+
 void Alarm::reset(){
     for(std::vector<Timer*>::iterator it = timers.begin(); it != timers.end() ; ++it ){
         delete *it;

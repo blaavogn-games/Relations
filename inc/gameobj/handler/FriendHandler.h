@@ -19,6 +19,7 @@ class FriendHandler : public GameObj{
         Alarm* alarm;
         sf::Texture texFriend, texEnemy, texStillF;
         std::vector<Friend*> friends;
+        std::vector<sf::Vector2f> transformBuffer;
 
     public:
         FriendHandler(GameControl* gameControl);
@@ -30,6 +31,8 @@ class FriendHandler : public GameObj{
 
         void addFriend();
         void addFriend(sf::Vector2f);
+        void transform(sf::Vector2f);
+
 
         void alarmAction(int);
         std::vector<Friend*>* getFriends(){ return &friends;}

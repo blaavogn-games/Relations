@@ -12,6 +12,9 @@ Friend::~Friend(){
     if(alarm){
         delete alarm;
     }
+    if(aggroCircle){
+        delete aggroCircle;
+    }
 }
 
 void Friend::init(sf::Texture* texEnemy, sf::Texture* texStillF){
@@ -19,15 +22,16 @@ void Friend::init(sf::Texture* texEnemy, sf::Texture* texStillF){
     this->texStillF = texStillF;
 
     friendSprite = true;
+    atPlayer = false;
 
-    blinkDefault = 4;
+    blinkDefault = 3;
     PersonBase::init();
-    value = 20;
 
 	alarm = new Alarm(this);
-	alarmReset();
-
+    startBlink();
     newAction();
+
+    aggroCircle = new ColCircle(&position, 15);
 }
 
 void Friend::update(float delta){
@@ -44,7 +48,7 @@ void Friend::update(float delta){
     alarm->update(delta);
 }
 
-void Friend::alarmReset(){
+void Friend::startBlink(){
     blinkTime = blinkDefault;
     alarm->addTimer(0, blinkTime);
 }
@@ -56,11 +60,14 @@ void Friend::alarmAction(int type){
             updateSprite(); //Set enemy
             alarm->addTimer(1, .15f);
         break;
-        case 1:
+        case 1: //Should possibly be a function call
             friendSprite = true;
             updateSprite(); //Set Friend
-            blinkTime *= 0.8f;
+            blinkTime *= 0.85f;
             alarm->addTimer(0, blinkTime);
+            if(blinkTime < 0.08f){
+                friendHandler->transform(position);
+            }
         break;
         case 2:
             newAction();
@@ -69,7 +76,7 @@ void Friend::alarmAction(int type){
 }
 
 void Friend::newAction(){
-    int action = rand() % 5;
+    int action = rand() % 4;
 
     if(action == 0){
         newTarget();
@@ -133,6 +140,19 @@ void Friend::updateSprite(){
     }
 }
 
-float Friend::getValue(){
-    return value;
+void Friend::setAtPlayer(bool newAtPlayer){
+    if(atPlayer != newAtPlayer){
+        if(newAtPlayer){
+            alarm->deleteTimer(0);
+            alarm->deleteTimer(1);
+            friendSprite = true;
+            updateSprite();
+            std::cout << "deleteTimer" << std::endl;
+        }else{
+            startBlink();
+            std::cout << "startBlinking" << std::endl;
+        }
+
+        atPlayer = newAtPlayer;
+    }
 }

@@ -29,6 +29,7 @@ class GameControl : public GameObj{
 		std::vector<Enemy*>* getEnemies();
 		std::vector<Enemy*> getEnemiesWithPathPoint(sf::Vector2i);
         void enemiesFindNewPath();
+        void addEnemy(sf::Vector2f);
 
         //GridHandler connection pipe
         std::deque<sf::Vector2i> getPath(sf::Vector2i);

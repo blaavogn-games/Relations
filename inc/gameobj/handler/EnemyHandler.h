@@ -16,10 +16,8 @@ class EnemyHandler : public GameObj{
 	private:
 		GameControl* gameControl;
 		std::vector<Enemy*> enemies;
-		Alarm* alarm;
 		sf::Texture texEnemy;
 
-        void addEnemy();
 
 	public:
 		EnemyHandler(GameControl* gameControl);
@@ -27,7 +25,7 @@ class EnemyHandler : public GameObj{
 		void init();
 		void update(float delta);
 		void render(sf::RenderWindow &window);
-        void alarmAction(int type);
+        void addEnemy(sf::Vector2f);
 
         //Set more or less
         void findNewPaths();

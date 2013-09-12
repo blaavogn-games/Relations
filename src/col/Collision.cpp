@@ -1,13 +1,22 @@
 #include "inc/col/Collision.h"
 
-bool Collision::doesCollide(ColCircle c1, ColCircle c2){
-	sf::Vector2f pos1 = c1.getPosition();
-	sf::Vector2f pos2 = c2.getPosition();
-
-	if(MathVector::distance(pos1,pos2) > (c1.getRadius() + c2.getRadius())){
+bool Collision::isWithin(sf::Vector2f point, ColCircle* circle){
+    if(MathVector::distance(point,circle->getPosition()) > circle->getRadius()){
 		return false;
+	}else{
+        return true;
 	}
-	return true;
+}
+
+bool Collision::doesCollide(ColCircle *c1, ColCircle *c2){
+	sf::Vector2f pos1 = c1->getPosition();
+	sf::Vector2f pos2 = c2->getPosition();
+
+	if(MathVector::distance(pos1,pos2) > (c1->getRadius() + c2->getRadius())){
+		return false;
+	}else{
+        return true;
+	}
 }
 
 

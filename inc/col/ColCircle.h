@@ -5,15 +5,15 @@
 class ColCircle{
 private:
 	float radius;
-	sf::Vector2f position;
+	sf::Vector2f *position;
 
 public:
-	ColCircle(sf::Vector2f position, float radius = 0);
+	ColCircle(sf::Vector2f *position, float radius = 0);
 
 	float getRadius(){return radius;}
 	void setRadius(float radius){this->radius = radius;}
 	sf::Vector2f getPosition();
-	void setPosition(sf::Vector2f position){this->position = position;}
+	void setPosition(sf::Vector2f* position){this->position = position;}
 
 
 };

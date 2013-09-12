@@ -19,7 +19,8 @@ private:
     static std::vector<sf::Vector2f> getOuterProjection(sf::Vector2f, std::vector<sf::Vector2f>*, bool);
 
 public:
-	static bool doesCollide(ColCircle, ColCircle);
+    static bool isWithin(sf::Vector2f, ColCircle*);
+	static bool doesCollide(ColCircle*, ColCircle*);
     static bool doesCollide(ColCircle*, ColShape*, sf::Vector2f*);
     static bool doesCollide(ColShape*, ColShape*, sf::Vector2f*);
 

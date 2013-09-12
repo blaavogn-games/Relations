@@ -17,7 +17,6 @@ class Player : public PersonBase{
 	private:
         PlayerHandler* playerHandler;
         GameControl* gameControl;
-
         sf::Vector2i previousCoordinate;
 
 		float speed;

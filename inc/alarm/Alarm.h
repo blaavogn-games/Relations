@@ -17,6 +17,7 @@ class Alarm{
         ~Alarm();
         void update(float delta);
         void addTimer(int , float);
+        void deleteTimer(int);
         void reset();
 };
 
