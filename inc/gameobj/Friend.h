@@ -14,23 +14,24 @@ class Friend : public PersonBase{
         FriendHandler* friendHandler;
         float value, blinkTime, blinkDefault;
         Alarm* alarm;
-        sf::Texture* texEnemy;
+        sf::Texture *texEnemy, *texStillF; //A bit unlogical, texFriend is placed in the baseClass and is called texPerson
         sf::Vector2f target, movement;
         sf::Vector2i coordinate;
-        bool moving;
+        bool friendSprite, moving;
 
         const float SPEED;
 
         void alarmReset();
-        void setEnemy();
-        void setFriend();
-        void findTarget();
+        void updateSprite();
+        void newAction();
+        void newTarget(); //Possible action
+        void newRotation(); //Possible action
 
     public:
-        Friend(FriendHandler*, sf::Vector2f, sf::Texture*, sf::Texture*);
+        Friend(FriendHandler*, sf::Vector2f, sf::Texture*);
         ~Friend();
 
-        void init();
+        void init(sf::Texture*, sf::Texture*);
         void update(float delta);
 
         void alarmAction(int);

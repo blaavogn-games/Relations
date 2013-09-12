@@ -38,7 +38,7 @@ void Enemy::update(float delta){
 
     position += MathVector::scale(movement,delta);
 
-    setPosition(sf::Vector2f(position.x + 16 , position.y + 16 ));
+    setPosition(sf::Vector2f(position.x, position.y));
     calculateSprite(delta, &movement);
 }
 
@@ -76,14 +76,13 @@ void Enemy::newTargetPoint(){
     if(path.size() > 1){
         path.pop_front();
 
-        targetPoint.x = path.at(0).x * GameControl::GRIDSIZE;
-        targetPoint.y = path.at(0).y * GameControl::GRIDSIZE;
+        targetPoint.x = path.at(0).x * GameControl::GRIDSIZE + 16;
+        targetPoint.y = path.at(0).y * GameControl::GRIDSIZE + 16;
 
         sf::Vector2f tempMovement;
         tempMovement.x = targetPoint.x - position.x;
         tempMovement.y = targetPoint.y - position.y;
 
-//        movement = MathVector::scale( MathVector::normalize(tempMovement) , 10);
+        movement = MathVector::scale( MathVector::normalize(tempMovement) , 10);
     }
 }
-

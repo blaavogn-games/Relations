@@ -17,7 +17,7 @@ class FriendHandler : public GameObj{
     private:
         GameControl* gameControl;
         Alarm* alarm;
-        sf::Texture texFriend, texEnemy;
+        sf::Texture texFriend, texEnemy, texStillF;
         std::vector<Friend*> friends;
 
     public:

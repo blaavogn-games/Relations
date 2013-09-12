@@ -19,11 +19,7 @@ void EnemyHandler::init(){
     texEnemy.loadFromFile("res/img/enemies/enemy.png");
 
     alarm = new Alarm(this);
-    alarm -> addTimer(0, 100);
-
-//	for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
-//		(*it)->init();
-//	}
+    alarm -> addTimer(0, 01);
 }
 
 void EnemyHandler::update(float delta){
@@ -69,7 +65,7 @@ void EnemyHandler::addEnemy(){
         break;
     }
 
-    sf::Vector2f position(coordinate.x * GameControl::GRIDSIZE , coordinate.y * GameControl::GRIDSIZE);
+    sf::Vector2f position(coordinate.x * GameControl::GRIDSIZE  + 16, coordinate.y * GameControl::GRIDSIZE  + 16);
 
     Enemy* tempPointer = new Enemy(this,position, &texEnemy);
     tempPointer -> init();
