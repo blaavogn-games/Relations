@@ -19,7 +19,7 @@ void ProgramControl::init(){
     menuControl = new MenuControl(this);
     menuControl -> init();
 
-    gameControl = new GameControl();
+    gameControl = new GameControl(this);
     gameControl -> init();
 
     state = MENU_STATE;
@@ -52,4 +52,13 @@ void ProgramControl::render(sf::RenderWindow &window){
 
 void ProgramControl::close(){
     closeWindow = true;
+}
+
+void ProgramControl::startGame(){
+    state = GAME_STATE;
+    gameControl -> resetGame();
+}
+
+void ProgramControl::enterMenuState(){
+    state = MENU_STATE;
 }

@@ -9,13 +9,14 @@
 #include <deque>
 #include <vector>
 
+class ProgramControl;
 
 //GameControl is becomming a path for communication between my handlers.
 //Maybe it is better to let the handlers have a pointer to eachother?
 class GameControl : public GameObj{
 	public:
         static const int GRIDSIZE = 32, GRIDX = 25, GRIDY = 19;
-		GameControl();
+		GameControl(ProgramControl* programControl);
 		~GameControl();
 
 		void init();
@@ -24,6 +25,7 @@ class GameControl : public GameObj{
 
         void pauseGame();
         void resetGame();
+        void enterMenuState();
 
         //Next project this should just be getHandlerX this seems stupid
         //EnemyHandler connection pipe
@@ -47,12 +49,13 @@ class GameControl : public GameObj{
 
 
 	private:
+        ProgramControl *programControl;
 		PlayerHandler* playerHandler;
 		EnemyHandler* enemyHandler;
 		GridHandler* gridHandler;
 		FriendHandler* friendHandler;
 
-        bool pause, pausePress, resetPress;
+        bool pause, pausePress, resetPress, firstGame;
 
         void clearGame();
 

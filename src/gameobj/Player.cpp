@@ -5,7 +5,7 @@
 #include <iostream>
 
 Player::Player(PlayerHandler* playerHandler, GameControl* gameControl, sf::Vector2f position, sf::Texture* texture) :
-        PersonBase(position, texture){
+        PersonBase(position, texture, 10.5f){
     this->playerHandler = playerHandler;
 	this->gameControl = gameControl;
 }
@@ -16,7 +16,7 @@ void Player::init(){
     PersonBase::init();
 
 	//Variables
-	speed = 32;
+	speed = 42;
     previousCoordinate = getCoordinate();
 }
 
@@ -54,9 +54,9 @@ void Player::update(float delta){
 	}
 
     //Diaognal movement not faster
-    if((curMovement.x != 0) ^ (curMovement.y != 0)){ //Going sideways
-        curMovement.x *= 1.4f;
-        curMovement.y *= 1.4f;
+    if((curMovement.x != 0) && (curMovement.y != 0)){
+        curMovement.x /= 1.4f;
+        curMovement.y /= 1.4f;
     }
 
 	position += curMovement;
@@ -121,7 +121,7 @@ void Player::update(float delta){
             it = enemies -> erase(it);
             if(playerHandler -> looseLife()){ //Returns true on dead
                 std::cout << "DØØØØØØØØØD" << std::endl;
-                gameControl -> resetGame();
+                gameControl -> enterMenuState();
                 return; //Exits update
             }
         }else{

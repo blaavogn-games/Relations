@@ -7,7 +7,7 @@
 #include <iostream>
 
 Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2f position, sf::Texture* texture) :
-        PersonBase(position, texture) , SPEED(28){
+        PersonBase(position, texture, 10.5f) , SPEED(46){
     this->enemyHandler = enemyHandler;
 	this->position = position;
 }
@@ -61,7 +61,7 @@ void Enemy::setPath(std::deque<sf::Vector2i> newPath){
 
     path = newPath;
 
-    if(std::fabs(path.at(0).x - position.x ) + std::fabs(path.at(0).y - position.y ) < 5.0f){
+    if(std::fabs(path.at(0).x - position.x ) + std::fabs(path.at(0).y - position.y ) < 20.0f){
         if(path.size() > 1){
             path.pop_front();
         }
@@ -82,6 +82,6 @@ void Enemy::newTargetPoint(){
         tempMovement.x = targetPoint.x - position.x;
         tempMovement.y = targetPoint.y - position.y;
 
-        movement = MathVector::scale( MathVector::normalize(tempMovement) , 10);
+        movement = MathVector::scale( MathVector::normalize(tempMovement) , SPEED);
     }
 }

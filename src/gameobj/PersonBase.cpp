@@ -2,9 +2,10 @@
 #include <inc/gameobj/GameControl.h>
 
 
-PersonBase::PersonBase(sf::Vector2f position, sf::Texture* texture) : CENTER(8,12){
+PersonBase::PersonBase(sf::Vector2f position, sf::Texture* texture, float animationSpeed) : CENTER(7,12){
     this->position = position;
     this->texPerson = texture;
+    this->animationSpeed = animationSpeed;
 }
 
 PersonBase::~PersonBase(){
@@ -26,7 +27,6 @@ void PersonBase::init(){
 	col->init();
 
 	time = 0;
-	animationSpeed = 6;
 }
 
 
@@ -47,16 +47,17 @@ void PersonBase::calculateSprite(float delta, sf::Vector2f* movement, bool movin
     if(moving){
         //Animation
         time = (time + delta * animationSpeed);
-        if(time >= 4){
-            time -= 4;
+        if(time >= 8){
+            time -= 8;
         }
     }else{
         time = 0;
     }
 
-    int frame = (int) time;
+    int frameX = (int) time % 4;
+    int frameY = (int) time / 4;
 
-    sprPerson.setTextureRect(sf::IntRect(frame * 16,0,16,24));
+    sprPerson.setTextureRect(sf::IntRect(frameX * 14, frameY * 24,14,24));
 }
 
 void PersonBase::setPosition(sf::Vector2f newPosition){

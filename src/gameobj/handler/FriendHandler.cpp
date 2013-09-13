@@ -24,6 +24,7 @@ void FriendHandler::init(){
 
     alarm = new Alarm(this);
     addFriend(sf::Vector2f(19 * 32 + 16,9 * 32 + 16));
+
 }
 
 void FriendHandler::update(float delta){
@@ -83,7 +84,7 @@ void FriendHandler::addFriend(sf::Vector2f position){
     tempFriend->init(&texEnemy, &texStillF);
     friends.push_back(tempFriend);
 
-    alarm->addTimer(0,25);
+    alarm->addTimer(0,20);
 }
 
 void FriendHandler::newTarget(sf::Vector2i coordinate){

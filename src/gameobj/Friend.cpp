@@ -4,7 +4,7 @@
 #include <inc/col/math/MathVector.h>
 
 Friend::Friend(FriendHandler* friendHandler, sf::Vector2f position , sf::Texture* texFriend)
-        : PersonBase(position, texFriend) , SPEED(10){
+        : PersonBase(position, texFriend, 4) , SPEED(10){
     this->friendHandler = friendHandler;
 }
 
@@ -24,7 +24,8 @@ void Friend::init(sf::Texture* texEnemy, sf::Texture* texStillF){
     friendSprite = true;
     atPlayer = false;
 
-    blinkDefault = 5;
+    //blinkDefault = 5;
+    blinkDefault = 1;
     PersonBase::init();
 
 	alarm = new Alarm(this);

@@ -19,6 +19,8 @@ GridHandler::~GridHandler(){
 
 void GridHandler::init(){
 
+    firstMousePress = false;
+
     pathfinder = new Pathfinder(this);
 
     //Loading and setting textures, might need some error handling. But if textures arn't loaded the game might as well crash.
@@ -200,7 +202,6 @@ void GridHandler::addWall(sf::Vector2i coordinate){
 
 //Private
 sf::Vector2i GridHandler::toCoordinate(sf::Vector2i position){
-
     return sf::Vector2i(position.x / GameControl::GRIDSIZE, position.y / GameControl::GRIDSIZE);
 }
 
@@ -240,6 +241,6 @@ bool GridHandler::isWall(int x, int y){
     if(x >= 0 && x < GameControl::GRIDX && y >= 0 && y < GameControl::GRIDY){
         return grid[x][y] -> isWall();
     }else{
-        return false;
+        return true;
     }
 }

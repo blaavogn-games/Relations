@@ -10,12 +10,14 @@
 
 class ProgramControl;
 
+//Welcome to the Power Point menu, all rights reserved Microsoft
+
 class MenuControl : public GameObj{
     private:
         ProgramControl *programControl;
 
-        sf::Sprite sprTitle;
-        sf::Texture texTitle;
+        sf::Sprite sprTitle, sprInfo;
+        sf::Texture texTitle, texControls, texCredits;
         std::vector<Button*> buttons;
 
         enum MenuState{

@@ -30,6 +30,8 @@ class ProgramControl : public GameObj{
         void update(float, sf::Vector2i);
         void render(sf::RenderWindow &window);
         void close();
+        void startGame();
+        void enterMenuState();
 };
 
 #endif

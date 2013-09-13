@@ -16,9 +16,15 @@ void MenuControl::init(){
     state = MAIN_MENU;
 
     texTitle.loadFromFile("res/img/menu/title.png");
+    texControls.loadFromFile("res/img/menu/controls.png");
+    texCredits.loadFromFile("res/img/menu/credits.png");
+
     sprTitle.setTexture(texTitle);
     sprTitle.setOrigin(sprTitle.getGlobalBounds().width / 2 , sprTitle.getGlobalBounds().height / 2);
     sprTitle.setPosition(400,80);
+
+    sprInfo.setTexture(texControls);
+    sprInfo.setPosition(420,220);
 
     const int POSX = 50, POSY = 220, SPACEY = 52;
 
@@ -37,8 +43,9 @@ void MenuControl::update(float delta, sf::Vector2i &mousePosition){
 }
 
 void MenuControl::render(sf::RenderWindow &window){
-    window.clear(sf::Color(30,255,30,255));
+    window.clear(sf::Color(30,185,30,255));
     window.draw(sprTitle);
+    window.draw(sprInfo);
 
     for(std::vector<Button*>::iterator it = buttons.begin(); it != buttons.end(); ++it){
         (*it)->render(window);
@@ -47,19 +54,17 @@ void MenuControl::render(sf::RenderWindow &window){
 }
 
 void MenuControl::action(int type){
-    std::cout << type << std::endl;
     switch(type){
-        case 0:
-
+        case 0: //Play
+            programControl->startGame();
         break;
-        case 1:
-
+        case 1: //Controls
+            sprInfo.setTexture(texControls);
         break;
-
-        case 2:
-
+        case 2: //Credits
+            sprInfo.setTexture(texCredits);
         break;
-        case 3:
+        case 3: //Quit
             programControl->close();
         break;
     }

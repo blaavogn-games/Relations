@@ -1,11 +1,14 @@
 #include <inc/gameobj/GameControl.h>
 #include <inc/col/Collision.h>
+#include <inc/gameobj/ProgramControl.h>
 
 #include <iostream>
 
-GameControl::GameControl() : pause(false){
+GameControl::GameControl(ProgramControl* programControl) : pause(false){
+    this->programControl = programControl;
     pausePress = false;
     resetPress = false;
+    firstGame = true;
 }
 GameControl::~GameControl(){
     clearGame();
@@ -88,12 +91,20 @@ void GameControl::render(sf::RenderWindow &window){
 
 void GameControl::resetGame(){
     resetPress = true;
-    clearGame();
-    init();
+    if(firstGame == false){
+        clearGame();
+        init();
+    }else{
+        firstGame = false;
+    }
 }
 
 void GameControl::pauseGame(){
     pause = (pause) ? false : true;
+}
+
+void GameControl::enterMenuState(){
+    programControl->enterMenuState();
 }
 
 //Enemyhandler pipeline

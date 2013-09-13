@@ -20,7 +20,7 @@ class PersonBase : public GameObj{
         void calculateSprite(float delta, sf::Vector2f* rotation, bool moving);
 
     public:
-        PersonBase(sf::Vector2f, sf::Texture*);
+        PersonBase(sf::Vector2f, sf::Texture*, float);
         virtual ~PersonBase();
         virtual void init();
         virtual void render(sf::RenderWindow &window);
