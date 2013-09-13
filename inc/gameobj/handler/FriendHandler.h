@@ -32,7 +32,7 @@ class FriendHandler : public GameObj{
         void addFriend();
         void addFriend(sf::Vector2f);
         void transform(sf::Vector2f);
-
+        void newTarget(sf::Vector2i);
 
         void alarmAction(int);
         std::vector<Friend*>* getFriends(){ return &friends;}

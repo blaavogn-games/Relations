@@ -30,7 +30,7 @@ void ColShape::init(){
 
 //Test code
 void ColShape::render(sf::RenderWindow &window){
-    for(int i = 0; i < absCorners.size(); i++){
+    for(unsigned int i = 0; i < absCorners.size(); i++){
         sprite->setPosition(absCorners.at(i).x - 2, absCorners.at(i).y - 2);
         window.draw(*sprite);
     }

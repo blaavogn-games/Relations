@@ -5,9 +5,7 @@
 
 //These functions is currently going to be overridden 100% of the time
 //Might be a good idea to enable a basic show sprite gameObj
-void GameObj::init(){
-    std::cout << "HEJSA" << std::endl;
-}
+void GameObj::init(){}
 void GameObj::update(float delta){}
 void GameObj::render(sf::RenderWindow &window){}
 

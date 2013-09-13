@@ -34,15 +34,17 @@ void PersonBase::render(sf::RenderWindow &window){
     window.draw(sprPerson);
 }
 
-void PersonBase::calculateSprite(float delta, sf::Vector2f* movement){
-    if(movement->y != 0 || movement->x != 0){
-        float newRotation = MathEssential::toDegrees(atan2(movement->y, movement->x));
-        if(rotation != newRotation){
-            rotation = newRotation;
-            sprPerson.setRotation(rotation);
-            col->setRotation(rotation);
-        }
+void PersonBase::calculateSprite(float delta, sf::Vector2f* movement, bool moving){
 
+    float newRotation = MathEssential::toDegrees(atan2(movement->y, movement->x));
+
+    if(rotation != newRotation){
+        rotation = newRotation;
+        sprPerson.setRotation(rotation);
+        col->setRotation(rotation);
+    }
+
+    if(moving){
         //Animation
         time = (time + delta * animationSpeed);
         if(time >= 4){

@@ -39,7 +39,7 @@ void Enemy::update(float delta){
     position += MathVector::scale(movement,delta);
 
     setPosition(sf::Vector2f(position.x, position.y));
-    calculateSprite(delta, &movement);
+    calculateSprite(delta, &movement, true);
 }
 
 void Enemy::render(sf::RenderWindow &window){
@@ -51,7 +51,6 @@ void Enemy::render(sf::RenderWindow &window){
 	}
 
     PersonBase::render(window);
-
 }
 
 void Enemy::findNewPath(){
@@ -62,7 +61,7 @@ void Enemy::setPath(std::deque<sf::Vector2i> newPath){
 
     path = newPath;
 
-    if(std::fabs(path.at(0).x - position.x ) + std::fabs(path.at(0).y - position.y ) < 10.0f){
+    if(std::fabs(path.at(0).x - position.x ) + std::fabs(path.at(0).y - position.y ) < 5.0f){
         if(path.size() > 1){
             path.pop_front();
         }

@@ -44,7 +44,7 @@ void GameControl::clearGame(){
     }
 }
 
-void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
+void GameControl::update(float delta, sf::Vector2i &mousePosition){
 
     //Dev code
     sf::Keyboard keyboard;
@@ -68,7 +68,7 @@ void GameControl::update(float delta, sf::Event &event, sf::Vector2i &mousePosit
 
 	if(!pause){
 	    //std::cout << "Update" << std::endl;
-        gridHandler     -> update(delta, event, mousePosition);
+        gridHandler     -> update(delta, mousePosition);
         friendHandler   -> update(delta);
         enemyHandler    -> update(delta);
         playerHandler   -> update(delta);
@@ -116,6 +116,9 @@ void GameControl::addEnemy(sf::Vector2f position){
 //friendHandler
 std::vector<Friend*>* GameControl::getFriends(){
     return friendHandler->getFriends();
+}
+void GameControl::friendsNewTarget(sf::Vector2i targetCoordinate){
+    friendHandler->newTarget(targetCoordinate);
 }
 
 //GridHandler

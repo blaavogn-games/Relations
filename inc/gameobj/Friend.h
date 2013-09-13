@@ -25,7 +25,6 @@ class Friend : public PersonBase{
 
         void startBlink();
         void updateSprite();
-        void newAction();
         void newTarget(); //Possible action
         void newRotation(); //Possible action
 
@@ -36,8 +35,10 @@ class Friend : public PersonBase{
         void init(sf::Texture*, sf::Texture*);
         void update(float delta);
 
+        void newAction();
         void alarmAction(int);
-        void setAtPlayer(bool);
+        void setAtPlayer(bool, sf::Vector2f);
+        sf::Vector2i getTargetCoord();
 
         ColCircle* getAggroCircle(){ return aggroCircle; }
 };

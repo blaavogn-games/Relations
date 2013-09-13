@@ -43,7 +43,7 @@ void PlayerHandler::init(){
 }
 
 void PlayerHandler::update(float delta){
-    scoreDisplay-> update(delta);
+   // scoreDisplay-> update(delta); Not used
     player      -> update(delta);
 }
 

@@ -14,12 +14,11 @@ void ScoreDisplay::init(){
     displayText.setPosition(6,0);
 
     fScore = 0;
-
+    iScore = 0;
 }
 
 void ScoreDisplay::update(float delta){
-    fScore += delta;
-    iScore = (int) fScore;
+
 }
 
 void ScoreDisplay::render(sf::RenderWindow &window){
@@ -33,4 +32,5 @@ void ScoreDisplay::render(sf::RenderWindow &window){
 
 void ScoreDisplay::addScore(float points){
     fScore += points;
+    iScore = (int) fScore;
 }

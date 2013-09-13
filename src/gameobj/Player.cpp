@@ -16,7 +16,7 @@ void Player::init(){
     PersonBase::init();
 
 	//Variables
-	speed = 22;
+	speed = 32;
     previousCoordinate = getCoordinate();
 }
 
@@ -32,19 +32,25 @@ void Player::update(float delta){
 	//Movement
 	sf::Vector2f curMovement(0,0);
 
+    bool moving = false;
+
 	float deltaSpeed = speed * delta;
 
-	if(keyboard.isKeyPressed(sf::Keyboard::A) && position.x > 0 + CENTER.x){
+	if(keyboard.isKeyPressed(sf::Keyboard::A) && position.x > 0 + 6){
 		curMovement.x -= deltaSpeed;
+		moving = true;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::D)  && position.x < 800 - CENTER.x){
+	if(keyboard.isKeyPressed(sf::Keyboard::D)  && position.x < 800 - 6){
 		curMovement.x += deltaSpeed;
+		moving = true;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::W) && position.y > 0 + CENTER.y){
+	if(keyboard.isKeyPressed(sf::Keyboard::W) && position.y > 0 + 6){
 		curMovement.y -= deltaSpeed;
+		moving = true;
 	}
-	if(keyboard.isKeyPressed(sf::Keyboard::S) && position.y < 600 - CENTER.x){
+	if(keyboard.isKeyPressed(sf::Keyboard::S) && position.y < 600 - 6){
 		curMovement.y += deltaSpeed;
+		moving = true;
 	}
 
     //Diaognal movement not faster
@@ -55,8 +61,6 @@ void Player::update(float delta){
 
 	position += curMovement;
 	col->setPosition(position);
-
-    calculateSprite(delta, &curMovement);
 
 	//Collision wall
     std::vector<ColShape*> surWalls = gameControl->getSurWalls(previousCoordinate);
@@ -75,7 +79,7 @@ void Player::update(float delta){
         ColCircle* aggroCircle = (*it)->getAggroCircle();
 
         if(Collision::isWithin(position, aggroCircle)){
-            (*it)->setAtPlayer(true);
+            (*it)->setAtPlayer(true, position);
             atFriends = true;
 
             sf::Vector2f returnVector;
@@ -84,14 +88,20 @@ void Player::update(float delta){
                 position += returnVector;
             }
 
+            if(moving == false){
+                //I should rewrite this whole update block,
+                //this code orientates the player towards a friend if the player isn't moving.
+                curMovement.x = aggroCircle->getPosition().x - position.x;
+                curMovement.y = aggroCircle->getPosition().y - position.y;
+            }
+
         }else{
-            (*it)->setAtPlayer(false);
+            (*it)->setAtPlayer(false, position);
         }
-
-
     }
 
     setPosition(position);
+    calculateSprite(delta, &curMovement, moving);
 
     if(atFriends){
         playerHandler->addScore(delta);

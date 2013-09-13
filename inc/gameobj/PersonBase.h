@@ -17,7 +17,7 @@ class PersonBase : public GameObj{
 
         float rotation, time, animationSpeed;
 
-        void calculateSprite(float delta, sf::Vector2f* movement);
+        void calculateSprite(float delta, sf::Vector2f* rotation, bool moving);
 
     public:
         PersonBase(sf::Vector2f, sf::Texture*);

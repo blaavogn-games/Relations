@@ -43,7 +43,7 @@ class GridHandler : public GameObj{
         GridHandler(GameControl* gameControl);
         ~GridHandler();
         void init();
-        void update( float delta , sf::Event &event, sf::Vector2i &mousePosition);
+        void update(float delta, sf::Vector2i &mousePosition);
         void render(sf::RenderWindow &window);
 
         std::vector<ColShape*> getSurWalls(sf::Vector2i &position);

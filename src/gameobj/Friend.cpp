@@ -1,7 +1,7 @@
 #include <inc/gameobj/Friend.h>
 #include <inc/gameobj/handler/FriendHandler.h>
-#include <inc/col/math/MathVector.h>
 #include <inc/gameobj/GameControl.h>
+#include <inc/col/math/MathVector.h>
 
 Friend::Friend(FriendHandler* friendHandler, sf::Vector2f position , sf::Texture* texFriend)
         : PersonBase(position, texFriend) , SPEED(10){
@@ -24,14 +24,14 @@ void Friend::init(sf::Texture* texEnemy, sf::Texture* texStillF){
     friendSprite = true;
     atPlayer = false;
 
-    blinkDefault = 3;
+    blinkDefault = 5;
     PersonBase::init();
 
 	alarm = new Alarm(this);
     startBlink();
     newAction();
 
-    aggroCircle = new ColCircle(&position, 15);
+    aggroCircle = new ColCircle(&position, 50);
 }
 
 void Friend::update(float delta){
@@ -44,7 +44,7 @@ void Friend::update(float delta){
 
     setPosition(sf::Vector2f(position.x, position.y));
 
-    calculateSprite(delta, &movement);
+    calculateSprite(delta, &movement, moving);
     alarm->update(delta);
 }
 
@@ -58,12 +58,12 @@ void Friend::alarmAction(int type){
         case 0:
             friendSprite = false;
             updateSprite(); //Set enemy
-            alarm->addTimer(1, .15f);
+            alarm->addTimer(1, .2f);
         break;
         case 1: //Should possibly be a function call
             friendSprite = true;
             updateSprite(); //Set Friend
-            blinkTime *= 0.85f;
+            blinkTime *= 0.81f;
             alarm->addTimer(0, blinkTime);
             if(blinkTime < 0.08f){
                 friendHandler->transform(position);
@@ -140,19 +140,29 @@ void Friend::updateSprite(){
     }
 }
 
-void Friend::setAtPlayer(bool newAtPlayer){
+void Friend::setAtPlayer(bool newAtPlayer, sf::Vector2f playerPos){
     if(atPlayer != newAtPlayer){
         if(newAtPlayer){
-            alarm->deleteTimer(0);
-            alarm->deleteTimer(1);
+            alarm->reset();
             friendSprite = true;
+            moving = false;
             updateSprite();
-            std::cout << "deleteTimer" << std::endl;
         }else{
             startBlink();
-            std::cout << "startBlinking" << std::endl;
+            newAction();
         }
-
         atPlayer = newAtPlayer;
+
+    }else if(atPlayer){
+        movement.x = playerPos.x - position.x;
+        movement.y = playerPos.y - position.y;
     }
+}
+
+sf::Vector2i Friend::getTargetCoord(){
+    int tX = (int) target.x;
+    int tY = (int) target.y;
+
+    return sf::Vector2i((tX - tX % GameControl::GRIDSIZE) / GameControl::GRIDSIZE,
+                        (tY - tY % GameControl::GRIDSIZE) / GameControl::GRIDSIZE);
 }

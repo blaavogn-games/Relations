@@ -21,3 +21,5 @@ SÆT POINTERE = NULL HVIS DU IKKE INITIALISERER DEM MED DET SAMME!!!!!!!!!!!!!!!
 Lær at initialiser collections at pointere til null på en nem måde.
 
 Måske skal jeg bruge flere shorts, jeg tror nærmest alle mine ints, kunne have været shorts.
+
+GameControl burde bare have getHandlers metoder

@@ -3,16 +3,15 @@
 #include <iostream>
 #include <vector>
 
-#include "inc/gameobj/GameControl.h"
-#include "inc/gameobj/FpsDisplay.h"
-#include "inc/col/ColRectangle.h"
+#include <inc/gameobj/ProgramControl.h>
+#include <inc/gameobj/FpsDisplay.h>
 
 int main()
 {
     int const TARGET_FPS = 60;
 
-    GameControl* gameControl = new GameControl();
-    gameControl->init();
+    ProgramControl* programControl = new ProgramControl();
+    programControl->init();
 
     FpsDisplay fpsDisplay;
     fpsDisplay.init();
@@ -20,7 +19,7 @@ int main()
     sf::Clock clock;
     float deltaTime;
 
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Spil", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Relations", sf::Style::Close);
     sf::Vector2i mousePosition;
 
     window.setFramerateLimit(TARGET_FPS);
@@ -47,13 +46,11 @@ int main()
 
         mousePosition = sf::Mouse::getPosition(window);
 
-        gameControl->update(deltaTime, event, mousePosition);
+        programControl->update(deltaTime, mousePosition);
         fpsDisplay.update(deltaTime);
 
-        window.clear(sf::Color(12,12,100,255));
-
         //Rendering in layer
-        gameControl->render(window);
+        programControl->render(window);
         fpsDisplay.render(window);
 
         //Diplay has a delay that targets the target FPS

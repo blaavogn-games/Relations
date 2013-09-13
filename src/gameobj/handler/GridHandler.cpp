@@ -39,7 +39,7 @@ void GridHandler::init(){
 
 }
 
-void GridHandler::update(float delta, sf::Event &event, sf::Vector2i &mousePosition){
+void GridHandler::update(float delta, sf::Vector2i &mousePosition){
     //Handles highlight and mouse position
     sf::Vector2i mouseGridPosition = getGridPosition(mousePosition);
     sprHighlight.setPosition(sf::Vector2f(mouseGridPosition.x,mouseGridPosition.y));
@@ -178,6 +178,8 @@ void GridHandler::addWall(sf::Vector2i coordinate){
 
     grid[coordinate.x][coordinate.y] -> setTexture( &(gridTextures[5]) );
     grid[coordinate.x][coordinate.y] -> setWall();
+
+    gameControl->friendsNewTarget(coordinate);
 
     //Add shadow tiles
     for(int i = 0; i < shadowLength; i++){

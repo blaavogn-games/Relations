@@ -86,6 +86,16 @@ void FriendHandler::addFriend(sf::Vector2f position){
     alarm->addTimer(0,25);
 }
 
+void FriendHandler::newTarget(sf::Vector2i coordinate){
+    //Every friend with coordinate == targetCoord finds new action
+    for(std::vector<Friend*>::iterator it = friends.begin(); it != friends.end(); ++it){
+        sf::Vector2i targetCoord = (*it) -> getTargetCoord();
+        if(targetCoord.x == coordinate.x && targetCoord.y == coordinate.y){
+            (*it)->newAction();
+        }
+    }
+}
+
 void FriendHandler::transform(sf::Vector2f position){
     transformBuffer.push_back(position);
 }
