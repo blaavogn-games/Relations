@@ -25,6 +25,10 @@ void GridTile::init(sf::Texture (*textures)[6], sf::Vector2i coordinate){
     sprite.setPosition(position);
 
     colShape = NULL;
+
+    for(int i = 0; i < 4; i++){
+        shadow[i] = 0;
+    }
 }
 
 void GridTile::render(sf::RenderWindow &window){

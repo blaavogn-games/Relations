@@ -21,7 +21,7 @@ class GridTile : public GameObj{
         ColShape* colShape;
         GridTile* parent;
         sf::Texture (*textures)[6];
-        int shadow[4] = {0}; //Shadow from top, bot, left, right
+        int shadow[4]; //Shadow from top, bot, left, right
 
 
     public:
