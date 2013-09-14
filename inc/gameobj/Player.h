@@ -18,6 +18,7 @@ class Player : public PersonBase{
         PlayerHandler* playerHandler;
         GameControl* gameControl;
         sf::Vector2i previousCoordinate;
+        sf::Vector2f prevMovement;
 
 		float speed;
 

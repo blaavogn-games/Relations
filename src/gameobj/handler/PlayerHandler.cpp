@@ -65,7 +65,7 @@ bool PlayerHandler::looseLife(){
 
     lives --;
 
-    if(lives == 1){
+    if(lives == 0){
         return true;
     }
     delete sprLives.back();

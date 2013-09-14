@@ -55,7 +55,7 @@ void PersonBase::calculateSprite(float delta, sf::Vector2f* movement, bool movin
     }
 
     int frameX = (int) time % 4;
-    int frameY = (int) time / 4;
+    int frameY = (int) (time - frameX) / 4;
 
     sprPerson.setTextureRect(sf::IntRect(frameX * 14, frameY * 24,14,24));
 }

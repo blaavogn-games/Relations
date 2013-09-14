@@ -15,16 +15,17 @@ class Friend : public PersonBase{
         float blinkTime, blinkDefault;
 
         Alarm* alarm;
-        sf::Texture *texEnemy, *texStillF; //A bit unlogical, texFriend is placed in the baseClass and is called texPerson
+        sf::Texture *texEnemy; //A bit unlogical, texFriend is placed in the baseClass and is called texPerson
         sf::Vector2f target, movement;
         sf::Vector2i coordinate;
-        bool friendSprite, moving, atPlayer;
+        bool moving, atPlayer, active;
         ColCircle *aggroCircle;
 
+        int value;
         const float SPEED;
 
         void startBlink();
-        void updateSprite();
+        void changeSprite(bool);
         void newTarget(); //Possible action
         void newRotation(); //Possible action
 
@@ -32,8 +33,10 @@ class Friend : public PersonBase{
         Friend(FriendHandler*, sf::Vector2f, sf::Texture*);
         ~Friend();
 
-        void init(sf::Texture*, sf::Texture*);
+        void init(sf::Texture*);
         void update(float delta);
+
+        float getValue();
 
         void newAction();
         void alarmAction(int);

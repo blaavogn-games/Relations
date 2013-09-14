@@ -18,12 +18,13 @@ FriendHandler::~FriendHandler(){
 
 //public
 void FriendHandler::init(){
+    spawnTime = 20;
+
     texFriend.loadFromFile("res/img/friends/0.png");
     texEnemy.loadFromFile("res/img/enemies/enemy.png");
-    texStillF.loadFromFile("res/img/friends/0s.png");
 
     alarm = new Alarm(this);
-    addFriend(sf::Vector2f(19 * 32 + 16,9 * 32 + 16));
+    addFriend(sf::Vector2f(12 * 32 + 16,9 * 32 + 16));
 
 }
 
@@ -72,7 +73,8 @@ void FriendHandler::addFriend(){
     coordinate.x = rand() % GameControl::GRIDX; //Might need a seed, but it doesn't seem like it
     coordinate.y = rand() % GameControl::GRIDY;
 
-    while(gameControl->getGrid(&coordinate) -> isWall()){
+    while(gameControl->getGrid(&coordinate) -> isWall() ||
+          gameControl->getPath(coordinate).size() < 15){
         coordinate.x = rand() % GameControl::GRIDX;
         coordinate.y = rand() % GameControl::GRIDY;
     }
@@ -81,10 +83,10 @@ void FriendHandler::addFriend(){
 
 void FriendHandler::addFriend(sf::Vector2f position){
     Friend* tempFriend = new Friend(this, position, &texFriend);
-    tempFriend->init(&texEnemy, &texStillF);
+    tempFriend->init(&texEnemy);
     friends.push_back(tempFriend);
 
-    alarm->addTimer(0,20);
+    alarm->addTimer(0,spawnTime);
 }
 
 void FriendHandler::newTarget(sf::Vector2i coordinate){

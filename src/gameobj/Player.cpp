@@ -5,7 +5,7 @@
 #include <iostream>
 
 Player::Player(PlayerHandler* playerHandler, GameControl* gameControl, sf::Vector2f position, sf::Texture* texture) :
-        PersonBase(position, texture, 10.5f){
+        PersonBase(position, texture, 9.5f){
     this->playerHandler = playerHandler;
 	this->gameControl = gameControl;
 }
@@ -15,8 +15,11 @@ Player::~Player(){
 void Player::init(){
     PersonBase::init();
 
+    prevMovement.x = 0;
+    prevMovement.y = 0;
+
 	//Variables
-	speed = 42;
+	speed = 29;
     previousCoordinate = getCoordinate();
 }
 
@@ -54,9 +57,9 @@ void Player::update(float delta){
 	}
 
     //Diaognal movement not faster
-    if((curMovement.x != 0) && (curMovement.y != 0)){
-        curMovement.x /= 1.4f;
-        curMovement.y /= 1.4f;
+    if((curMovement.x != 0) ^ (curMovement.y != 0)){
+        curMovement.x *= 1.4f;
+        curMovement.y *= 1.4f;
     }
 
 	position += curMovement;
@@ -95,19 +98,25 @@ void Player::update(float delta){
                 curMovement.y = aggroCircle->getPosition().y - position.y;
             }
 
+            playerHandler->addScore((*it)->getValue());
+           // std::cout << "Her" << std::endl;
+
         }else{
             (*it)->setAtPlayer(false, position);
         }
     }
 
     setPosition(position);
+
+    if(!moving && !atFriends){
+        curMovement = prevMovement;
+    }
+
     calculateSprite(delta, &curMovement, moving);
 
-    if(atFriends){
-        playerHandler->addScore(delta);
-        //Player doesn't get extra points for being close to several persons
-        //Maybe it this is a bad rule, but it seems to deal with RNG luck problem.
-    }
+    prevMovement = curMovement;
+
+
 
     //Collision enemy
 	sf::Vector2f notUsedReturn;

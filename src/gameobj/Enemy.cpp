@@ -7,7 +7,7 @@
 #include <iostream>
 
 Enemy::Enemy(EnemyHandler* enemyHandler, sf::Vector2f position, sf::Texture* texture) :
-        PersonBase(position, texture, 10.5f) , SPEED(46){
+        PersonBase(position, texture, 10.5f) , SPEED(42){
     this->enemyHandler = enemyHandler;
 	this->position = position;
 }
