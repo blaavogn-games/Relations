@@ -41,6 +41,7 @@ void PlayerHandler::init(){
 
 void PlayerHandler::update(float delta){
     player      -> update(delta);
+    scoreDisplay -> update(delta);
 }
 
 void PlayerHandler::render(sf::RenderWindow &window){
@@ -76,8 +77,8 @@ void PlayerHandler::reset(){
     }
 }
 
-void PlayerHandler::addScore(float value){
-    scoreDisplay -> addScore(value);
+void PlayerHandler::addScore(float value, sf::Vector2f pos){
+    scoreDisplay -> addScore(value, pos);
 }
 
 bool PlayerHandler::looseLife(){

@@ -104,7 +104,7 @@ void Player::update(float delta){
                 curMovement.y = aggroCircle->getPosition().y - position.y;
             }
 
-            playerHandler->addScore((*it)->getValue());
+            playerHandler->addScore((*it)->getValue(), position);
            // std::cout << "Her" << std::endl;
 
         }else{
@@ -139,7 +139,6 @@ void Player::update(float delta){
         }else{
             it++;
         }
-
     }
 
     //Check if player moves into a new coordinate, if player does, enemies has to find new path

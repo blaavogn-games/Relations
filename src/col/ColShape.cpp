@@ -19,22 +19,8 @@ void ColShape::init(){
 
     calculateSepAxes();
     calculateAbsCorners();
-
-    //Test code
-    texture = new sf::Texture();
-    sprite = new sf::Sprite();
-
-    texture->loadFromFile("res/img/temp_corner.png");
-    sprite->setTexture(*texture);
 }
 
-//Test code
-void ColShape::render(sf::RenderWindow &window){
-    for(unsigned int i = 0; i < absCorners.size(); i++){
-        sprite->setPosition(absCorners.at(i).x - 2, absCorners.at(i).y - 2);
-        window.draw(*sprite);
-    }
-}
 
 //Private
 void ColShape::calculateAbsCorners(){

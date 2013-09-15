@@ -33,7 +33,7 @@ class PlayerHandler : public GameObj{
         void render(sf::RenderWindow &window);
         void reset();
 
-        void addScore(float);
+        void addScore(float, sf::Vector2f);
         bool looseLife();
         void death();
 

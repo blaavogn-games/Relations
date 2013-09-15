@@ -2,11 +2,22 @@
 #include <sstream>
 
 ScoreDisplay::ScoreDisplay(){}
-ScoreDisplay::~ScoreDisplay(){}
+ScoreDisplay::~ScoreDisplay(){
+    for(std::vector<ScoreMsg*>::iterator it = scoreMsgs.begin(); it != scoreMsgs.end(); ++it){
+        delete (*it);
+    }
+
+    scoreMsgs.clear();
+}
 
 void ScoreDisplay::init(){
     font.loadFromFile("res/fonts/SW721BTB.OTF");
     texBg.loadFromFile("res/img/player/scoreBG.png");
+    scoreTex.loadFromFile("res/img/player/score.png");
+
+    scoreBuffer.loadFromFile("res/sound/score.ogg");
+    scoreSound.setBuffer(scoreBuffer);
+
 
     bg.setTexture(texBg);
     bg.scale(800,600);
@@ -35,15 +46,28 @@ void ScoreDisplay::init(){
     minorText.setString(ss2.str());
 }
 
-void ScoreDisplay::death(){
-    dead = true;
-    displayText.setPosition(290,250);
-    displayText.setCharacterSize(50);
+void ScoreDisplay::update(float delta){
+    std::vector<ScoreMsg*>::iterator it = scoreMsgs.begin();
 
+    while(it != scoreMsgs.end()){
+        (*it)->update(delta);
 
+        if((*it) ->timer > 1){
+            delete (*it);
+            it = scoreMsgs.erase(it);
+        }else{
+            it++;
+        }
+
+    }
 }
 
+
 void ScoreDisplay::render(sf::RenderWindow &window){
+    for(std::vector<ScoreMsg*>::iterator it = scoreMsgs.begin(); it != scoreMsgs.end(); ++it){
+        (*it)->render(window);
+    }
+
     if(dead){
         window.draw(bg);
         window.draw(minorText);
@@ -51,7 +75,23 @@ void ScoreDisplay::render(sf::RenderWindow &window){
     window.draw(displayText);
 }
 
-void ScoreDisplay::addScore(float points){
+
+void ScoreDisplay::death(){
+    dead = true;
+    displayText.setPosition(290,250);
+    displayText.setCharacterSize(50);
+
+}
+
+
+void ScoreDisplay::addScore(float points, sf::Vector2f playerPosition){
+    if(points >= 1){
+        scoreSound.play();
+        ScoreMsg* tempMsg = new ScoreMsg();
+        tempMsg -> init(playerPosition, &scoreTex);
+        scoreMsgs.push_back(tempMsg);
+    }
+
     fScore += points;
     iScore = (int) fScore;
 }
