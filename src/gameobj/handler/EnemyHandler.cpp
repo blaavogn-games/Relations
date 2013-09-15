@@ -29,6 +29,13 @@ void EnemyHandler::render(sf::RenderWindow &window){
 	}
 }
 
+void EnemyHandler::reset(){
+    for(std::vector<Enemy*>::iterator it = enemies.begin(); it != enemies.end(); ++it){
+        delete (*it);
+    }
+	enemies.clear();
+}
+
 
 
 void EnemyHandler::addEnemy(sf::Vector2f position){

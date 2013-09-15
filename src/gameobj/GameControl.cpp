@@ -4,35 +4,11 @@
 
 #include <iostream>
 
-GameControl::GameControl(ProgramControl* programControl) : pause(false){
+GameControl::GameControl(ProgramControl* programControl){
     this->programControl = programControl;
-    pausePress = false;
-    resetPress = false;
-    firstGame = true;
 }
+
 GameControl::~GameControl(){
-    clearGame();
-}
-
-void GameControl::init(){
-
-    //enemyHandler dependent on gridHandler and player atm
-	gridHandler = new GridHandler(this);
-	gridHandler->init();
-
-	friendHandler = new FriendHandler(this);
-	friendHandler->init();
-
-	playerHandler = new PlayerHandler(this);
-	playerHandler->init();
-
-	enemyHandler = new EnemyHandler(this);
-	enemyHandler->init();
-
-}
-
-void GameControl::clearGame(){
-
     if(playerHandler){
 		delete playerHandler;
 	}
@@ -47,65 +23,89 @@ void GameControl::clearGame(){
     }
 }
 
-void GameControl::update(float delta, sf::Vector2i &mousePosition){
+void GameControl::init(){
+    //enemyHandler dependent on gridHandler and player atm
+	gridHandler = new GridHandler(this);
+	gridHandler->init();
 
+	friendHandler = new FriendHandler(this);
+	friendHandler->init();
+
+	playerHandler = new PlayerHandler(this);
+	playerHandler->init();
+
+	enemyHandler = new EnemyHandler(this);
+	enemyHandler->init();
+
+	pause = false;
+	reset = false;
+    resetPress = false;
+    firstGame = true;
+}
+
+
+void GameControl::update(float delta, sf::Vector2i &mousePosition){
     //Dev code
     sf::Keyboard keyboard;
 
-    if(keyboard.isKeyPressed(sf::Keyboard::Space)){
+    if(keyboard.isKeyPressed(sf::Keyboard::R)){
         if(resetPress == false){
             resetGame();
+            pause = false;
         }
     }else{
         resetPress = false;
     }
 
- 	if(keyboard.isKeyPressed(sf::Keyboard::Q)){
-		if(pausePress == false){
-            pausePress = true;
-            pauseGame();
-		}
-	}else{
-        pausePress = false;
+    if(keyboard.isKeyPressed(sf::Keyboard::Space) && pause){
+        programControl->enterMenuState();
+    }
+
+ 	if(keyboard.isKeyPressed(sf::Keyboard::Escape)){
+        programControl->enterMenuState();
 	}
 
-	if(!pause){
-	    //std::cout << "Update" << std::endl;
+    if(!pause){
         gridHandler     -> update(delta, mousePosition);
         friendHandler   -> update(delta);
         enemyHandler    -> update(delta);
         playerHandler   -> update(delta);
-	}
+    }
+
+    if(reset){
+        gridHandler -> reset();
+        friendHandler -> reset();
+        enemyHandler -> reset();
+        playerHandler -> reset();
+        reset = false;
+    }
 }
 
 void GameControl::render(sf::RenderWindow &window){
 
-    if(!resetPress){
-        //std::cout << "render" << std::endl;
-        gridHandler     -> render(window);
-        friendHandler   -> render(window);
-        enemyHandler    -> render(window);
-        playerHandler   -> render(window);
-    }
+    gridHandler     -> render(window);
+    friendHandler   -> render(window);
+    enemyHandler    -> render(window);
+    playerHandler   -> render(window);
 }
 
 void GameControl::resetGame(){
-    resetPress = true;
+    pause = false;
+    resetPress = true; //Dev bool
+
     if(firstGame == false){
-        clearGame();
-        init();
+        reset = true;
     }else{
         firstGame = false;
     }
 }
 
-void GameControl::pauseGame(){
-    pause = (pause) ? false : true;
+
+void GameControl::death(){
+    pause = true;
+    playerHandler -> death();
 }
 
-void GameControl::enterMenuState(){
-    programControl->enterMenuState();
-}
 
 //Enemyhandler pipeline
 void GameControl::enemiesFindNewPath(){
@@ -128,8 +128,9 @@ void GameControl::addEnemy(sf::Vector2f position){
 std::vector<Friend*>* GameControl::getFriends(){
     return friendHandler->getFriends();
 }
-void GameControl::friendsNewTarget(sf::Vector2i targetCoordinate){
+void GameControl::wallAdded(sf::Vector2i targetCoordinate){
     friendHandler->newTarget(targetCoordinate);
+    playerHandler->wallAdded();
 }
 
 //GridHandler

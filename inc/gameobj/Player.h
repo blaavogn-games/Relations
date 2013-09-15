@@ -17,7 +17,7 @@ class Player : public PersonBase{
 	private:
         PlayerHandler* playerHandler;
         GameControl* gameControl;
-        sf::Vector2i previousCoordinate;
+        sf::Vector2i previousCoordinate, currentCoordinate;
         sf::Vector2f prevMovement;
 
 		float speed;
@@ -26,6 +26,8 @@ class Player : public PersonBase{
         bool looseLife();
 
 	public:
+        bool wallsPlaced;
+
 		Player(PlayerHandler*, GameControl*, sf::Vector2f, sf::Texture*);
 		~Player();
 

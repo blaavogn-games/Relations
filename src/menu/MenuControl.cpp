@@ -21,12 +21,12 @@ void MenuControl::init(){
 
     sprTitle.setTexture(texTitle);
     sprTitle.setOrigin(sprTitle.getGlobalBounds().width / 2 , sprTitle.getGlobalBounds().height / 2);
-    sprTitle.setPosition(400,80);
+    sprTitle.setPosition(400,100);
 
     sprInfo.setTexture(texControls);
-    sprInfo.setPosition(420,220);
+    sprInfo.setPosition(440,280);
 
-    const int POSX = 50, POSY = 220, SPACEY = 52;
+    const int POSX = 100, POSY = 220, SPACEY = 66;
 
     for(int i = 0; i < 4; i++){
         Button* tempButton = new Button(this);
@@ -43,7 +43,7 @@ void MenuControl::update(float delta, sf::Vector2i &mousePosition){
 }
 
 void MenuControl::render(sf::RenderWindow &window){
-    window.clear(sf::Color(30,185,30,255));
+    window.clear(sf::Color(185,250,185,255));
     window.draw(sprTitle);
     window.draw(sprInfo);
 

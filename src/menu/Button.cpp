@@ -18,7 +18,7 @@ void Button::init(int type, sf::Vector2f position){
     sprite.setTexture(texture);
     width = sprite.getGlobalBounds().width;
 
-    sprite.setTextureRect(sf::IntRect(0,0,width,40));
+    sprite.setTextureRect(sf::IntRect(0,0,width,52));
     sprite.setPosition(position);
 }
 
@@ -26,10 +26,10 @@ void Button::update(sf::Vector2i &mousePosition){
     bool hoverNow = sprite.getGlobalBounds().contains(mousePosition.x,mousePosition.y);
 
     if(hoverNow && !hover){
-        sprite.setTextureRect(sf::IntRect(0,40,width,40));
+        sprite.setTextureRect(sf::IntRect(0,52,width,52));
         hover = true;
     }else if(!hoverNow && hover){
-        sprite.setTextureRect(sf::IntRect(0,0,width,40));
+        sprite.setTextureRect(sf::IntRect(0,0,width,52));
         hover = false;
     }
 

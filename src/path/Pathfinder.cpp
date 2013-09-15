@@ -42,7 +42,7 @@ void Pathfinder::resetTiles(sf::Vector2i* endCoordinate){
     //Resets all tiles to default, and calculates h to endCoordinate
     for(int y = 0; y < GameControl::GRIDY; y++){
         for(int x = 0; x < GameControl::GRIDX; x++){
-            int heuristic = (std::abs(x - endCoordinate->x) + std::abs(y - endCoordinate->y)) * 100;
+            int heuristic = (std::abs(x - endCoordinate->x) + std::abs(y - endCoordinate->y));
             gridHandler -> getGrid(x,y) -> reset(heuristic);
         }
     }

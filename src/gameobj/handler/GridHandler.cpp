@@ -18,13 +18,13 @@ GridHandler::~GridHandler(){
 }
 
 void GridHandler::init(){
-
     firstMousePress = false;
 
     pathfinder = new Pathfinder(this);
 
     //Loading and setting textures, might need some error handling. But if textures arn't loaded the game might as well crash.
-	txHighlight.loadFromFile("res/img/highlight.png");
+	txHighlight.loadFromFile("res/img/gridtiles/highlight.png");
+	txHighError.loadFromFile("res/img/gridtiles/highlight_error.png");
 	sprHighlight.setTexture(txHighlight);
 
     for(int i = 0; i < 6; i++){
@@ -39,6 +39,8 @@ void GridHandler::init(){
         }
     }
 
+    //Creating alarm
+    alarm = new Alarm(this);
 }
 
 void GridHandler::update(float delta, sf::Vector2i &mousePosition){
@@ -51,12 +53,18 @@ void GridHandler::update(float delta, sf::Vector2i &mousePosition){
     //Registers a mouse event every frame, might be nesecarry to change it
     if(mouse.isButtonPressed(sf::Mouse::Left)){
         if(firstMousePress == true){
-            attemptToAddWall(mouseGridPosition);
+            if(!attemptToAddWall(mouseGridPosition)){
+                //Not legal to place wall
+                sprHighlight.setTexture(txHighError);
+                alarm->addTimer(0,.3f);
+            }
             firstMousePress = false;
         }
     }else{
         firstMousePress = true;
     }
+
+    alarm->update(delta);
 
 }
 
@@ -99,7 +107,6 @@ bool GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
                 getGrid(&coordinate) -> removeTempWall();
                 return false;
             }
-
         }
 
         //For player
@@ -174,6 +181,22 @@ bool GridHandler::attemptToAddWall(sf::Vector2i gridPosition){
     return false;
 }
 
+void GridHandler::reset(){
+    //Creating grid
+    for(int y = 0; y < GameControl::GRIDY; y++){
+        for(int x = 0; x < GameControl::GRIDX; x++){
+            delete grid[x][y];
+            grid[x][y] = new GridTile();
+            grid[x][y]->init(&(gridTextures) , sf::Vector2i(x, y));
+        }
+    }
+}
+
+void GridHandler::alarmAction(int type){
+    //Only 0
+    sprHighlight.setTexture(txHighlight);
+}
+
 //Private
 void GridHandler::addWall(sf::Vector2i coordinate){
     const int shadowLength = 6;
@@ -181,7 +204,7 @@ void GridHandler::addWall(sf::Vector2i coordinate){
     grid[coordinate.x][coordinate.y] -> setTexture( &(gridTextures[5]) );
     grid[coordinate.x][coordinate.y] -> setWall();
 
-    gameControl->friendsNewTarget(coordinate);
+    gameControl->wallAdded(coordinate);
 
     //Add shadow tiles
     for(int i = 0; i < shadowLength; i++){

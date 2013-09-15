@@ -26,6 +26,7 @@ class EnemyHandler : public GameObj{
 		void update(float delta);
 		void render(sf::RenderWindow &window);
         void addEnemy(sf::Vector2f);
+        void reset();
 
         //Set more or less
         void findNewPaths();

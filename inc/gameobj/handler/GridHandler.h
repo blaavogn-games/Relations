@@ -28,8 +28,9 @@ class GridHandler : public GameObj{
         sf::Texture gridTextures[6]; //0 to 4 different shadows, 5 = wall
 
         sf::Sprite sprHighlight;
-        sf::Texture txHighlight;
+        sf::Texture txHighlight, txHighError;
 
+        Alarm* alarm;
         bool firstMousePress;
 
         bool attemptToAddWall(sf::Vector2i);
@@ -42,9 +43,14 @@ class GridHandler : public GameObj{
     public:
         GridHandler(GameControl* gameControl);
         ~GridHandler();
+
+
         void init();
         void update(float delta, sf::Vector2i &mousePosition);
         void render(sf::RenderWindow &window);
+        void reset();
+
+        void alarmAction(int);
 
         std::vector<ColShape*> getSurWalls(sf::Vector2i &position);
         std::deque<sf::Vector2i> getPath(sf::Vector2i, sf::Vector2i);

@@ -8,18 +8,22 @@ class ScoreDisplay : public GameObj{
 
 private:
     sf::Font font;
-    sf::Text displayText;
+    sf::Text displayText, minorText;
+    sf::Sprite bg;
+    sf::Texture texBg;
+
 
     float fScore;
     int iScore;
+    bool dead;
 
 public:
     ScoreDisplay();
     ~ScoreDisplay();
     void init();
-    void update(float delta);
     void render(sf::RenderWindow &window);
 
+    void death();
     void addScore(float points);
 };
 

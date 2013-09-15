@@ -23,9 +23,8 @@ class GameControl : public GameObj{
 		void update(float delta, sf::Vector2i &mousePosition);
 		void render(sf::RenderWindow &window);
 
-        void pauseGame();
+        void death();
         void resetGame();
-        void enterMenuState();
 
         //Next project this should just be getHandlerX this seems stupid
         //EnemyHandler connection pipe
@@ -42,7 +41,8 @@ class GameControl : public GameObj{
 
         //FriendHandler pipe
         std::vector<Friend*>* getFriends();
-        void friendsNewTarget(sf::Vector2i);
+
+        void wallAdded(sf::Vector2i);
 
         //Player connection pipe
         sf::Vector2i getPlayerCoordinate();
@@ -55,7 +55,7 @@ class GameControl : public GameObj{
 		GridHandler* gridHandler;
 		FriendHandler* friendHandler;
 
-        bool pause, pausePress, resetPress, firstGame;
+        bool pause, reset, resetPress, firstGame;
 
         void clearGame();
 

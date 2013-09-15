@@ -6,10 +6,7 @@
 #include <inc/gameobj/Enemy.h>
 #include <inc/gameobj/Player.h>
 
-
 #include <SFML/Graphics.hpp>
-
-
 
 class GameControl; // Forward
 
@@ -34,10 +31,13 @@ class PlayerHandler : public GameObj{
         void init();
         void update(float delta);
         void render(sf::RenderWindow &window);
+        void reset();
 
         void addScore(float);
         bool looseLife();
+        void death();
 
+        void wallAdded();
         sf::Vector2i getPlayerCoordinate();
 };
 

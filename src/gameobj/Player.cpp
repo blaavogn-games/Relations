@@ -20,7 +20,13 @@ void Player::init(){
 
 	//Variables
 	speed = 29;
-    previousCoordinate = getCoordinate();
+	previousCoordinate.x = 0;
+	previousCoordinate.y = 0;
+
+    currentCoordinate = getCoordinate();
+    wallsPlaced = true;
+
+    sprPerson.setPosition(position);
 }
 
 
@@ -66,7 +72,7 @@ void Player::update(float delta){
 	col->setPosition(position);
 
 	//Collision wall
-    std::vector<ColShape*> surWalls = gameControl->getSurWalls(previousCoordinate);
+    std::vector<ColShape*> surWalls = gameControl->getSurWalls(currentCoordinate);
 
     int ventil = 0;
     while(collisionHandler(surWalls) && ventil < 2){
@@ -111,12 +117,9 @@ void Player::update(float delta){
     if(!moving && !atFriends){
         curMovement = prevMovement;
     }
-
     calculateSprite(delta, &curMovement, moving);
 
     prevMovement = curMovement;
-
-
 
     //Collision enemy
 	sf::Vector2f notUsedReturn;
@@ -130,7 +133,7 @@ void Player::update(float delta){
             it = enemies -> erase(it);
             if(playerHandler -> looseLife()){ //Returns true on dead
                 std::cout << "DØØØØØØØØØD" << std::endl;
-                gameControl -> enterMenuState();
+                gameControl -> death();
                 return; //Exits update
             }
         }else{
@@ -140,12 +143,18 @@ void Player::update(float delta){
     }
 
     //Check if player moves into a new coordinate, if player does, enemies has to find new path
-    sf::Vector2i currentCoordinate = getCoordinate();
-    if(currentCoordinate.x != previousCoordinate.x || currentCoordinate.y != previousCoordinate.y){
+    sf::Vector2i posNewCoordinate = getCoordinate();
+    if(posNewCoordinate.x != currentCoordinate.x || posNewCoordinate.y != currentCoordinate.y){
         //Message enemies about new coordinate
-        gameControl -> enemiesFindNewPath();
+        if(wallsPlaced || (previousCoordinate.x != posNewCoordinate.x || previousCoordinate.y != posNewCoordinate.y) ){
+            //This check is to prevent jugling
+            //In reality I think the real fix was adjusting the heuristic value in pathfinding from stpud to not so stupid
+            gameControl -> enemiesFindNewPath();
+            wallsPlaced = false;
+        }
+        previousCoordinate = currentCoordinate;
+        currentCoordinate = posNewCoordinate;
     }
-    previousCoordinate = currentCoordinate;
 }
 
 bool Player::collisionHandler(std::vector<ColShape*> surWalls){

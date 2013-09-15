@@ -1,7 +1,7 @@
 #include <inc/gameobj/handler/FriendHandler.h>
 #include <inc/gameobj/GameControl.h>
 
-FriendHandler::FriendHandler(GameControl* gameControl){
+FriendHandler::FriendHandler(GameControl* gameControl) : spawnTime(20){
     this->gameControl = gameControl;
 }
 
@@ -18,13 +18,15 @@ FriendHandler::~FriendHandler(){
 
 //public
 void FriendHandler::init(){
-    spawnTime = 20;
 
-    texFriend.loadFromFile("res/img/friends/0.png");
+    for(int i = 0; i < FRIEND_TYPES; i++){
+        texFriend[i].loadFromFile("res/img/friends/"+std::to_string(i)+".png");
+    }
+
     texEnemy.loadFromFile("res/img/enemies/enemy.png");
 
     alarm = new Alarm(this);
-    addFriend(sf::Vector2f(12 * 32 + 16,9 * 32 + 16));
+    addFriend(sf::Vector2f(12 * 32 + 16,9 * 32 + 16), 10);
 
 }
 
@@ -62,6 +64,19 @@ void FriendHandler::render(sf::RenderWindow &window){
     }
 }
 
+void FriendHandler::reset(){
+    for(std::vector<Friend*>::iterator it = friends.begin(); it != friends.end(); ++it){
+        delete *it;
+    }
+    friends.clear();
+
+    transformBuffer.clear();
+
+    alarm->reset();
+
+    addFriend(sf::Vector2f(12 * 32 + 16,9 * 32 + 16), 10);
+}
+
 void FriendHandler::alarmAction(int type){
     //Currently only 0
     addFriend();
@@ -78,15 +93,16 @@ void FriendHandler::addFriend(){
         coordinate.x = rand() % GameControl::GRIDX;
         coordinate.y = rand() % GameControl::GRIDY;
     }
-    addFriend(sf::Vector2f(coordinate.x * GameControl::GRIDSIZE + 16, coordinate.y * GameControl::GRIDSIZE + 16));
+    addFriend(sf::Vector2f(coordinate.x * GameControl::GRIDSIZE + 16, coordinate.y * GameControl::GRIDSIZE + 16), spawnTime);
 }
 
-void FriendHandler::addFriend(sf::Vector2f position){
-    Friend* tempFriend = new Friend(this, position, &texFriend);
+void FriendHandler::addFriend(sf::Vector2f position, float time){
+    int iTex = rand() % FRIEND_TYPES;
+    Friend* tempFriend = new Friend(this, position, &texFriend[iTex]);
     tempFriend->init(&texEnemy);
     friends.push_back(tempFriend);
 
-    alarm->addTimer(0,spawnTime);
+    alarm->addTimer(0,time);
 }
 
 void FriendHandler::newTarget(sf::Vector2i coordinate){

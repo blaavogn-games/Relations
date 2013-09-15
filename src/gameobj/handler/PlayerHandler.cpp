@@ -31,19 +31,15 @@ void PlayerHandler::init(){
 
     lives = MAXLIVES;
 
-    //SprLives init()
-    const int STARTX = 760, STARTY = 10, HEARTSPACE = 22;
-
     for(int i = 0; i < MAXLIVES; i++){
         sf::Sprite* tempSprite = new sf::Sprite(texLife);
-        tempSprite -> setPosition(STARTX - i * HEARTSPACE , STARTY);
+        tempSprite -> setPosition(760 - i * 22 , 10);
         sprLives.push_back(tempSprite);
     }
 
 }
 
 void PlayerHandler::update(float delta){
-   // scoreDisplay-> update(delta); Not used
     player      -> update(delta);
 }
 
@@ -57,25 +53,52 @@ void PlayerHandler::render(sf::RenderWindow &window){
     }
 }
 
+void PlayerHandler::reset(){
+    delete player;
+    player = new Player(this, gameControl, sf::Vector2f(160,280) , &texPlayer);
+    player -> init();
+
+    delete scoreDisplay;
+    scoreDisplay = new ScoreDisplay();
+	scoreDisplay -> init();
+
+	lives = MAXLIVES;
+
+    for(std::vector<sf::Sprite*>::iterator it = sprLives.begin(); it != sprLives.end(); ++it){
+        delete (*it);
+    }
+    sprLives.clear();
+
+    for(int i = 0; i < MAXLIVES; i++){
+        sf::Sprite* tempSprite = new sf::Sprite(texLife);
+        tempSprite -> setPosition(760 - i * 22, 10);
+        sprLives.push_back(tempSprite);
+    }
+}
+
 void PlayerHandler::addScore(float value){
     scoreDisplay -> addScore(value);
 }
 
 bool PlayerHandler::looseLife(){
-
     lives --;
+    delete sprLives.back();
+    sprLives.pop_back();
 
     if(lives == 0){
         return true;
     }
-    delete sprLives.back();
-    sprLives.pop_back();
     return false;
 }
 
+void PlayerHandler::death(){
+    scoreDisplay->death();
+}
 
 sf::Vector2i PlayerHandler::getPlayerCoordinate(){
     return player -> getCoordinate();
 }
 
-
+void PlayerHandler::wallAdded(){
+    player -> wallsPlaced = true;
+}

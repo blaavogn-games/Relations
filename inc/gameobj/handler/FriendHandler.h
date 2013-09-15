@@ -15,13 +15,16 @@ class GameControl;
 
 class FriendHandler : public GameObj{
     private:
+        enum {FRIEND_TYPES = 6};
+
         GameControl* gameControl;
         Alarm* alarm;
-        sf::Texture texFriend, texEnemy;
+        sf::Texture texEnemy;
+        sf::Texture texFriend[FRIEND_TYPES];
         std::vector<Friend*> friends;
         std::vector<sf::Vector2f> transformBuffer;
 
-        float spawnTime;
+        const float spawnTime;
 
     public:
         FriendHandler(GameControl* gameControl);
@@ -30,9 +33,10 @@ class FriendHandler : public GameObj{
         void init();
         void update(float delta);
         void render(sf::RenderWindow &window);
+        void reset();
 
         void addFriend();
-        void addFriend(sf::Vector2f);
+        void addFriend(sf::Vector2f, float);
         void transform(sf::Vector2f);
         void newTarget(sf::Vector2i);
 
