@@ -41,7 +41,6 @@ void GameControl::init(){
 
 	pause = false;
 	reset = false;
-    resetPress = false;
     firstGame = true;
 }
 
@@ -49,15 +48,6 @@ void GameControl::init(){
 void GameControl::update(float delta, sf::Vector2i &mousePosition){
     //Dev code
     sf::Keyboard keyboard;
-
-    if(keyboard.isKeyPressed(sf::Keyboard::R)){
-        if(resetPress == false){
-            resetGame();
-            pause = false;
-        }
-    }else{
-        resetPress = false;
-    }
 
     if(keyboard.isKeyPressed(sf::Keyboard::Space) && pause){
         music.stop();
@@ -94,7 +84,6 @@ void GameControl::render(sf::RenderWindow &window){
 
 void GameControl::resetGame(){
     pause = false;
-    resetPress = true; //Dev bool
 
     music.play();
 

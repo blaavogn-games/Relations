@@ -57,7 +57,7 @@ class GameControl : public GameObj{
 
 		sf::Music music;
 
-        bool pause, reset, resetPress, firstGame;
+        bool pause, reset, firstGame;
 
         void clearGame();
 
