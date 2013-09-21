@@ -1,13 +1,13 @@
 Ny todo:
--1. Få transform til at virke
-0. Forbedre friend behaviour
-1. Find på point system
-2. Lav pointSystem
-    a. Venner skal ikke fjernes ved kontakt
-    b. Venners spawnRate skal tilpasses
-3. Bedre visuelt
+-1. Få transform til at virke -- Done
+0. Forbedre friend behaviour -- Done
+1. Find på point system -- Done
+2. Lav pointSystem -- Næsten færdig
+    a. Venner skal ikke fjernes ved kontakt -- Done
+    b. Venners spawnRate skal tilpasses -- Done
+3. Bedre visuelt -- Done men stadigvæk rimeligt grimt
 4. Musik og lyd
-5. "Menu"
+5. "Menu" -- Done
 6. publish
 
 Næste spil struktur forbedring:
@@ -15,6 +15,11 @@ Udbyg GameObj med sprite collision position og lignende
 Lav en Handler_base der har std::vector<GameObj*> som kan evt arver fra noget der minder om nuværende GameObj.
 Ny GameObj kan også arve fra den.
 Kan man lave events a la actionsScript? Kan ikke finde ud af om mine "pipelines" er god praksis
+Bedre fil sturktur
+State engines hvor muligt
+Lav soundHandler, som alle kan tilgå, når de vil spille lyd
+
+
 
 LEKTIE:
 SÆT POINTERE = NULL HVIS DU IKKE INITIALISERER DEM MED DET SAMME!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -23,3 +28,10 @@ Lær at initialiser collections at pointere til null på en nem måde.
 Måske skal jeg bruge flere shorts, jeg tror nærmest alle mine ints, kunne have været shorts.
 
 GameControl burde bare have getHandlers metoder
+
+Lydoversigt:
+Point (God)
+Friend Transform (Måske ok med musik)
+Mister liv - mangler
+Fejl ved murplacering - mangler
+evt. gå

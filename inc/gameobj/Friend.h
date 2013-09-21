@@ -5,6 +5,7 @@
 #include <inc/col/ColCircle.h>
 #include <inc/alarm/Alarm.h>
 
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
 class FriendHandler;
@@ -18,6 +19,7 @@ class Friend : public PersonBase{
         sf::Texture *texEnemy; //A bit unlogical, texFriend is placed in the baseClass and is called texPerson
         sf::Vector2f target, movement;
         sf::Vector2i coordinate;
+        sf::Sound soundBlink;
         bool moving, atPlayer, active;
         ColCircle *aggroCircle;
 
@@ -30,7 +32,7 @@ class Friend : public PersonBase{
         void newRotation(); //Possible action
 
     public:
-        Friend(FriendHandler*, sf::Vector2f, sf::Texture*);
+        Friend(FriendHandler*, sf::Vector2f, sf::Texture*, sf::SoundBuffer*);
         ~Friend();
 
         void init(sf::Texture*);

@@ -3,9 +3,11 @@
 #include <inc/gameobj/GameControl.h>
 #include <inc/col/math/MathVector.h>
 
-Friend::Friend(FriendHandler* friendHandler, sf::Vector2f position , sf::Texture* texFriend)
+Friend::Friend(FriendHandler* friendHandler, sf::Vector2f position , sf::Texture* texFriend, sf::SoundBuffer* soundBuffTrans)
         : PersonBase(position, texFriend, 8) , SPEED(10){
     this->friendHandler = friendHandler;
+    soundBlink.setBuffer(*soundBuffTrans);
+    soundBlink.setVolume(80);
 }
 
 Friend::~Friend(){
@@ -59,12 +61,13 @@ void Friend::alarmAction(int type){
         case 0: //Changes sprite to enemy
             changeSprite(false);
             alarm->addTimer(1, .2f);
+            soundBlink.play();
         break;
         case 1: //Set Friend //Should possibly be a function call
             changeSprite(true);
             blinkTime *= 0.81f;
             alarm->addTimer(0, blinkTime);
-            if(blinkTime < 0.08f){
+            if(blinkTime < 0.04f){
                 friendHandler->transform(position);
             }
         break;

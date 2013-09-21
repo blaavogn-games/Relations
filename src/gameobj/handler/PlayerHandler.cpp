@@ -22,6 +22,9 @@ void PlayerHandler::init(){
 	//Load data
     texLife.loadFromFile("res/img/player/life.png");
     texPlayer.loadFromFile("res/img/player/sheet.png");
+    soundBufferLooseLife.loadFromFile("res/sound/looseLife.wav");
+
+    soundLooseLife.setBuffer(soundBufferLooseLife);
 
     player = new Player(this, gameControl, sf::Vector2f(160,280) , &texPlayer);
     player -> init();
@@ -82,6 +85,7 @@ void PlayerHandler::addScore(float value, sf::Vector2f pos){
 }
 
 bool PlayerHandler::looseLife(){
+    soundLooseLife.play();
     lives --;
     delete sprLives.back();
     sprLives.pop_back();

@@ -13,8 +13,8 @@ int main()
     ProgramControl* programControl = new ProgramControl();
     programControl->init();
 
-    FpsDisplay fpsDisplay;
-    fpsDisplay.init();
+  //  FpsDisplay fpsDisplay;
+  //  fpsDisplay.init();
 
     sf::Clock clock;
     float deltaTime;
@@ -47,11 +47,11 @@ int main()
         mousePosition = sf::Mouse::getPosition(window);
 
         programControl->update(deltaTime, mousePosition);
-        fpsDisplay.update(deltaTime);
+    //    fpsDisplay.update(deltaTime);
 
         //Rendering in layer
         programControl->render(window);
-        fpsDisplay.render(window);
+      //  fpsDisplay.render(window);
 
         //Diplay has a delay that targets the target FPS
         window.display();

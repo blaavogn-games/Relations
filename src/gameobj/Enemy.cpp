@@ -19,9 +19,6 @@ Enemy::~Enemy(){
 void Enemy::init(){
     PersonBase::init();
 
-	texPath.loadFromFile("res/img/temp_path.png");
-
-    sprPath.setTexture(texPath);
 
     setPosition(position);
 
@@ -43,13 +40,6 @@ void Enemy::update(float delta){
 }
 
 void Enemy::render(sf::RenderWindow &window){
-
-	//Just for testing
-	for(std::deque<sf::Vector2i>::iterator it = path.begin(); it != path.end(); ++it){
-        sprPath.setPosition((it)->x * 32 , (it)->y * 32);
-        window.draw(sprPath);
-	}
-
     PersonBase::render(window);
 }
 

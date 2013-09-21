@@ -37,6 +37,8 @@ void GameControl::init(){
 	enemyHandler = new EnemyHandler(this);
 	enemyHandler->init();
 
+    music.openFromFile("res/music/music.ogg");
+
 	pause = false;
 	reset = false;
     resetPress = false;
@@ -58,6 +60,7 @@ void GameControl::update(float delta, sf::Vector2i &mousePosition){
     }
 
     if(keyboard.isKeyPressed(sf::Keyboard::Space) && pause){
+        music.stop();
         programControl->enterMenuState();
     }
 
@@ -92,6 +95,8 @@ void GameControl::render(sf::RenderWindow &window){
 void GameControl::resetGame(){
     pause = false;
     resetPress = true; //Dev bool
+
+    music.play();
 
     if(firstGame == false){
         reset = true;

@@ -21,6 +21,8 @@ class FriendHandler : public GameObj{
         Alarm* alarm;
         sf::Texture texEnemy;
         sf::Texture texFriend[FRIEND_TYPES];
+        sf::SoundBuffer soundBufferBlink, soundBufferTrans;
+        sf::Sound soundTrans;
         std::vector<Friend*> friends;
         std::vector<sf::Vector2f> transformBuffer;
 

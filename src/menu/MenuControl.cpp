@@ -43,7 +43,7 @@ void MenuControl::update(float delta, sf::Vector2i &mousePosition){
 }
 
 void MenuControl::render(sf::RenderWindow &window){
-    window.clear(sf::Color(185,250,185,255));
+    window.clear(sf::Color(60,255,60,255));
     window.draw(sprTitle);
     window.draw(sprInfo);
 

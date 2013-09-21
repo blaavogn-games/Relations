@@ -7,6 +7,8 @@
 #include <inc/path/Pathfinder.h>
 #include <inc/path/PathNote.h>
 
+#include <SFML/Audio.hpp>
+
 #include <unordered_map>
 #include <vector>
 
@@ -29,6 +31,9 @@ class GridHandler : public GameObj{
 
         sf::Sprite sprHighlight;
         sf::Texture txHighlight, txHighError;
+        sf::SoundBuffer soundBufferWall, soundBufferWallError;
+        sf::Sound soundWall, soundWallError;
+
 
         Alarm* alarm;
         bool firstMousePress;

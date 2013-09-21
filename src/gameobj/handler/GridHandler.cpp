@@ -27,6 +27,12 @@ void GridHandler::init(){
 	txHighError.loadFromFile("res/img/gridtiles/highlight_error.png");
 	sprHighlight.setTexture(txHighlight);
 
+    soundBufferWall.loadFromFile("res/sound/wall.wav");
+    soundBufferWallError.loadFromFile("res/sound/wallError.wav");
+
+    soundWall.setBuffer(soundBufferWall);
+    soundWallError.setBuffer(soundBufferWallError);
+
     for(int i = 0; i < 6; i++){
         gridTextures[i].loadFromFile("res/img/gridtiles/" + std::to_string(i) + ".png");
     }
@@ -57,6 +63,9 @@ void GridHandler::update(float delta, sf::Vector2i &mousePosition){
                 //Not legal to place wall
                 sprHighlight.setTexture(txHighError);
                 alarm->addTimer(0,.3f);
+                soundWallError.play();
+            }else{
+                soundWall.play();
             }
             firstMousePress = false;
         }

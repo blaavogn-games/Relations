@@ -55,6 +55,8 @@ class GameControl : public GameObj{
 		GridHandler* gridHandler;
 		FriendHandler* friendHandler;
 
+		sf::Music music;
+
         bool pause, reset, resetPress, firstGame;
 
         void clearGame();

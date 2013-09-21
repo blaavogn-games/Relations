@@ -15,7 +15,7 @@ void ScoreDisplay::init(){
     texBg.loadFromFile("res/img/player/scoreBG.png");
     scoreTex.loadFromFile("res/img/player/score.png");
 
-    scoreBuffer.loadFromFile("res/sound/score.ogg");
+    scoreBuffer.loadFromFile("res/sound/score.wav");
     scoreSound.setBuffer(scoreBuffer);
 
 
@@ -34,6 +34,7 @@ void ScoreDisplay::init(){
     minorText.setCharacterSize(20);
     minorText.setColor(sf::Color::Black);
     minorText.setPosition(260,320);
+
 
     fScore = 0;
     iScore = 0;
@@ -78,20 +79,24 @@ void ScoreDisplay::render(sf::RenderWindow &window){
 
 void ScoreDisplay::death(){
     dead = true;
-    displayText.setPosition(290,250);
+    displayText.setPosition(270,250);
     displayText.setCharacterSize(50);
 
 }
 
 
 void ScoreDisplay::addScore(float points, sf::Vector2f playerPosition){
+    fScore += points;
+    iScore = (int) fScore;
+
     if(points >= 1){
         scoreSound.play();
         ScoreMsg* tempMsg = new ScoreMsg();
         tempMsg -> init(playerPosition, &scoreTex);
         scoreMsgs.push_back(tempMsg);
-    }
 
-    fScore += points;
-    iScore = (int) fScore;
+        std::ostringstream ss, ss2;
+        ss << "Score: " << iScore;
+        displayText.setString(ss.str());
+    }
 }

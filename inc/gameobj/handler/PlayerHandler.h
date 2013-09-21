@@ -22,7 +22,8 @@ class PlayerHandler : public GameObj{
 
         sf::Texture texPlayer;
 		sf::Texture texLife;
-
+        sf::SoundBuffer soundBufferLooseLife;
+        sf::Sound soundLooseLife;
         int const MAXLIVES;
     public:
         PlayerHandler(GameControl*);

@@ -2,9 +2,7 @@
 #include <sstream>
 
 void FpsDisplay::init(){
-    if (!font.loadFromFile("res/fonts/sansation.ttf")){
-        //UNhandled error
-    }
+    font.loadFromFile("res/fonts/SW721BTB.OTF");
 }
 
 void FpsDisplay::update(float delta){
@@ -23,5 +21,4 @@ void FpsDisplay::render(sf::RenderWindow &window){
     displayText.setString(ss.str());
 
     window.draw(displayText);
-
 }

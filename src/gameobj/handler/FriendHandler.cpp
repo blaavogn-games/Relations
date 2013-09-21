@@ -25,6 +25,11 @@ void FriendHandler::init(){
 
     texEnemy.loadFromFile("res/img/enemies/enemy.png");
 
+    soundBufferBlink.loadFromFile("res/sound/blink.wav");
+    soundBufferTrans.loadFromFile("res/sound/transform.wav");
+
+    soundTrans.setBuffer(soundBufferTrans);
+
     alarm = new Alarm(this);
     addFriend(sf::Vector2f(12 * 32 + 16,9 * 32 + 16), 10);
 
@@ -98,7 +103,7 @@ void FriendHandler::addFriend(){
 
 void FriendHandler::addFriend(sf::Vector2f position, float time){
     int iTex = rand() % FRIEND_TYPES;
-    Friend* tempFriend = new Friend(this, position, &texFriend[iTex]);
+    Friend* tempFriend = new Friend(this, position, &texFriend[iTex], &soundBufferBlink);
     tempFriend->init(&texEnemy);
     friends.push_back(tempFriend);
 
@@ -116,6 +121,7 @@ void FriendHandler::newTarget(sf::Vector2i coordinate){
 }
 
 void FriendHandler::transform(sf::Vector2f position){
+    soundTrans.play();
     transformBuffer.push_back(position);
 }
 

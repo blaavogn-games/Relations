@@ -20,8 +20,6 @@ class Enemy : public PersonBase{
 
         std::deque<sf::Vector2i> path;
 
-		sf::Sprite sprPath;
-		sf::Texture texPath;
         sf::Vector2i targetPoint;
         sf::Vector2f movement;
 
