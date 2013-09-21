@@ -18,6 +18,7 @@ PersonBase::~PersonBase(){
 void PersonBase::init(){
     sprPerson.setTexture(*texPerson);
     sprPerson.setOrigin(CENTER);
+    sprPerson.setTextureRect(sf::IntRect(0, 0,14,24));
 
     col = new ColShape(position, sf::Vector2f(0,0));
 	col->addCorner(sf::Vector2f(0 , -CENTER.y));

@@ -34,7 +34,7 @@ void Friend::init(sf::Texture* texEnemy){
     newAction();
 
     aggroCircle = new ColCircle(&position, 50);
-
+    setPosition(sf::Vector2f(position.x, position.y));
 }
 
 void Friend::update(float delta){
