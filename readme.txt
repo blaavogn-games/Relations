@@ -1,5 +1,7 @@
-This is the repository for a game I am working on.
+This is the repository for Relations.
 
-While I am writing this, I am trying to figure out, how to use git in some none stupid way.
-It seems like I have been using it, in a stupid way.
+I used CodeBlocks as IDE, and SFML 2.0 as engine
+
+I think this is the release code, but I am not quite sure.
+And I am pretty sure there is a memory leak or two that I never got around to fix.
 
